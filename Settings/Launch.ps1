@@ -337,17 +337,28 @@ if ($BtnResetTweaks) {
                 Start-Process powershell -Verb RunAs -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$tempScriptPath`"" -Wait
                 Remove-Item -Path $tempScriptPath -Force -ErrorAction SilentlyContinue
                 
-                # Uncheck all boxes
-                $ChkIRQ.IsChecked = $false
-                $ChkNet.IsChecked = $false
-                $ChkGPU.IsChecked = $false
-                $ChkCPU.IsChecked = $false
-                $ChkUSB.IsChecked = $false
-                $ChkHPET.IsChecked = $false
-                $ChkGameDVR.IsChecked = $false
-                $ChkFullscreenOpt.IsChecked = $false
-                $ChkUSBSuspend.IsChecked = $false
-                $ChkMousePrecision.IsChecked = $false
+                # Uncheck all boxes - access through UserControl to ensure proper scope
+                $chkIRQ = $UserControl.FindName("ChkIRQ")
+                $chkNet = $UserControl.FindName("ChkNet")
+                $chkGPU = $UserControl.FindName("ChkGPU")
+                $chkCPU = $UserControl.FindName("ChkCPU")
+                $chkUSB = $UserControl.FindName("ChkUSB")
+                $chkHPET = $UserControl.FindName("ChkHPET")
+                $chkGameDVR = $UserControl.FindName("ChkGameDVR")
+                $chkFullscreenOpt = $UserControl.FindName("ChkFullscreenOpt")
+                $chkUSBSuspend = $UserControl.FindName("ChkUSBSuspend")
+                $chkMousePrecision = $UserControl.FindName("ChkMousePrecision")
+                
+                if ($chkIRQ) { $chkIRQ.IsChecked = $false }
+                if ($chkNet) { $chkNet.IsChecked = $false }
+                if ($chkGPU) { $chkGPU.IsChecked = $false }
+                if ($chkCPU) { $chkCPU.IsChecked = $false }
+                if ($chkUSB) { $chkUSB.IsChecked = $false }
+                if ($chkHPET) { $chkHPET.IsChecked = $false }
+                if ($chkGameDVR) { $chkGameDVR.IsChecked = $false }
+                if ($chkFullscreenOpt) { $chkFullscreenOpt.IsChecked = $false }
+                if ($chkUSBSuspend) { $chkUSBSuspend.IsChecked = $false }
+                if ($chkMousePrecision) { $chkMousePrecision.IsChecked = $false }
                 
                 Show-InfoPopup "Reset Complete" "All system tweaks have been reverted to default. A restart is recommended."
                 if ($StatusText) { $StatusText.Text = "Tweaks reset to default. System restart recommended." }
