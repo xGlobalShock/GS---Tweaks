@@ -11,7 +11,6 @@ param(
     [bool]$GameDVR = $false,
     [bool]$FullscreenOpt = $false,
     [bool]$USBSuspend = $false,
-    [bool]$MousePrecision = $false,
     [bool]$ApexConfig = $false,
     [bool]$ApexShader = $false
 )
@@ -41,7 +40,6 @@ if ($HPET) { & "$scriptRoot\GamingTweaks.ps1" -Type HPET }
 if ($GameDVR) { & "$scriptRoot\GamingTweaks.ps1" -Type GameDVR }
 if ($FullscreenOpt) { & "$scriptRoot\GamingTweaks.ps1" -Type FullscreenOpt }
 if ($USBSuspend) { & "$scriptRoot\GamingTweaks.ps1" -Type USBSuspend }
-if ($MousePrecision) { & "$scriptRoot\GamingTweaks.ps1" -Type MousePrecision }
 
 if ($ApexConfig) { & powershell -NoProfile -ExecutionPolicy Bypass -File "$scriptRoot\ApexTweaks.ps1" -Type Config }
 if ($ApexShader) { & powershell -NoProfile -ExecutionPolicy Bypass -File "$scriptRoot\ApexShaders.ps1" -Type ClearShaders }

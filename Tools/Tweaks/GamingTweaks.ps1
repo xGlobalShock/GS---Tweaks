@@ -141,28 +141,18 @@ switch ($Type) {
         # Effect: Prevents USB devices from power-saving mode
         # Revert: Delete DisableSelectiveSuspend value or set to 0
         # Default: Not present (uses Windows default - devices can suspend)
-        if (Test-Path "HKLM:\SYSTEM\CurrentControlSet\Services\USB") {
-            Set-SafeRegistryValue -Path "HKLM:\SYSTEM\CurrentControlSet\Services\USB" -Name "DisableSelectiveSuspend" -Value 1 -PropertyType DWORD
+        $usbPath = "HKLM:\SYSTEM\CurrentControlSet\Services\USB"
+        if (-not (Test-Path $usbPath)) {
+            New-SafeRegistryKey -Path $usbPath
+        }
+        if (Test-Path $usbPath) {
+            Set-SafeRegistryValue -Path $usbPath -Name "DisableSelectiveSuspend" -Value 1 -PropertyType DWORD
         } else {
-            Write-Host "ERROR: Registry path not found" -ForegroundColor Red
+            Write-Host "ERROR: Registry path could not be created: $usbPath" -ForegroundColor Red
         }
     }
     
-    "MousePrecision" { 
-        # SAFE: Disables mouse acceleration (0 = disabled)
-        # Effect: Raw mouse input for gaming
-        # Revert: Set MouseSpeed=1, MouseThreshold1=6, MouseThreshold2=10
-        # Default: MouseSpeed=1, MouseThreshold1=6, MouseThreshold2=10 (acceleration enabled)
-        $mousePath = "HKCU:\Control Panel\Mouse"
-        if (Test-Path $mousePath) {
-            Set-SafeRegistryValue -Path $mousePath -Name "MouseSpeed" -Value "0" -PropertyType String
-            Set-SafeRegistryValue -Path $mousePath -Name "MouseThreshold1" -Value "0" -PropertyType String
-            Set-SafeRegistryValue -Path $mousePath -Name "MouseThreshold2" -Value "0" -PropertyType String
-        } else {
-            Write-Host "ERROR: Registry path not found" -ForegroundColor Red
-        }
-    }
-    
+
     "ResetAll" {
         Write-Host "`n========================================" -ForegroundColor Cyan
         Write-Host "RESETTING ALL GAMING TWEAKS TO DEFAULTS" -ForegroundColor Cyan

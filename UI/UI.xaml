@@ -9,6 +9,8 @@
         <SolidColorBrush x:Key="SidebarBg" Color="#161922"/>
         <SolidColorBrush x:Key="CardBg" Color="#1E222D"/>
         <SolidColorBrush x:Key="TextSecondary" Color="#94A3B8"/>
+        <SolidColorBrush x:Key="BadgeAppliedColor" Color="#4CAF50"/>
+        <SolidColorBrush x:Key="BadgeDefaultColor" Color="#999999"/>
         
         <!-- Gradient Brushes -->
         <LinearGradientBrush x:Key="BlueGradient" StartPoint="0,0" EndPoint="1,1">
@@ -168,6 +170,33 @@
             </Setter>
         </Style>
 
+        <!-- Status Badge Style - Simple Circle Indicator -->
+        <Style x:Key="AppliedBadge" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource BadgeAppliedColor}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Width" Value="20"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="MinWidth" Value="20"/>
+            <Setter Property="MinHeight" Value="20"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Visibility" Value="Visible"/>
+        </Style>
+        
+        <Style x:Key="DefaultBadge" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource BadgeDefaultColor}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Width" Value="20"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="MinWidth" Value="20"/>
+            <Setter Property="MinHeight" Value="20"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Visibility" Value="Visible"/>
+        </Style>
+
         <!-- Tab Button Style to match navbar -->
         <Style x:Key="TabButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#252A37"/>
@@ -244,9 +273,9 @@
             <StackPanel>
                 <!-- Logo Section -->
                 <StackPanel Orientation="Horizontal" Margin="20,30,0,50">
-                    <Ellipse Width="36" Height="36" Fill="{StaticResource PrimaryAccent}" Margin="0,0,14,0"/>
+                    <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/PC%20Tweaks.png" Width="36" Height="36" Margin="0,0,14,0" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
                     <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="GlobalShock" VerticalAlignment="Center" FontWeight="Black" FontSize="16"/>
+                        <TextBlock Text="GS" VerticalAlignment="Center" FontWeight="Black" FontSize="16"/>
                         <TextBlock Text="Tweaker" VerticalAlignment="Center" FontSize="10" Foreground="#00A3FF" FontWeight="SemiBold"/>
                     </StackPanel>
                 </StackPanel>
@@ -314,6 +343,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
                                 <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Regedit.png" Width="32" Height="32" Margin="0,0,12,0" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
@@ -338,6 +368,14 @@
                                     </StackPanel>
                                 </Button>
                             </Border>
+                            <Border Grid.Column="3" Background="#2196F3" CornerRadius="8" VerticalAlignment="Center" Margin="8,0,0,0">
+                                <Button x:Name="BtnRefreshStatus" Style="{StaticResource SelectAllButtonStyle}" Cursor="Hand">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" Margin="0,0,6,0" FontSize="13"/>
+                                        <TextBlock Text="Refresh Status"/>
+                                    </StackPanel>
+                                </Button>
+                            </Border>
                         </Grid>
 
                         <!-- Performance & Interrupts Section -->
@@ -350,34 +388,60 @@
                             <!-- IRQ8 Priority Card -->
                             <Border Grid.Column="0" Background="#0F111A" Padding="20" CornerRadius="12" BorderBrush="#00A3FF" BorderThickness="1.5" Margin="0,0,10,0">
                                 <Grid>
-                                    <StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                            <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Regedit.png" Width="20" Height="20" Margin="0,0,10,0" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
-                                            <StackPanel VerticalAlignment="Center">
-                                                <TextBlock Text="IRQ8 Priority" FontSize="13" FontWeight="Bold" Foreground="White"/>
-                                                <TextBlock Text="System Timer" FontSize="10" Foreground="#888"/>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                                        <Grid Margin="0,0,0,12">
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Regedit.png" Width="20" Height="20" Margin="0,0,10,0" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Text="IRQ8 Priority" FontSize="13" FontWeight="Bold" Foreground="White"/>
+                                                    <TextBlock Text="System Timer" FontSize="10" Foreground="#888"/>
+                                                </StackPanel>
                                             </StackPanel>
-                                        </StackPanel>
+                                        </Grid>
                                         <TextBlock Text="Forces the system timer to a higher interrupt priority for better responsiveness." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
                                     </StackPanel>
-                                    <CheckBox x:Name="ChkIRQ" Style="{StaticResource ModernCheckBox}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                                    
+                                    <CheckBox Grid.Row="0" Grid.Column="1" x:Name="ChkIRQ" Style="{StaticResource ModernCheckBox}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,0"/>
+                                    <Border Grid.Row="0" Grid.Column="1" x:Name="BadgeIRQ" Style="{StaticResource DefaultBadge}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,3"/>
                                 </Grid>
                             </Border>
 
                             <!-- Network Interrupt Card -->
                             <Border Grid.Column="1" Background="#0F111A" Padding="20" CornerRadius="12" BorderBrush="#00A3FF" BorderThickness="1.5" Margin="10,0,0,0">
                                 <Grid>
-                                    <StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                            <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Regedit.png" Width="20" Height="20" Margin="0,0,10,0" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
-                                            <StackPanel VerticalAlignment="Center">
-                                                <TextBlock Text="Network Interrupts" FontSize="13" FontWeight="Bold" Foreground="White"/>
-                                                <TextBlock Text="Connectivity" FontSize="10" Foreground="#888"/>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                                        <Grid Margin="0,0,0,12">
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Regedit.png" Width="20" Height="20" Margin="0,0,10,0" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Text="Network Interrupts" FontSize="13" FontWeight="Bold" Foreground="White"/>
+                                                    <TextBlock Text="Connectivity" FontSize="10" Foreground="#888"/>
+                                                </StackPanel>
                                             </StackPanel>
-                                        </StackPanel>
+                                        </Grid>
                                         <TextBlock Text="Stabilizes network interrupts for improved consistency and lower ping." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
                                     </StackPanel>
-                                    <CheckBox x:Name="ChkNet" Style="{StaticResource ModernCheckBox}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                                    
+                                    <CheckBox Grid.Row="0" Grid.Column="1" x:Name="ChkNet" Style="{StaticResource ModernCheckBox}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,0"/>
+                                    <Border Grid.Row="0" Grid.Column="1" x:Name="BadgeNET" Style="{StaticResource DefaultBadge}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,3"/>
                                 </Grid>
                             </Border>
                         </Grid>
@@ -392,39 +456,65 @@
                             <!-- GPU Scheduling Card -->
                             <Border Grid.Column="0" Background="#0F111A" Padding="20" CornerRadius="12" BorderBrush="#00A3FF" BorderThickness="1.5" Margin="0,0,10,0">
                                 <Grid>
-                                    <StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                            <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Regedit.png" Width="20" Height="20" Margin="0,0,10,0" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
-                                            <StackPanel VerticalAlignment="Center">
-                                                <TextBlock Text="Hardware GPU Scheduling" FontSize="13" FontWeight="Bold" Foreground="White"/>
-                                                <TextBlock Text="Advanced GPU Management" FontSize="10" Foreground="#888"/>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                                        <Grid Margin="0,0,0,12">
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Regedit.png" Width="20" Height="20" Margin="0,0,10,0" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Text="Hardware GPU Scheduling" FontSize="13" FontWeight="Bold" Foreground="White"/>
+                                                    <TextBlock Text="Advanced GPU Management" FontSize="10" Foreground="#888"/>
+                                                </StackPanel>
                                             </StackPanel>
-                                        </StackPanel>
+                                        </Grid>
                                         <TextBlock Text="Reduces latency by allowing the GPU to manage its own memory and scheduling." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
                                     </StackPanel>
-                                    <CheckBox x:Name="ChkGPU" Style="{StaticResource ModernCheckBox}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                                    
+                                    <CheckBox Grid.Row="0" Grid.Column="1" x:Name="ChkGPU" Style="{StaticResource ModernCheckBox}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,0"/>
+                                    <Border Grid.Row="0" Grid.Column="1" x:Name="BadgeGPU" Style="{StaticResource DefaultBadge}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,3"/>
                                 </Grid>
                             </Border>
 
                             <!-- Fullscreen Optimizations Card -->
                             <Border Grid.Column="1" Background="#0F111A" Padding="20" CornerRadius="12" BorderBrush="#00A3FF" BorderThickness="1.5" Margin="10,0,0,0">
                                 <Grid>
-                                    <StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                            <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Regedit.png" Width="20" Height="20" Margin="0,0,10,0" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
-                                            <StackPanel VerticalAlignment="Center">
-                                                <TextBlock Text="Fullscreen Optimizations" FontSize="13" FontWeight="Bold" Foreground="White"/>
-                                                <TextBlock Text="Performance Mode" FontSize="10" Foreground="#888"/>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                                        <Grid Margin="0,0,0,12">
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Regedit.png" Width="20" Height="20" Margin="0,0,10,0" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Text="Fullscreen Optimizations" FontSize="13" FontWeight="Bold" Foreground="White"/>
+                                                    <TextBlock Text="Performance Mode" FontSize="10" Foreground="#888"/>
+                                                </StackPanel>
                                             </StackPanel>
-                                        </StackPanel>
+                                        </Grid>
                                         <TextBlock Text="Disables fullscreen optimizations for better fullscreen gaming performance." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
                                     </StackPanel>
-                                    <CheckBox x:Name="ChkFullscreenOpt" Style="{StaticResource ModernCheckBox}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                                    
+                                    <CheckBox Grid.Row="0" Grid.Column="1" x:Name="ChkFullscreenOpt" Style="{StaticResource ModernCheckBox}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,0"/>
+                                    <Border Grid.Row="0" Grid.Column="1" x:Name="BadgeFullscreenOpt" Style="{StaticResource DefaultBadge}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,3"/>
                                 </Grid>
                             </Border>
                         </Grid>
 
-                        <!-- Input Devices Section -->
+                        <!-- Input Devices & Recording Section -->
                         <Grid Margin="0,0,0,24">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -434,54 +524,63 @@
                             <!-- Disable USB Suspend Card -->
                             <Border Grid.Column="0" Background="#0F111A" Padding="20" CornerRadius="12" BorderBrush="#00A3FF" BorderThickness="1.5" Margin="0,0,10,0">
                                 <Grid>
-                                    <StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                            <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Regedit.png" Width="20" Height="20" Margin="0,0,10,0" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
-                                            <StackPanel VerticalAlignment="Center">
-                                                <TextBlock Text="Disable USB Suspend" FontSize="13" FontWeight="Bold" Foreground="White"/>
-                                                <TextBlock Text="Input Devices" FontSize="10" Foreground="#888"/>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                                        <Grid Margin="0,0,0,12">
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Regedit.png" Width="20" Height="20" Margin="0,0,10,0" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Text="Disable USB Suspend" FontSize="13" FontWeight="Bold" Foreground="White"/>
+                                                    <TextBlock Text="Input Devices" FontSize="10" Foreground="#888"/>
+                                                </StackPanel>
                                             </StackPanel>
-                                        </StackPanel>
+                                        </Grid>
                                         <TextBlock Text="Prevents USB devices from entering power-saving mode for consistent responsiveness." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
                                     </StackPanel>
-                                    <CheckBox x:Name="ChkUSBSuspend" Style="{StaticResource ModernCheckBox}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                                    
+                                    <CheckBox Grid.Row="0" Grid.Column="1" x:Name="ChkUSBSuspend" Style="{StaticResource ModernCheckBox}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,0"/>
+                                    <Border Grid.Row="0" Grid.Column="1" x:Name="BadgeUSB" Style="{StaticResource DefaultBadge}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,3"/>
                                 </Grid>
                             </Border>
 
-                            <!-- Disable Mouse Acceleration Card -->
+                            <!-- Disable Game DVR Card -->
                             <Border Grid.Column="1" Background="#0F111A" Padding="20" CornerRadius="12" BorderBrush="#00A3FF" BorderThickness="1.5" Margin="10,0,0,0">
                                 <Grid>
-                                    <StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                            <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Regedit.png" Width="20" Height="20" Margin="0,0,10,0" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
-                                            <StackPanel VerticalAlignment="Center">
-                                                <TextBlock Text="Disable Mouse Acceleration" FontSize="13" FontWeight="Bold" Foreground="White"/>
-                                                <TextBlock Text="Raw Input Mode" FontSize="10" Foreground="#888"/>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                                        <Grid Margin="0,0,0,12">
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Regedit.png" Width="20" Height="20" Margin="0,0,10,0" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Text="Disable Game DVR" FontSize="13" FontWeight="Bold" Foreground="White"/>
+                                                    <TextBlock Text="Recording Service" FontSize="10" Foreground="#888"/>
+                                                </StackPanel>
                                             </StackPanel>
-                                        </StackPanel>
-                                        <TextBlock Text="Disables mouse acceleration for 1:1 tracking and raw input, essential for competitive gaming." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
+                                        </Grid>
+                                        <TextBlock Text="Disables Windows Game DVR to free up system resources and reduce overhead." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
                                     </StackPanel>
-                                    <CheckBox x:Name="ChkMousePrecision" Style="{StaticResource ModernCheckBox}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                                    
+                                    <CheckBox Grid.Row="0" Grid.Column="1" x:Name="ChkGameDVR" Style="{StaticResource ModernCheckBox}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,0"/>
+                                    <Border Grid.Row="0" Grid.Column="1" x:Name="BadgeGameDVR" Style="{StaticResource DefaultBadge}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,3"/>
                                 </Grid>
                             </Border>
                         </Grid>
-
-                        <!-- Recording Service Section -->
-                        <Border Background="#0F111A" Padding="20" CornerRadius="12" BorderBrush="#00A3FF" BorderThickness="1.5" Margin="0,0,0,24">
-                            <Grid>
-                                <StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                        <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Regedit.png" Width="20" Height="20" Margin="0,0,10,0" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
-                                        <StackPanel VerticalAlignment="Center">
-                                            <TextBlock Text="Disable Game DVR" FontSize="13" FontWeight="Bold" Foreground="White"/>
-                                            <TextBlock Text="Recording Service" FontSize="10" Foreground="#888"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                    <TextBlock Text="Disables Windows Game DVR to free up system resources and reduce overhead." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
-                                </StackPanel>
-                                <CheckBox x:Name="ChkGameDVR" Style="{StaticResource ModernCheckBox}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
-                            </Grid>
-                        </Border>
 
                         <Button x:Name="BtnApply" Content="Apply Optimization" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" Height="36" Padding="20,0" FontSize="12"/>
                     </StackPanel>
@@ -1227,28 +1326,37 @@
         <!-- Popup Overlay and Cache Result Popup -->
         <Grid x:Name="PopupOverlay" Background="#000000" Opacity="0.5" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         <Grid x:Name="CacheResultPopupContainer" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Border Background="#1E222D" BorderBrush="#00A3FF" BorderThickness="2" CornerRadius="12" Padding="24" Width="400">
+            <Border Background="#1E222D" BorderBrush="#00A3FF" BorderThickness="2" CornerRadius="12" Padding="24" Width="420">
                 <StackPanel>
-                    <TextBlock x:Name="PopupTitle" FontSize="18" FontWeight="SemiBold" Foreground="#00A3FF" Margin="0,0,0,16" Text="Cache Cleared"/>
+                    <TextBlock x:Name="PopupTitle" FontSize="22" FontWeight="Bold" Foreground="#00A3FF" Margin="0,0,0,20" Text="Cache Cleared"/>
                     
-                    <Border Background="#0D1117" BorderBrush="#2A3F5F" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+                    <Border Background="#0D1117" BorderBrush="#2A3F5F" BorderThickness="1" CornerRadius="8" Padding="20" Margin="0,0,0,20">
                         <StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                <TextBlock Foreground="#ECEFF1" FontSize="14">Files Deleted:</TextBlock>
-                                <TextBlock x:Name="FilesDeletedCount" Foreground="#4CAF50" FontSize="14" FontWeight="SemiBold" Text="0" Margin="12,0,0,0"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                <TextBlock Foreground="#ECEFF1" FontSize="14">Files Remaining:</TextBlock>
-                                <TextBlock x:Name="FilesRemainingCount" Foreground="#FF6B35" FontSize="14" FontWeight="SemiBold" Text="0" Margin="12,0,0,0"/>
-                            </StackPanel>
-                            <Border Background="#1A2332" BorderBrush="#2A5A7F" BorderThickness="1" CornerRadius="6" Padding="8" Margin="0,8,0,0">
-                                <TextBlock x:Name="PopupDescription" FontSize="11" Foreground="#A0AEC0" TextWrapping="Wrap" Text="Operation completed successfully."/>
-                            </Border>
+                            <Grid Margin="0,0,0,14">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Foreground="#ECEFF1" FontSize="13">Files Deleted:</TextBlock>
+                                <TextBlock Grid.Column="1" x:Name="FilesDeletedCount" Foreground="#4CAF50" FontSize="13" FontWeight="Bold" Text="0"/>
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Foreground="#ECEFF1" FontSize="13">Files Remaining:</TextBlock>
+                                <TextBlock Grid.Column="1" x:Name="FilesRemainingCount" Foreground="#FF9800" FontSize="13" FontWeight="Bold" Text="0"/>
+                            </Grid>
                         </StackPanel>
                     </Border>
                     
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
-                        <Button x:Name="PopupOKButton" Style="{StaticResource PopupOKButtonStyle}" Content="OK"/>
+                    <Border Background="#1A2332" BorderBrush="#2A5A7F" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,20">
+                        <TextBlock x:Name="PopupDescription" FontSize="12" Foreground="#A0AEC0" TextWrapping="Wrap" Text="Operation completed successfully." TextAlignment="Center"/>
+                    </Border>
+                    
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button x:Name="PopupOKButton" Style="{StaticResource PopupOKButtonStyle}" Content="OK" Padding="24,8" FontSize="13"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -1257,14 +1365,23 @@
         <!-- Generic Info Popup -->
         <Grid x:Name="InfoPopupOverlay" Background="#000000" Opacity="0.5" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         <Grid x:Name="InfoPopupContainer" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Border Background="#1E222D" BorderBrush="#00A3FF" BorderThickness="2" CornerRadius="12" Padding="24" Width="700" MaxHeight="850">
+            <Border Background="#1E222D" BorderBrush="#00A3FF" BorderThickness="2" CornerRadius="12" Padding="24" Width="500">
                 <StackPanel>
-                    <TextBlock x:Name="InfoPopupTitle" FontSize="18" FontWeight="SemiBold" Foreground="#00A3FF" Margin="0,0,0,16" Text="Information"/>
+                    <!-- Title -->
+                    <TextBlock x:Name="InfoPopupTitle" FontSize="22" FontWeight="Bold" Foreground="#00A3FF" Margin="0,0,0,20" Text="Information"/>
                     
-                    <Border Background="#0D1117" BorderBrush="#2A3F5F" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,16">
-                        <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="700">
-                            <RichTextBox x:Name="InfoPopupMessage" FontSize="11" Foreground="#ECEFF1" Background="#0A0D13" BorderThickness="0" Padding="8" IsReadOnly="True" FontFamily="Consolas"/>
+                    <!-- Data Display Section with Grid Layout -->
+                    <Border x:Name="InfoPopupDataGridBorder" Background="#0D1117" BorderBrush="#2A3F5F" BorderThickness="1" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="400">
+                            <StackPanel x:Name="InfoPopupDataGrid">
+                                <!-- Dynamic grid items will be added here via PowerShell -->
+                            </StackPanel>
                         </ScrollViewer>
+                    </Border>
+                    
+                    <!-- Message Section -->
+                    <Border Background="#0D1117" BorderBrush="#2A3F5F" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,20">
+                        <TextBlock x:Name="InfoPopupMessage" FontSize="12" Foreground="#A0AEC0" TextAlignment="Center" TextWrapping="Wrap" Background="Transparent"/>
                     </Border>
                     
                     <!-- Path Box Section (Hidden by default) -->
@@ -1282,7 +1399,8 @@
                         </Border>
                     </StackPanel>
                     
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+                    <!-- OK Button -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button x:Name="InfoPopupOKButton" Style="{StaticResource PopupOKButtonStyle}" Content="OK"/>
                     </StackPanel>
                 </StackPanel>
