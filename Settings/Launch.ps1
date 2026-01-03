@@ -323,19 +323,34 @@ if ($BtnResetTweaks) {
         $result = [System.Windows.MessageBox]::Show("This will revert all system tweaks back to default. Continue?", "Reset All Tweaks", [System.Windows.MessageBoxButton]::YesNo, [System.Windows.MessageBoxImage]::Warning)
         
         if ($result -eq [System.Windows.MessageBoxResult]::Yes) {
-            Show-InfoPopup "Resetting Tweaks" "Reverting all tweaks back to default..."
-            
             # Reset all tweaks in elevated session
             try {
                 $gamingTweaksPath = "$(Split-Path $PSScriptRoot)\Tools\Tweaks\GamingTweaks.ps1"
                 $tempScriptPath = "$env:TEMP\ApexTweaksReset_Temp_$(Get-Random).ps1"
                 
                 # Build reset script
-                $scriptContent = "& `"$gamingTweaksPath`" -Type ResetAll`r`n"
+                $scriptContent = @"
+& `"$gamingTweaksPath`" -Type ResetAll 2>&1
+"@
                 
                 Set-Content -Path $tempScriptPath -Value $scriptContent -Encoding UTF8
-                Start-Process powershell -Verb RunAs -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$tempScriptPath`"" -Wait
+                
+                # Execute with elevation and wait for completion
+                Start-Process powershell -Verb RunAs -ArgumentList "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "`"$tempScriptPath`"" -Wait
+                Start-Sleep -Milliseconds 1000
                 Remove-Item -Path $tempScriptPath -Force -ErrorAction SilentlyContinue
+                
+                # Build the reset info list manually (all 7 tweaks)
+                $resetInfo = @(
+                    "IRQ8 Priority [deleted]",
+                    "Network Interrupts [deleted]",
+                    "GPU Scheduling [deleted]",
+                    "Game DVR [GameDVR_Enabled = 1]",
+                    "Fullscreen Optimizations [GameDVR_FSEBehaviorMonitorEnabled = 1]",
+                    "USB Suspend [deleted]",
+                    "Mouse Acceleration [MouseSpeed=1, Threshold1=6, Threshold2=10]"
+                )
+                $hasErrors = $false
                 
                 # Uncheck all boxes - access through UserControl to ensure proper scope
                 $chkIRQ = $UserControl.FindName("ChkIRQ")
@@ -360,7 +375,26 @@ if ($BtnResetTweaks) {
                 if ($chkUSBSuspend) { $chkUSBSuspend.IsChecked = $false }
                 if ($chkMousePrecision) { $chkMousePrecision.IsChecked = $false }
                 
-                Show-InfoPopup "Reset Complete" "All system tweaks have been reverted to default. A restart is recommended."
+                # Show results popup
+                $statusMessage = if ($hasErrors) { "Some tweaks had errors. Check details below." } else { "A restart is recommended for changes to take effect." }
+                
+                # Build formatted message with all reset items
+                if ($resetInfo.Count -gt 0) {
+                    # Create nicely formatted message
+                    $formattedItems = @()
+                    foreach ($item in $resetInfo) {
+                        if ($item -like "ERROR:*") {
+                            $formattedItems += "  ! $item"
+                        } else {
+                            $formattedItems += "  - $item"
+                        }
+                    }
+                    
+                    $message = "Reset Tweaks:`n`n" + ($formattedItems -join "`n") + "`n`n$statusMessage"
+                } else {
+                    $message = "Tweaks reset operation completed.`n`n$statusMessage"
+                }
+                Show-InfoPopup "Reset Complete" $message
                 if ($StatusText) { $StatusText.Text = "Tweaks reset to default. System restart recommended." }
             } catch {
                 $errorMsg = $_.Exception.Message

@@ -25,9 +25,22 @@ function Set-SafeRegistryValue {
             return $false
         }
         
-        # Use Set-ItemProperty (safer than New-ItemProperty with -Force)
-        Set-ItemProperty -Path $Path -Name $Name -Value $Value -Force -ErrorAction Stop
-        Write-Host "✓ Set $Name = $Value" -ForegroundColor Green
+        # Use Set-ItemProperty with proper type parameter
+        $params = @{
+            Path = $Path
+            Name = $Name
+            Value = $Value
+            Force = $true
+            ErrorAction = "Stop"
+        }
+        
+        # Add Type parameter if not DWORD
+        if ($PropertyType -ne "DWORD") {
+            $params['Type'] = $PropertyType
+        }
+        
+        Set-ItemProperty @params
+        Write-Host "[OK] Set $Name = $Value" -ForegroundColor Green
         return $true
     } catch {
         Write-Host "ERROR: Failed to set registry value: $($_.Exception.Message)" -ForegroundColor Red
@@ -44,7 +57,7 @@ function New-SafeRegistryKey {
     try {
         if (-not (Test-Path $Path)) {
             New-Item -Path $Path -Force -ErrorAction Stop | Out-Null
-            Write-Host "✓ Created registry key: $Path" -ForegroundColor Green
+            Write-Host "[OK] Created registry key: $Path" -ForegroundColor Green
         }
         return $true
     } catch {
@@ -155,45 +168,99 @@ switch ($Type) {
         Write-Host "RESETTING ALL GAMING TWEAKS TO DEFAULTS" -ForegroundColor Cyan
         Write-Host "========================================" -ForegroundColor Cyan
         
-        # All reset operations use Remove-ItemProperty which safely reverts to Windows defaults
-        # This is 100% safe because we're only removing values we added
+        # All reset operations safely revert to Windows defaults
+        # This is 100% safe because we're only removing/reverting values we added
         
-        if (Test-Path "HKLM:\SYSTEM\CurrentControlSet\Control\PriorityControl") {
-            Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\PriorityControl" -Name "IRQ8Priority" -Force -ErrorAction SilentlyContinue
-            Write-Host "✓ Reset: IRQ8 Priority" -ForegroundColor Green
+        # 1. IRQ8 Priority - DELETE (HKLM)
+        try {
+            Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\PriorityControl" -Name "IRQ8Priority" -Force -ErrorAction Stop
+            Write-Host "[OK] Reset: IRQ8 Priority [deleted]" -ForegroundColor Green
+        } catch {
+            if ($_.Exception.Message -like "*Cannot find*" -or $_.Exception.Message -like "*does not exist*") {
+                Write-Host "[OK] Reset: IRQ8 Priority [already removed]" -ForegroundColor Green
+            } else {
+                Write-Host "[ERR] Error resetting IRQ8 Priority: $($_.Exception.Message)" -ForegroundColor Red
+            }
         }
         
-        if (Test-Path "HKLM:\SYSTEM\CurrentControlSet\Services\NDIS\Parameters") {
-            Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\NDIS\Parameters" -Name "ProcessorThrottleMode" -Force -ErrorAction SilentlyContinue
-            Write-Host "✓ Reset: Network Interrupts" -ForegroundColor Green
+        # 2. Network Interrupts - DELETE (HKLM)
+        try {
+            Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\NDIS\Parameters" -Name "ProcessorThrottleMode" -Force -ErrorAction Stop
+            Write-Host "[OK] Reset: Network Interrupts [deleted]" -ForegroundColor Green
+        } catch {
+            if ($_.Exception.Message -like "*Cannot find*" -or $_.Exception.Message -like "*does not exist*") {
+                Write-Host "[OK] Reset: Network Interrupts [already removed]" -ForegroundColor Green
+            } else {
+                Write-Host "[ERR] Error resetting Network Interrupts: $($_.Exception.Message)" -ForegroundColor Red
+            }
         }
         
-        if (Test-Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers") {
-            Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers" -Name "HwSchMode" -Force -ErrorAction SilentlyContinue
-            Write-Host "✓ Reset: GPU Scheduling" -ForegroundColor Green
+        # 3. GPU Scheduling - DELETE (HKLM)
+        try {
+            Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers" -Name "HwSchMode" -Force -ErrorAction Stop
+            Write-Host "[OK] Reset: GPU Scheduling [deleted]" -ForegroundColor Green
+        } catch {
+            if ($_.Exception.Message -like "*Cannot find*" -or $_.Exception.Message -like "*does not exist*") {
+                Write-Host "[OK] Reset: GPU Scheduling [already removed]" -ForegroundColor Green
+            } else {
+                Write-Host "[ERR] Error resetting GPU Scheduling: $($_.Exception.Message)" -ForegroundColor Red
+            }
         }
         
-        if (Test-Path "HKCU:\System\GameConfigStore") {
-            Set-ItemProperty -Path "HKCU:\System\GameConfigStore" -Name "GameDVR_Enabled" -Value 1 -Force -ErrorAction SilentlyContinue
-            Write-Host "✓ Reset: Game DVR (re-enabled)" -ForegroundColor Green
-            
-            Set-ItemProperty -Path "HKCU:\System\GameConfigStore" -Name "GameDVR_FSEBehaviorMonitorEnabled" -Value 1 -Force -ErrorAction SilentlyContinue
-            Write-Host "✓ Reset: Fullscreen Optimizations (re-enabled)" -ForegroundColor Green
+        # 4. Game DVR - SET to 1 (HKCU)
+        try {
+            $path = "HKCU:\System\GameConfigStore"
+            if (Test-Path $path) {
+                Set-ItemProperty -Path $path -Name "GameDVR_Enabled" -Value 1 -Type DWORD -Force -ErrorAction Stop
+                Write-Host "[OK] Reset: Game DVR [GameDVR_Enabled = 1]" -ForegroundColor Green
+            } else {
+                Write-Host "[OK] Reset: Game DVR (already removed)" -ForegroundColor Green
+            }
+        } catch {
+            Write-Host "[ERR] Error resetting Game DVR: $($_.Exception.Message)" -ForegroundColor Red
         }
         
-        if (Test-Path "HKLM:\SYSTEM\CurrentControlSet\Services\USB") {
-            Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\USB" -Name "DisableSelectiveSuspend" -Force -ErrorAction SilentlyContinue
-            Write-Host "✓ Reset: USB Suspend (re-enabled)" -ForegroundColor Green
+        # 5. Fullscreen Optimizations - SET to 1 (HKCU)
+        try {
+            $path = "HKCU:\System\GameConfigStore"
+            if (Test-Path $path) {
+                Set-ItemProperty -Path $path -Name "GameDVR_FSEBehaviorMonitorEnabled" -Value 1 -Type DWORD -Force -ErrorAction Stop
+                Write-Host "[OK] Reset: Fullscreen Optimizations [GameDVR_FSEBehaviorMonitorEnabled = 1]" -ForegroundColor Green
+            } else {
+                Write-Host "[OK] Reset: Fullscreen Optimizations (already removed)" -ForegroundColor Green
+            }
+        } catch {
+            Write-Host "[ERR] Error resetting Fullscreen Optimizations: $($_.Exception.Message)" -ForegroundColor Red
         }
         
-        if (Test-Path "HKCU:\Control Panel\Mouse") {
-            Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseSpeed" -Value "1" -Force -ErrorAction SilentlyContinue
-            Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseThreshold1" -Value "6" -Force -ErrorAction SilentlyContinue
-            Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseThreshold2" -Value "10" -Force -ErrorAction SilentlyContinue
-            Write-Host "✓ Reset: Mouse Acceleration (re-enabled)" -ForegroundColor Green
+        # 6. USB Suspend - DELETE (HKLM)
+        try {
+            Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\USB" -Name "DisableSelectiveSuspend" -Force -ErrorAction Stop
+            Write-Host "[OK] Reset: USB Suspend [deleted]" -ForegroundColor Green
+        } catch {
+            if ($_.Exception.Message -like "*Cannot find*" -or $_.Exception.Message -like "*does not exist*") {
+                Write-Host "[OK] Reset: USB Suspend [already removed]" -ForegroundColor Green
+            } else {
+                Write-Host "[ERR] Error resetting USB Suspend: $($_.Exception.Message)" -ForegroundColor Red
+            }
         }
         
-        Write-Host "`n✓ All tweaks successfully reset to Windows defaults" -ForegroundColor Green
+        # 7. Mouse Acceleration - SET to defaults (HKCU)
+        try {
+            $path = "HKCU:\Control Panel\Mouse"
+            if (Test-Path $path) {
+                Set-ItemProperty -Path $path -Name "MouseSpeed" -Value "1" -Type String -Force -ErrorAction Stop
+                Set-ItemProperty -Path $path -Name "MouseThreshold1" -Value "6" -Type String -Force -ErrorAction Stop
+                Set-ItemProperty -Path $path -Name "MouseThreshold2" -Value "10" -Type String -Force -ErrorAction Stop
+                Write-Host "[OK] Reset: Mouse Acceleration [MouseSpeed=1, Threshold1=6, Threshold2=10]" -ForegroundColor Green
+            } else {
+                Write-Host "[OK] Reset: Mouse Acceleration (already removed)" -ForegroundColor Green
+            }
+        } catch {
+            Write-Host "[ERR] Error resetting Mouse Acceleration: $($_.Exception.Message)" -ForegroundColor Red
+        }
+        
+        Write-Host "`n[OK] All tweaks reset to Windows defaults" -ForegroundColor Green
         Write-Host "A system restart is recommended for changes to take effect.`n" -ForegroundColor Cyan
     }
     
