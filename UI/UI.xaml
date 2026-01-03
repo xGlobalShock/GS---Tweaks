@@ -1381,7 +1381,9 @@
                     
                     <!-- Message Section -->
                     <Border Background="#0D1117" BorderBrush="#2A3F5F" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,20">
-                        <TextBlock x:Name="InfoPopupMessage" FontSize="12" Foreground="#A0AEC0" TextAlignment="Center" TextWrapping="Wrap" Background="Transparent"/>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="500">
+                            <RichTextBox x:Name="InfoPopupMessage" FontSize="12" Foreground="#A0AEC0" Background="Transparent" BorderThickness="0" IsReadOnly="True" Padding="0"/>
+                        </ScrollViewer>
                     </Border>
                     
                     <!-- Path Box Section (Hidden by default) -->

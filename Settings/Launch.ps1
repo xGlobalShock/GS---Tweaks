@@ -37,6 +37,217 @@ function Invoke-PresetDownload($presetName) {
     }
 }
 
+# ==========================================
+# PROFESSIONAL POPUP SYSTEM
+# Clean, extensible, and maintainable
+# ==========================================
+
+# Display info popup with two sections: grid items and status message
+function Show-InfoPopup {
+    param(
+        [string]$title,
+        [array]$gridItems = @(),      # Array of hashtables with 'name' and 'value' keys
+        [string]$statusMessage = "",  # Status message for second box
+        [string]$pathToCopy = $null   # Path to display in path box (for Config Ready)
+    )
+    
+    $InfoPopupOverlay = $UserControl.FindName("InfoPopupOverlay")
+    $InfoPopupContainer = $UserControl.FindName("InfoPopupContainer")
+    $InfoPopupTitle = $UserControl.FindName("InfoPopupTitle")
+    $InfoPopupMessage = $UserControl.FindName("InfoPopupMessage")
+    $InfoPopupDataGrid = $UserControl.FindName("InfoPopupDataGrid")
+    $InfoPopupDataGridBorder = $UserControl.FindName("InfoPopupDataGridBorder")
+    $InfoPopupOKButton = $UserControl.FindName("InfoPopupOKButton")
+    $PathBoxSection = $UserControl.FindName("PathBoxSection")
+    $PathBoxText = $UserControl.FindName("PathBoxText")
+    
+    # Set title
+    if ($null -ne $InfoPopupTitle) { $InfoPopupTitle.Text = $title }
+    
+    # Clear existing content
+    if ($null -ne $InfoPopupDataGrid) { $InfoPopupDataGrid.Children.Clear() }
+    if ($null -ne $InfoPopupMessage) {
+        if ($InfoPopupMessage.GetType().Name -eq "RichTextBox") {
+            $InfoPopupMessage.Document.Blocks.Clear()
+        } else {
+            $InfoPopupMessage.Text = ""
+        }
+    }
+    
+    # Handle "Config Ready" special case - display full installation guide
+    if ($title -eq "Config Ready") {
+        if ($null -ne $InfoPopupDataGridBorder) { $InfoPopupDataGridBorder.Visibility = "Collapsed" }
+        
+        if ($null -ne $InfoPopupMessage) {
+            $isRichTextBox = $InfoPopupMessage.GetType().Name -eq "RichTextBox"
+            if ($isRichTextBox) {
+                $bullet = [char]0x2022
+                
+                # Title
+                $para = New-Object System.Windows.Documents.Paragraph
+                $run = New-Object System.Windows.Documents.Run
+                $run.Text = "Installation Guide"
+                $run.FontWeight = [System.Windows.FontWeights]::Bold
+                $run.FontSize = 14
+                $run.Foreground = [System.Windows.Media.Brushes]::Cyan
+                $para.Inlines.Add($run)
+                $para.Margin = New-Object System.Windows.Thickness(0, 0, 0, 12)
+                $InfoPopupMessage.Document.Blocks.Add($para)
+                
+                # Backup section
+                $para = New-Object System.Windows.Documents.Paragraph
+                $run = New-Object System.Windows.Documents.Run
+                $run.Text = "Backup:"
+                $run.FontWeight = [System.Windows.FontWeights]::Bold
+                $run.Foreground = [System.Windows.Media.Brushes]::LightGray
+                $para.Inlines.Add($run)
+                $para.Inlines.Add((New-Object System.Windows.Documents.LineBreak))
+                $run = New-Object System.Windows.Documents.Run
+                $run.Text = "$bullet Use the [Open] button to jump to the file path and find videoconfig.`n$bullet Rename it to 'videoconfig_backup' so you can revert if needed."
+                $run.Foreground = [System.Windows.Media.Brushes]::LightGray
+                $para.Inlines.Add($run)
+                $para.Margin = New-Object System.Windows.Thickness(0, 0, 0, 12)
+                $InfoPopupMessage.Document.Blocks.Add($para)
+                
+                # Installation section
+                $para = New-Object System.Windows.Documents.Paragraph
+                $run = New-Object System.Windows.Documents.Run
+                $run.Text = "Installation:"
+                $run.FontWeight = [System.Windows.FontWeights]::Bold
+                $run.Foreground = [System.Windows.Media.Brushes]::LightGray
+                $para.Inlines.Add($run)
+                $para.Inlines.Add((New-Object System.Windows.Documents.LineBreak))
+                $run = New-Object System.Windows.Documents.Run
+                $run.Text = "$bullet First make sure that Apex Legends is closed`n$bullet Copy the downloaded 'videoconfig' and paste it into that same folder."
+                $run.Foreground = [System.Windows.Media.Brushes]::LightGray
+                $para.Inlines.Add($run)
+                $para.Margin = New-Object System.Windows.Thickness(0, 0, 0, 12)
+                $InfoPopupMessage.Document.Blocks.Add($para)
+                
+                # Restart section
+                $para = New-Object System.Windows.Documents.Paragraph
+                $run = New-Object System.Windows.Documents.Run
+                $run.Text = "Restart:"
+                $run.FontWeight = [System.Windows.FontWeights]::Bold
+                $run.Foreground = [System.Windows.Media.Brushes]::LightGray
+                $para.Inlines.Add($run)
+                $para.Inlines.Add((New-Object System.Windows.Documents.LineBreak))
+                $run = New-Object System.Windows.Documents.Run
+                $run.Text = "$bullet Close and relaunch Apex Legends to apply the new settings."
+                $run.Foreground = [System.Windows.Media.Brushes]::LightGray
+                $para.Inlines.Add($run)
+                $para.Margin = New-Object System.Windows.Thickness(0, 0, 0, 12)
+                $InfoPopupMessage.Document.Blocks.Add($para)
+                
+                # Note section
+                $para = New-Object System.Windows.Documents.Paragraph
+                $run = New-Object System.Windows.Documents.Run
+                $run.Text = "Note:"
+                $run.FontWeight = [System.Windows.FontWeights]::Bold
+                $run.Foreground = [System.Windows.Media.Brushes]::LightGray
+                $para.Inlines.Add($run)
+                $para.Inlines.Add((New-Object System.Windows.Documents.LineBreak))
+                $run = New-Object System.Windows.Documents.Run
+                $run.Text = "$bullet To restore your old settings, delete the new videoconfig file and rename videoconfig_backup back to 'videoconfig'."
+                $run.Foreground = [System.Windows.Media.Brushes]::LightGray
+                $para.Inlines.Add($run)
+                $InfoPopupMessage.Document.Blocks.Add($para)
+            }
+        }
+        
+        # Show path box
+        if ($null -ne $PathBoxSection) {
+            if ($null -ne $pathToCopy) {
+                $PathBoxSection.Visibility = "Visible"
+                if ($null -ne $PathBoxText) { $PathBoxText.Text = $pathToCopy }
+            } else {
+                $PathBoxSection.Visibility = "Collapsed"
+            }
+        }
+    } else {
+        # Normal grid + message display
+        
+        # Display grid items in first box
+        if ($null -ne $InfoPopupDataGridBorder -and $gridItems.Count -gt 0) {
+            $InfoPopupDataGridBorder.Visibility = "Visible"
+            
+            foreach ($item in $gridItems) {
+                $itemGrid = New-Object System.Windows.Controls.Grid
+                $col1 = New-Object System.Windows.Controls.ColumnDefinition
+                $col1.Width = [System.Windows.GridLength]::new(1, [System.Windows.GridUnitType]::Star)
+                $col2 = New-Object System.Windows.Controls.ColumnDefinition
+                $col2.Width = [System.Windows.GridLength]::new(1, [System.Windows.GridUnitType]::Auto)
+                $itemGrid.ColumnDefinitions.Add($col1)
+                $itemGrid.ColumnDefinitions.Add($col2)
+                
+                # Name (Orange)
+                $nameBlock = New-Object System.Windows.Controls.TextBlock
+                $nameBlock.Text = $item.name
+                $orangeBrush = New-Object System.Windows.Media.BrushConverter
+                $nameBlock.Foreground = $orangeBrush.ConvertFromString("#FF9800")
+                $nameBlock.FontSize = 12
+                $nameBlock.FontWeight = [System.Windows.FontWeights]::Bold
+                [System.Windows.Controls.Grid]::SetColumn($nameBlock, 0)
+                $itemGrid.Children.Add($nameBlock) | Out-Null
+                
+                # Value (Light Gray)
+                $valueBlock = New-Object System.Windows.Controls.TextBlock
+                $valueBlock.Text = $item.value
+                $lightBrush = New-Object System.Windows.Media.BrushConverter
+                $valueBlock.Foreground = $lightBrush.ConvertFromString("#ECEFF1")
+                $valueBlock.FontSize = 12
+                $valueBlock.TextAlignment = "Right"
+                [System.Windows.Controls.Grid]::SetColumn($valueBlock, 1)
+                $valueBlock.Margin = New-Object System.Windows.Thickness(12, 0, 0, 0)
+                $itemGrid.Children.Add($valueBlock) | Out-Null
+                
+                $itemGrid.Margin = New-Object System.Windows.Thickness(0, 0, 0, 14)
+                $InfoPopupDataGrid.Children.Add($itemGrid) | Out-Null
+            }
+        } else {
+            if ($null -ne $InfoPopupDataGridBorder) { $InfoPopupDataGridBorder.Visibility = "Collapsed" }
+        }
+        
+        # Display status message in second box
+        if ($null -ne $InfoPopupMessage -and $statusMessage -ne "") {
+            $isRichTextBox = $InfoPopupMessage.GetType().Name -eq "RichTextBox"
+            
+            if ($isRichTextBox) {
+                $para = New-Object System.Windows.Documents.Paragraph
+                $run = New-Object System.Windows.Documents.Run
+                $run.Text = $statusMessage
+                $run.Foreground = [System.Windows.Media.Brushes]::LightGray
+                $para.Inlines.Add($run)
+                $InfoPopupMessage.Document.Blocks.Add($para)
+            } else {
+                $InfoPopupMessage.Text = $statusMessage
+            }
+        }
+        
+        # Hide path box for normal popups
+        if ($null -ne $PathBoxSection) {
+            $PathBoxSection.Visibility = "Collapsed"
+        }
+    }
+    
+    # Show popup
+    if ($null -ne $InfoPopupOverlay) { $InfoPopupOverlay.Visibility = "Visible" }
+    if ($null -ne $InfoPopupContainer) { $InfoPopupContainer.Visibility = "Visible" }
+    
+    # Setup close button - use script block with UserControl in scope
+    if ($null -ne $InfoPopupOKButton) {
+        $closeHandler = {
+            param($sender, $e)
+            $overlay = $UserControl.FindName("InfoPopupOverlay")
+            $container = $UserControl.FindName("InfoPopupContainer")
+            if ($null -ne $overlay) { $overlay.Visibility = "Collapsed" }
+            if ($null -ne $container) { $container.Visibility = "Collapsed" }
+        }
+        
+        $InfoPopupOKButton.Add_Click($closeHandler)
+    }
+}
+
 function Show-CacheResultPopup($title, $description, $filesDeleted, $filesRemaining) {
     $PopupOverlay = $UserControl.FindName("PopupOverlay")
     $CacheResultPopupContainer = $UserControl.FindName("CacheResultPopupContainer")
@@ -63,239 +274,6 @@ function Show-CacheResultPopup($title, $description, $filesDeleted, $filesRemain
             if ($null -ne $container) { $container.Visibility = "Collapsed" }
         }
         $PopupOKButton.Add_Click($closePopupHandler)
-    }
-}
-
-function Show-InfoPopup($title, $message, $pathToCopy = $null) {
-    $InfoPopupOverlay = $UserControl.FindName("InfoPopupOverlay")
-    $InfoPopupContainer = $UserControl.FindName("InfoPopupContainer")
-    $InfoPopupTitle = $UserControl.FindName("InfoPopupTitle")
-    $InfoPopupMessage = $UserControl.FindName("InfoPopupMessage")
-    $InfoPopupDataGrid = $UserControl.FindName("InfoPopupDataGrid")
-    $InfoPopupOKButton = $UserControl.FindName("InfoPopupOKButton")
-    $PathBoxSection = $UserControl.FindName("PathBoxSection")
-    $PathBoxText = $UserControl.FindName("PathBoxText")
-    $PathOpenButton = $UserControl.FindName("PathOpenButton")
-    
-    if ($null -ne $InfoPopupTitle) { $InfoPopupTitle.Text = $title }
-    
-    # Get reference to the data grid border
-    $InfoPopupDataGridBorder = $UserControl.FindName("InfoPopupDataGridBorder")
-    
-    # Clear data grid for all popups
-    if ($null -ne $InfoPopupDataGrid) {
-        $InfoPopupDataGrid.Children.Clear()
-    }
-    
-    # Hide data grid border for non-configuration popups
-    if ($null -ne $InfoPopupDataGridBorder) {
-        if ($title -eq "Tweaks Configuration" -or $title -eq "Reset Complete") {
-            $InfoPopupDataGridBorder.Visibility = "Visible"
-        } else {
-            $InfoPopupDataGridBorder.Visibility = "Collapsed"
-        }
-    }
-    
-    # Parse and display registry information in grid format
-    if ($null -ne $InfoPopupDataGrid -and ($title -eq "Tweaks Configuration" -or $title -eq "Reset Complete")) {
-        $InfoPopupDataGrid.Children.Clear()
-        
-        if ($title -eq "Reset Complete") {
-            # Parse reset info from message (format: "- Item [details]")
-            $lines = $message -split "`n"
-            $resetItems = @()
-            foreach ($line in $lines) {
-                if ($line -match "^\s*-\s*(.+?)\s*\[(.+?)\]") {
-                    $resetItems += @{
-                        name = $matches[1].Trim()
-                        detail = $matches[2].Trim()
-                    }
-                }
-            }
-            
-            # Add each reset item as a grid row
-            foreach ($item in $resetItems) {
-                # Create Grid with 2 columns for Name and Value
-                $itemGrid = New-Object System.Windows.Controls.Grid
-                $col1 = New-Object System.Windows.Controls.ColumnDefinition
-                $col1.Width = [System.Windows.GridLength]::new(1, [System.Windows.GridUnitType]::Star)
-                $col2 = New-Object System.Windows.Controls.ColumnDefinition
-                $col2.Width = [System.Windows.GridLength]::new(1, [System.Windows.GridUnitType]::Auto)
-                $itemGrid.ColumnDefinitions.Add($col1)
-                $itemGrid.ColumnDefinitions.Add($col2)
-                
-                # Name TextBlock (Orange color)
-                $nameBlock = New-Object System.Windows.Controls.TextBlock
-                $nameBlock.Text = $item.name + ":"
-                $orangeBrush = New-Object System.Windows.Media.BrushConverter
-                $nameBlock.Foreground = $orangeBrush.ConvertFromString("#FF9800")
-                $nameBlock.FontSize = 12
-                $nameBlock.FontWeight = [System.Windows.FontWeights]::Bold
-                [System.Windows.Controls.Grid]::SetColumn($nameBlock, 0)
-                $itemGrid.Children.Add($nameBlock) | Out-Null
-                
-                # Value TextBlock
-                $valueBlock = New-Object System.Windows.Controls.TextBlock
-                $valueBlock.Text = $item.detail
-                $lightBrush = New-Object System.Windows.Media.BrushConverter
-                $valueBlock.Foreground = $lightBrush.ConvertFromString("#ECEFF1")
-                $valueBlock.FontSize = 12
-                $valueBlock.TextAlignment = "Right"
-                [System.Windows.Controls.Grid]::SetColumn($valueBlock, 1)
-                $valueBlock.Margin = New-Object System.Windows.Thickness(12, 0, 0, 0)
-                $itemGrid.Children.Add($valueBlock) | Out-Null
-                
-                # Add to data grid
-                $itemGrid.Margin = New-Object System.Windows.Thickness(0, 0, 0, 14)
-                $InfoPopupDataGrid.Children.Add($itemGrid) | Out-Null
-            }
-        } else {
-            # Original "Tweaks Configuration" logic
-            # Parse registry info from message
-            $lines = $message -split "`n"
-            $registryItems = @()
-            foreach ($line in $lines) {
-                if ($line -match "^\s*(.+?)\s*\(") {
-                    $registryItems += $line.Trim()
-                }
-            }
-            
-            # Add each registry item as a grid row
-            foreach ($item in $registryItems) {
-                # Create Grid with 2 columns for Name and Value
-                $itemGrid = New-Object System.Windows.Controls.Grid
-                $col1 = New-Object System.Windows.Controls.ColumnDefinition
-                $col1.Width = [System.Windows.GridLength]::new(1, [System.Windows.GridUnitType]::Star)
-                $col2 = New-Object System.Windows.Controls.ColumnDefinition
-                $col2.Width = [System.Windows.GridLength]::new(1, [System.Windows.GridUnitType]::Auto)
-                $itemGrid.ColumnDefinitions.Add($col1)
-                $itemGrid.ColumnDefinitions.Add($col2)
-                
-                # Parse name and value
-                if ($item -match "(.+?)\s*\((.*)\)") {
-                    $name = $matches[1].Trim()
-                    $detail = $matches[2].Trim()
-                    
-                    # Normalize value display to "Value set to: X" format
-                    if ($detail -match "value:\s*(.+)") {
-                        $value = $matches[1].Trim()
-                        $detail = "Value set to: $value"
-                    } elseif ($detail -match "will be set to:\s*(.+)") {
-                        $value = $matches[1].Trim()
-                        $detail = "Value set to: $value"
-                    } elseif ($detail -match "already exists") {
-                        $detail = "Already exists"
-                    }
-                    
-                    # Name TextBlock (Orange color)
-                    $nameBlock = New-Object System.Windows.Controls.TextBlock
-                    $nameBlock.Text = $name + ":"
-                    $orangeBrush = New-Object System.Windows.Media.BrushConverter
-                    $nameBlock.Foreground = $orangeBrush.ConvertFromString("#FF9800")
-                    $nameBlock.FontSize = 12
-                    $nameBlock.FontWeight = [System.Windows.FontWeights]::Bold
-                    [System.Windows.Controls.Grid]::SetColumn($nameBlock, 0)
-                    $itemGrid.Children.Add($nameBlock) | Out-Null
-                    
-                    # Value TextBlock
-                    $valueBlock = New-Object System.Windows.Controls.TextBlock
-                    $valueBlock.Text = $detail
-                    $lightBrush = New-Object System.Windows.Media.BrushConverter
-                    $valueBlock.Foreground = $lightBrush.ConvertFromString("#ECEFF1")
-                    $valueBlock.FontSize = 12
-                    $valueBlock.TextAlignment = "Right"
-                    [System.Windows.Controls.Grid]::SetColumn($valueBlock, 1)
-                    $valueBlock.Margin = New-Object System.Windows.Thickness(12, 0, 0, 0)
-                    $itemGrid.Children.Add($valueBlock) | Out-Null
-                    
-                    # Add to data grid
-                    $itemGrid.Margin = New-Object System.Windows.Thickness(0, 0, 0, 14)
-                    $InfoPopupDataGrid.Children.Add($itemGrid) | Out-Null
-                }
-            }
-        }
-    }
-    
-    # Display message (status/action required message)
-    if ($null -ne $InfoPopupMessage) {
-        $InfoPopupMessage.Text = ""
-        
-        # Check if this is the videoconfig Installation Guide (special formatting)
-        if ($message -match "Installation Guide" -or $title -eq "Config Ready") {
-            $bullet = [char]0x2022
-            $parts = @(
-                @{text = "Installation Guide"; bold = $true; underline = $true; fontSize = 16},
-                @{text = "`n`nBackup: "; bold = $true; underline = $true; fontSize = 12},
-                @{text = "`n    $bullet Use the [Open] button to jump to the file path and find videoconfig.`n    $bullet Rename it to 'videoconfig_backup' so you can revert if needed.`n`n"; bold = $false; underline = $false; fontSize = 12},
-                @{text = "Installation: "; bold = $true; underline = $true; fontSize = 12},
-                @{text = "`n   $bullet First make sure that Apex Legends is closed"; bold = $false; underline = $false; fontSize = 12},
-                @{text = "`n   $bullet Copy the downloaded 'videoconfig' and paste it into that same folder.`n`n"; bold = $false; underline = $false; fontSize = 12},
-                @{text = "Restart: "; bold = $true; underline = $true; fontSize = 12},
-                @{text = "`n    $bullet Close and relaunch Apex Legends to apply the new settings.`n`n"; bold = $false; underline = $false; fontSize = 12},
-                @{text = "Note: "; bold = $true; underline = $true; fontSize = 12},
-                @{text = "`n    $bullet To restore your old settings, delete the new videoconfig file and rename videoconfig_backup back to 'videoconfig'."; bold = $false; underline = $false; fontSize = 12}
-            )
-            
-            # For installation guide, extract just the status message
-            if ($message -match "A restart is required|No action required") {
-                $statusMsg = $message -replace ".*?(A restart is required|No action required).*", '$1'
-                $InfoPopupMessage.Text = $statusMsg
-            }
-        } elseif ($title -eq "Reset Complete") {
-            # For reset complete, extract and show only the status message
-            if ($message -match "(A restart is recommended|system restart recommended)") {
-                $statusMsg = [regex]::Match($message, "(A restart is recommended|system restart recommended)").Value
-                $InfoPopupMessage.Text = $statusMsg
-            }
-        } else {
-            # For tweaks configuration, extract just the status message (last part after tweaks list)
-            if ($title -eq "Tweaks Configuration") {
-                if ($message -match "(A restart is required|No action required).*") {
-                    $statusMsg = [regex]::Match($message, "(A restart is required|No action required)").Value
-                    $InfoPopupMessage.Text = $statusMsg
-                }
-            } else {
-                # Generic message display (for errors)
-                $InfoPopupMessage.Text = $message
-            }
-        }
-    }
-    
-    # Show/hide path box based on parameter
-    if ($null -ne $PathBoxSection) {
-        if ($null -ne $pathToCopy) {
-            $PathBoxSection.Visibility = "Visible"
-            if ($null -ne $PathBoxText) { $PathBoxText.Text = $pathToCopy }
-            
-            # Setup open button handler
-            if ($null -ne $PathOpenButton) {
-                $openHandler = {
-                    $fullPath = Join-Path $env:USERPROFILE "Saved Games\Respawn\Apex\Local\"
-                    if (Test-Path $fullPath) {
-                        Invoke-Item $fullPath
-                    } else {
-                        [System.Windows.MessageBox]::Show("Path does not exist: $fullPath", "Error", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Warning) | Out-Null
-                    }
-                }
-                $PathOpenButton.Add_Click($openHandler)
-            }
-        } else {
-            $PathBoxSection.Visibility = "Collapsed"
-        }
-    }
-    
-    if ($null -ne $InfoPopupOverlay) { $InfoPopupOverlay.Visibility = "Visible" }
-    if ($null -ne $InfoPopupContainer) { $InfoPopupContainer.Visibility = "Visible" }
-    
-    # Setup close button handler
-    if ($null -ne $InfoPopupOKButton) {
-        $closePopupHandler = {
-            $overlay = $UserControl.FindName("InfoPopupOverlay")
-            $container = $UserControl.FindName("InfoPopupContainer")
-            if ($null -ne $overlay) { $overlay.Visibility = "Collapsed" }
-            if ($null -ne $container) { $container.Visibility = "Collapsed" }
-        }
-        $InfoPopupOKButton.Add_Click($closePopupHandler)
     }
 }
 
@@ -477,91 +455,144 @@ if ($BtnResetTweaks) {
         $result = [System.Windows.MessageBox]::Show("This will revert all system tweaks back to default. Continue?", "Reset All Tweaks", [System.Windows.MessageBoxButton]::YesNo, [System.Windows.MessageBoxImage]::Warning)
         
         if ($result -eq [System.Windows.MessageBoxResult]::Yes) {
-            # Reset all tweaks in elevated session
-            try {
-                $gamingTweaksPath = "$(Split-Path $PSScriptRoot)\Tools\Tweaks\GamingTweaks.ps1"
-                $tempScriptPath = "$env:TEMP\ApexTweaksReset_Temp_$(Get-Random).ps1"
+            # Check current registry status BEFORE resetting
+            $resetInfo = @()
+            $alreadyDefaultCount = 0
+            $needsResetCount = 0
+            
+            # Check IRQ8Priority
+            $irqPath = "HKLM:\SYSTEM\CurrentControlSet\Control\PriorityControl"
+            if ((Test-Path $irqPath) -and ($null -ne (Get-ItemProperty -Path $irqPath -Name "IRQ8Priority" -ErrorAction SilentlyContinue).IRQ8Priority)) {
+                $resetInfo += "IRQ8Priority: Registry deleted"
+                $needsResetCount++
+            } else {
+                $resetInfo += "IRQ8Priority: Registry not found"
+                $alreadyDefaultCount++
+            }
+            
+            # Check ProcessorThrottleMode
+            $netPath = "HKLM:\SYSTEM\CurrentControlSet\Services\NDIS\Parameters"
+            if ((Test-Path $netPath) -and ($null -ne (Get-ItemProperty -Path $netPath -Name "ProcessorThrottleMode" -ErrorAction SilentlyContinue).ProcessorThrottleMode)) {
+                $resetInfo += "ProcessorThrottleMode: Registry deleted"
+                $needsResetCount++
+            } else {
+                $resetInfo += "ProcessorThrottleMode: Registry not found"
+                $alreadyDefaultCount++
+            }
+            
+            # Check HwSchMode
+            $gpuPath = "HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers"
+            if ((Test-Path $gpuPath) -and ($null -ne (Get-ItemProperty -Path $gpuPath -Name "HwSchMode" -ErrorAction SilentlyContinue).HwSchMode)) {
+                $resetInfo += "HwSchMode: Registry deleted"
+                $needsResetCount++
+            } else {
+                $resetInfo += "HwSchMode: Registry not found"
+                $alreadyDefaultCount++
+            }
+            
+            # Check GameDVR_Enabled (set to default value 1)
+            $gameDVRPath = "HKCU:\System\GameConfigStore"
+            $gameDVRValue = (Get-ItemProperty -Path $gameDVRPath -Name "GameDVR_Enabled" -ErrorAction SilentlyContinue).GameDVR_Enabled
+            if ($gameDVRValue -eq 0) {
+                $resetInfo += "GameDVR_Enabled: Value set to default"
+                $needsResetCount++
+            } else {
+                $resetInfo += "GameDVR_Enabled: Set at default"
+                $alreadyDefaultCount++
+            }
+            
+            # Check GameDVR_FSEBehaviorMonitorEnabled (set to default value 1)
+            $fullscreenValue = (Get-ItemProperty -Path $gameDVRPath -Name "GameDVR_FSEBehaviorMonitorEnabled" -ErrorAction SilentlyContinue).GameDVR_FSEBehaviorMonitorEnabled
+            if ($fullscreenValue -eq 0) {
+                $resetInfo += "GameDVR_FSEBehaviorMonitorEnabled: Value set to default"
+                $needsResetCount++
+            } else {
+                $resetInfo += "GameDVR_FSEBehaviorMonitorEnabled: Set at default"
+                $alreadyDefaultCount++
+            }
+            
+            # Check DisableSelectiveSuspend
+            $usbPath = "HKLM:\SYSTEM\CurrentControlSet\Services\USB"
+            if ((Test-Path $usbPath) -and ($null -ne (Get-ItemProperty -Path $usbPath -Name "DisableSelectiveSuspend" -ErrorAction SilentlyContinue).DisableSelectiveSuspend)) {
+                $resetInfo += "DisableSelectiveSuspend: Registry deleted"
+                $needsResetCount++
+            } else {
+                $resetInfo += "DisableSelectiveSuspend: Registry not found"
+                $alreadyDefaultCount++
+            }
+            
+            # Determine if all tweaks are already at default
+            $allAlreadyDefault = ($alreadyDefaultCount -eq 6)
+            
+            # Convert resetInfo to gridItems
+            $gridItems = @()
+            foreach ($item in $resetInfo) {
+                $parts = $item -split ": "
+                $gridItems += @{ name = "$($parts[0]):"; value = $parts[1] }
+            }
+            
+            # Show appropriate popup
+            if ($allAlreadyDefault) {
+                # All tweaks already at default - show "No action required"
+                Show-InfoPopup "Reset Already Default" -gridItems $gridItems -statusMessage "No action is required"
+            } else {
+                # Some tweaks need resetting - show "Restart is required"
+                Show-InfoPopup "Reset Complete" -gridItems $gridItems -statusMessage "Restart is required to apply changes."
                 
-                # Build reset script
-                $scriptContent = @"
+                # Now execute the actual reset
+                try {
+                    $gamingTweaksPath = "$(Split-Path $PSScriptRoot)\Tools\Tweaks\GamingTweaks.ps1"
+                    $tempScriptPath = "$env:TEMP\ApexTweaksReset_Temp_$(Get-Random).ps1"
+                    
+                    # Build reset script
+                    $scriptContent = @"
 & "$gamingTweaksPath" -Type ResetAll 2>&1
 "@
-                
-                Set-Content -Path $tempScriptPath -Value $scriptContent -Encoding UTF8
-                
-                # Execute with elevation and wait for completion
-                Start-Process powershell -Verb RunAs -ArgumentList "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "`"$tempScriptPath`"" -Wait
-                Start-Sleep -Milliseconds 1000
-                Remove-Item -Path $tempScriptPath -Force -ErrorAction SilentlyContinue
-                
-                # Build the reset info list manually (all 7 tweaks)
-                $resetInfo = @(
-                    "IRQ8 Priority [deleted]",
-                    "Network Interrupts [deleted]",
-                    "GPU Scheduling [deleted]",
-                    "Game DVR [GameDVR_Enabled = 1]",
-                    "Fullscreen Optimizations [GameDVR_FSEBehaviorMonitorEnabled = 1]",
-                    "USB Suspend [deleted]",
-                    "Mouse Acceleration [MouseSpeed=1, Threshold1=6, Threshold2=10]"
-                )
-                $hasErrors = $false
-                
-                # Uncheck all boxes - access through UserControl to ensure proper scope
-                $chkIRQ = $UserControl.FindName("ChkIRQ")
-                $chkNet = $UserControl.FindName("ChkNet")
-                $chkGPU = $UserControl.FindName("ChkGPU")
-                $chkCPU = $UserControl.FindName("ChkCPU")
-                $chkUSB = $UserControl.FindName("ChkUSB")
-                $chkHPET = $UserControl.FindName("ChkHPET")
-                $chkGameDVR = $UserControl.FindName("ChkGameDVR")
-                $chkFullscreenOpt = $UserControl.FindName("ChkFullscreenOpt")
-                $chkUSBSuspend = $UserControl.FindName("ChkUSBSuspend")
-                
-                if ($chkIRQ) { $chkIRQ.IsChecked = $false }
-                if ($chkNet) { $chkNet.IsChecked = $false }
-                if ($chkGPU) { $chkGPU.IsChecked = $false }
-                if ($chkCPU) { $chkCPU.IsChecked = $false }
-                if ($chkUSB) { $chkUSB.IsChecked = $false }
-                if ($chkHPET) { $chkHPET.IsChecked = $false }
-                if ($chkGameDVR) { $chkGameDVR.IsChecked = $false }
-                if ($chkFullscreenOpt) { $chkFullscreenOpt.IsChecked = $false }
-                if ($chkUSBSuspend) { $chkUSBSuspend.IsChecked = $false }
-                
-                # Refresh status badges with extended wait for registry propagation
-                Start-Sleep -Milliseconds 2000
-                $status = Get-RegistryTweakStatus
-                Update-StatusBadge "BadgeIRQ" "BadgeIRQText" $status.IRQ
-                Update-StatusBadge "BadgeNET" "BadgeNETText" $status.NET
-                Update-StatusBadge "BadgeGPU" "BadgeGPUText" $status.GPU
-                Update-StatusBadge "BadgeUSB" "BadgeUSBText" $status.USB
-                Update-StatusBadge "BadgeGameDVR" "BadgeGameDVRText" $status.GameDVR
-                Update-StatusBadge "BadgeFullscreenOpt" "BadgeFullscreenOptText" $status.FullscreenOpt
-                
-                # Show results popup
-                $statusMessage = if ($hasErrors) { "Some tweaks had errors. Check details below." } else { "A restart is recommended for changes to take effect." }
-                
-                # Build formatted message with all reset items
-                if ($resetInfo.Count -gt 0) {
-                    # Create nicely formatted message
-                    $formattedItems = @()
-                    foreach ($item in $resetInfo) {
-                        if ($item -like "ERROR:*") {
-                            $formattedItems += "  ! $item"
-                        } else {
-                            $formattedItems += "  - $item"
-                        }
-                    }
                     
-                    $message = "Reset Tweaks:`n`n" + ($formattedItems -join "`n") + "`n`n$statusMessage"
-                } else {
-                    $message = "Tweaks reset operation completed.`n`n$statusMessage"
+                    Set-Content -Path $tempScriptPath -Value $scriptContent -Encoding UTF8
+                    
+                    # Execute with elevation and wait for completion
+                    Start-Process powershell -Verb RunAs -ArgumentList "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "`"$tempScriptPath`"" -Wait
+                    Start-Sleep -Milliseconds 1000
+                    Remove-Item -Path $tempScriptPath -Force -ErrorAction SilentlyContinue
+                } catch {
+                    $errorMsg = $_.Exception.Message
+                    Show-InfoPopup "Error" -statusMessage "Failed to reset tweaks: $errorMsg"
                 }
-                Show-InfoPopup "Reset Complete" $message
-                if ($StatusText) { $StatusText.Text = "Tweaks reset to default. System restart recommended." }
-            } catch {
-                $errorMsg = $_.Exception.Message
-                Show-InfoPopup "Error" "Failed to reset tweaks: $errorMsg"
             }
+            
+            # Uncheck all boxes - access through UserControl to ensure proper scope
+            $chkIRQ = $UserControl.FindName("ChkIRQ")
+            $chkNet = $UserControl.FindName("ChkNet")
+            $chkGPU = $UserControl.FindName("ChkGPU")
+            $chkCPU = $UserControl.FindName("ChkCPU")
+            $chkUSB = $UserControl.FindName("ChkUSB")
+            $chkHPET = $UserControl.FindName("ChkHPET")
+            $chkGameDVR = $UserControl.FindName("ChkGameDVR")
+            $chkFullscreenOpt = $UserControl.FindName("ChkFullscreenOpt")
+            $chkUSBSuspend = $UserControl.FindName("ChkUSBSuspend")
+            
+            if ($chkIRQ) { $chkIRQ.IsChecked = $false }
+            if ($chkNet) { $chkNet.IsChecked = $false }
+            if ($chkGPU) { $chkGPU.IsChecked = $false }
+            if ($chkCPU) { $chkCPU.IsChecked = $false }
+            if ($chkUSB) { $chkUSB.IsChecked = $false }
+            if ($chkHPET) { $chkHPET.IsChecked = $false }
+            if ($chkGameDVR) { $chkGameDVR.IsChecked = $false }
+            if ($chkFullscreenOpt) { $chkFullscreenOpt.IsChecked = $false }
+            if ($chkUSBSuspend) { $chkUSBSuspend.IsChecked = $false }
+            
+            # Refresh status badges with extended wait for registry propagation
+            Start-Sleep -Milliseconds 2000
+            $status = Get-RegistryTweakStatus
+            Update-StatusBadge "BadgeIRQ" "BadgeIRQText" $status.IRQ
+            Update-StatusBadge "BadgeNET" "BadgeNETText" $status.NET
+            Update-StatusBadge "BadgeGPU" "BadgeGPUText" $status.GPU
+            Update-StatusBadge "BadgeUSB" "BadgeUSBText" $status.USB
+            Update-StatusBadge "BadgeGameDVR" "BadgeGameDVRText" $status.GameDVR
+            Update-StatusBadge "BadgeFullscreenOpt" "BadgeFullscreenOptText" $status.FullscreenOpt
+            
+            if ($StatusText) { $StatusText.Text = "Tweaks reset to default. System restart recommended." }
         }
     })
 }
@@ -585,21 +616,20 @@ if ($BtnApply) {
         if ($params.Count -gt 0) {
             # Check for existing registry entries before applying tweaks
             $registryInfo = @()
-            $hasNewTweaks = $false
+            $newTweakInfo = @()
+            $alreadyAppliedCount = 0
             
             if ($ChkIRQ -and $ChkIRQ.IsChecked) {
                 $irqPath = "HKLM:\SYSTEM\CurrentControlSet\Control\PriorityControl"
                 if (Test-Path $irqPath) {
                     $irqValue = (Get-ItemProperty -Path $irqPath -Name "IRQ8Priority" -ErrorAction SilentlyContinue).IRQ8Priority
                     if ($null -ne $irqValue) {
-                        $registryInfo += "IRQ8 Priority (already exists, value: $irqValue)"
+                        $alreadyAppliedCount++
                     } else {
-                        $registryInfo += "IRQ8 Priority (will be set to: 1)"
-                        $hasNewTweaks = $true
+                        $newTweakInfo += "IRQ8Priority: 1"
                     }
                 } else {
-                    $registryInfo += "IRQ8 Priority (will be set to: 1)"
-                    $hasNewTweaks = $true
+                    $newTweakInfo += "IRQ8Priority: 1"
                 }
             }
             
@@ -608,14 +638,12 @@ if ($BtnApply) {
                 if (Test-Path $netPath) {
                     $netValue = (Get-ItemProperty -Path $netPath -Name "ProcessorThrottleMode" -ErrorAction SilentlyContinue).ProcessorThrottleMode
                     if ($null -ne $netValue) {
-                        $registryInfo += "Network Interrupts (already exists, value: $netValue)"
+                        $alreadyAppliedCount++
                     } else {
-                        $registryInfo += "Network Interrupts (will be set to: 1)"
-                        $hasNewTweaks = $true
+                        $newTweakInfo += "ProcessorThrottleMode: 1"
                     }
                 } else {
-                    $registryInfo += "Network Interrupts (will be set to: 1)"
-                    $hasNewTweaks = $true
+                    $newTweakInfo += "ProcessorThrottleMode: 1"
                 }
             }
             
@@ -624,61 +652,75 @@ if ($BtnApply) {
                 if (Test-Path $gpuPath) {
                     $gpuValue = (Get-ItemProperty -Path $gpuPath -Name "HwSchMode" -ErrorAction SilentlyContinue).HwSchMode
                     if ($null -ne $gpuValue) {
-                        $registryInfo += "Hardware GPU Scheduling (already exists, value: $gpuValue)"
+                        $alreadyAppliedCount++
                     } else {
-                        $registryInfo += "Hardware GPU Scheduling (will be set to: 2)"
-                        $hasNewTweaks = $true
+                        $newTweakInfo += "HwSchMode: 2"
                     }
                 } else {
-                    $registryInfo += "Hardware GPU Scheduling (will be set to: 2)"
-                    $hasNewTweaks = $true
+                    $newTweakInfo += "HwSchMode: 2"
                 }
             }
 
             if ($ChkGameDVR -and $ChkGameDVR.IsChecked) {
                 $gameDVRPath = "HKCU:\System\GameConfigStore"
-                if (Test-Path $gameDVRPath) {
-                    $gameDVRValue = (Get-ItemProperty -Path $gameDVRPath -Name "GameDVR_Enabled" -ErrorAction SilentlyContinue).GameDVR_Enabled
-                    if ($null -ne $gameDVRValue) {
-                        $registryInfo += "Disable Game DVR (already exists, value: $gameDVRValue)"
-                    } else {
-                        $registryInfo += "Disable Game DVR (will be set to: 0)"
-                        $hasNewTweaks = $true
-                    }
+                $gameDVRValue = (Get-ItemProperty -Path $gameDVRPath -Name "GameDVR_Enabled" -ErrorAction SilentlyContinue).GameDVR_Enabled
+                if ($gameDVRValue -eq 0) {
+                    # Already disabled (already applied)
+                    $alreadyAppliedCount++
                 } else {
-                    $registryInfo += "Disable Game DVR (will be set to: 0)"
-                    $hasNewTweaks = $true
+                    # Either doesn't exist or is set to 1 (enabled) - needs to be disabled
+                    $newTweakInfo += "GameDVR_Enabled: 0"
                 }
             }
 
             if ($ChkFullscreenOpt -and $ChkFullscreenOpt.IsChecked) {
                 $fullscreenPath = "HKCU:\System\GameConfigStore"
                 $fullscreenValue = (Get-ItemProperty -Path $fullscreenPath -Name "GameDVR_FSEBehaviorMonitorEnabled" -ErrorAction SilentlyContinue).GameDVR_FSEBehaviorMonitorEnabled
-                if ($null -ne $fullscreenValue) {
-                    $registryInfo += "Fullscreen Optimizations (already exists, value: $fullscreenValue)"
+                if ($fullscreenValue -eq 0) {
+                    # Already disabled (already applied)
+                    $alreadyAppliedCount++
                 } else {
-                    $registryInfo += "Fullscreen Optimizations (will be set to: 0)"
-                    $hasNewTweaks = $true
+                    # Either doesn't exist or is set to 1 (enabled) - needs to be disabled
+                    $newTweakInfo += "GameDVR_FSEBehaviorMonitorEnabled: 0"
                 }
             }
 
             if ($ChkUSBSuspend -and $ChkUSBSuspend.IsChecked) {
-                # Try to read from registry - will fail in non-elevated context, so we show what will be set
+                # Try to read from registry
                 $usbPath = "HKLM:\SYSTEM\CurrentControlSet\Services\USB"
                 $usbValue = (Get-ItemProperty -Path $usbPath -Name "DisableSelectiveSuspend" -ErrorAction SilentlyContinue).DisableSelectiveSuspend
                 if ($null -ne $usbValue) {
-                    $registryInfo += "Disable USB Suspend (already exists, value: $usbValue)"
+                    $alreadyAppliedCount++
                 } else {
-                    $registryInfo += "Disable USB Suspend (already exists, value: 1)"
-                    # Don't set hasNewTweaks to true since this runs in elevated context
+                    $newTweakInfo += "DisableSelectiveSuspend: 1"
                 }
             }
 
-            # Show what will be applied with appropriate message
-            if ($registryInfo.Count -gt 0) {
-                $statusMessage = if ($hasNewTweaks) { "A restart is required for changes to take effect." } else { "No action required since all tweaks already exist." }
-                $message = "Applying tweaks:`n`n" + ($registryInfo -join "`n") + "`n`n$statusMessage"
-                Show-InfoPopup "Tweaks Configuration" $message
+            # Determine if all tweaks are already applied
+            $totalSelectedTweaks = ($params.Count)
+            $allAlreadyApplied = ($alreadyAppliedCount -eq $totalSelectedTweaks)
+            
+            # Show appropriate popup message
+            if ($allAlreadyApplied) {
+                # All tweaks already applied - show "Already Applied" message
+                $gridItems = @()
+                foreach ($tweak in $newTweakInfo) {
+                    $name, $value = $tweak -split ": "
+                    $gridItems += @{ name = "${name}:"; value = "Registry not found" }
+                }
+                Show-InfoPopup "Already Applied" -gridItems $gridItems -statusMessage "No action is required"
+            } else {
+                # Show new tweaks being applied
+                $gridItems = @()
+                foreach ($tweak in $newTweakInfo) {
+                    $name, $value = $tweak -split ": "
+                    if ($name -match "GameDVR|FSEBehavior") {
+                        $gridItems += @{ name = "${name}:"; value = "Registry Modified" }
+                    } else {
+                        $gridItems += @{ name = "${name}:"; value = "Registry Created" }
+                    }
+                }
+                Show-InfoPopup "Tweaks Configuration" -gridItems $gridItems -statusMessage "Restart is required to apply changes."
             }
             
             # Apply tweaks with a single elevated session using temp file
@@ -894,10 +936,12 @@ if ($BtnViewSupportedCommands) {
         $InfoPopupTitle = $UserControl.FindName("InfoPopupTitle")
         $InfoPopupMessage = $UserControl.FindName("InfoPopupMessage")
         $InfoPopupOKButton = $UserControl.FindName("InfoPopupOKButton")
+        $InfoPopupDataGridBorder = $UserControl.FindName("InfoPopupDataGridBorder")
         $PathBoxSection = $UserControl.FindName("PathBoxSection")
         
         if ($null -ne $InfoPopupTitle) { $InfoPopupTitle.Text = "Apex Legends Supported Commands" }
         if ($null -ne $PathBoxSection) { $PathBoxSection.Visibility = "Collapsed" }
+        if ($null -ne $InfoPopupDataGridBorder) { $InfoPopupDataGridBorder.Visibility = "Collapsed" }
         
         if ($null -ne $InfoPopupMessage) {
             $commands = @(
