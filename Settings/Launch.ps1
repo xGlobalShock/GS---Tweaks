@@ -246,6 +246,28 @@ function Show-InfoPopup {
         
         $InfoPopupOKButton.Add_Click($closeHandler)
     }
+    
+    # Setup path open button (only set once during initialization)
+    if ($null -eq $script:PathOpenButtonInitialized) {
+        $PathOpenButton = $UserControl.FindName("PathOpenButton")
+        if ($null -ne $PathOpenButton) {
+            $openHandler = {
+                param($sender, $e)
+                $pathBoxText = $UserControl.FindName("PathBoxText")
+                if ($null -ne $pathBoxText) {
+                    $fullPath = "$env:USERPROFILE\$($pathBoxText.Text)"
+                    if (Test-Path $fullPath) {
+                        explorer.exe $fullPath
+                    } else {
+                        [System.Windows.MessageBox]::Show("Path not found: $fullPath", "Error", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
+                    }
+                }
+            }
+            
+            $PathOpenButton.Add_Click($openHandler)
+            $script:PathOpenButtonInitialized = $true
+        }
+    }
 }
 
 function Show-CacheResultPopup($title, $description, $filesDeleted, $filesRemaining) {
@@ -615,7 +637,6 @@ if ($BtnApply) {
 
         if ($params.Count -gt 0) {
             # Check for existing registry entries before applying tweaks
-            $registryInfo = @()
             $newTweakInfo = @()
             $alreadyAppliedCount = 0
             
@@ -909,17 +930,8 @@ if ($BtnApplyApexConfig) {
                 $destFile = $saveDialog.FileName
                 Copy-Item -Path $templateFile -Destination $destFile -Force
                 Set-ItemProperty -Path $destFile -Name IsReadOnly -Value $true
-               $message = "Installation Guide`n`n" +
-"Backup: 
-    - Click 'Open' to find your 'videoconfig.txt'. 
-    - Rename it to 'videoconfig_backup.txt' so you can revert if needed.`n`n" +
-"Installation: 
-    - Copy the downloaded 'videoconfig.txt' and paste it into that same folder.`n`n" +
-"Restart: 
-    - Close and relaunch Apex Legends to apply the new settings.`n`n" +
-"Note: If issues occur, delete the new file and restore your backup."
                 $path = "Saved Games\Respawn\Apex\Local\"
-                Show-InfoPopup "Config Ready" $message $path
+                Show-InfoPopup "Config Ready" @() "" $path
                 if ($StatusText) { $StatusText.Text = "videoconfig.txt saved. Manual installation required." }
             }
         } else {

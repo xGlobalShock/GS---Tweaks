@@ -21,11 +21,11 @@ $principal = New-Object System.Security.Principal.WindowsPrincipal($currentUser)
 $isAdmin = $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
 
 if (-not $isAdmin) {
-    $args = "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`""
+    $argList = "-NoProfile -ExecutionPolicy Bypass -File `\"$PSCommandPath`\""
     foreach ($param in $PSBoundParameters.GetEnumerator()) {
-        $args += " -$($param.Key) `$$($param.Value)"
+        $argList += " -$($param.Key) `\$$($param.Value)"
     }
-    Start-Process powershell -Verb RunAs -ArgumentList $args -Wait
+    Start-Process powershell -Verb RunAs -ArgumentList $argList -Wait
     exit
 }
 
