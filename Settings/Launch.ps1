@@ -237,7 +237,7 @@ function Show-InfoPopup {
     # Setup close button - use script block with UserControl in scope
     if ($null -ne $InfoPopupOKButton) {
         $closeHandler = {
-            param($sender, $e)
+            param($snd, $e)
             $overlay = $UserControl.FindName("InfoPopupOverlay")
             $container = $UserControl.FindName("InfoPopupContainer")
             if ($null -ne $overlay) { $overlay.Visibility = "Collapsed" }
@@ -252,7 +252,7 @@ function Show-InfoPopup {
         $PathOpenButton = $UserControl.FindName("PathOpenButton")
         if ($null -ne $PathOpenButton) {
             $openHandler = {
-                param($sender, $e)
+                param($snd, $e)
                 $pathBoxText = $UserControl.FindName("PathBoxText")
                 if ($null -ne $pathBoxText) {
                     $fullPath = "$env:USERPROFILE\$($pathBoxText.Text)"
@@ -302,33 +302,92 @@ function Show-CacheResultPopup($title, $description, $filesDeleted, $filesRemain
 # UI Elements
 $BtnNavGaming = $UserControl.FindName("BtnNavGaming")
 $BtnNavApex = $UserControl.FindName("BtnNavApex")
-$BtnNavCache = $UserControl.FindName("BtnNavCache")
-$BtnNavDebloating = $UserControl.FindName("BtnNavDebloating")
 $BtnNavOBS = $UserControl.FindName("BtnNavOBS")
 $BtnNavAbout = $UserControl.FindName("BtnNavAbout")
+$BtnNavNvidia = $UserControl.FindName("BtnNavNvidia")
 $SectionGaming = $UserControl.FindName("SectionGaming")
 $SectionApex = $UserControl.FindName("SectionApex")
-$SectionCache = $UserControl.FindName("SectionCache")
-$SectionDebloating = $UserControl.FindName("SectionDebloating")
 $SectionOBS = $UserControl.FindName("SectionOBS")
 $SectionAbout = $UserControl.FindName("SectionAbout")
+$SectionNvidia = $UserControl.FindName("SectionNvidia")
+
+# System Tweaks tabs
+$TabPerfTweaks = $UserControl.FindName("TabPerfTweaks")
+$TabPerfCleanup = $UserControl.FindName("TabPerfCleanup")
+$TabServicesOpt = $UserControl.FindName("TabServicesOpt")
+$ContentPerfTweaks = $UserControl.FindName("ContentPerfTweaks")
+$ContentPerfCleanup = $UserControl.FindName("ContentPerfCleanup")
+$ContentServicesOpt = $UserControl.FindName("ContentServicesOpt")
 
 function Show-Section($section) {
     $SectionGaming.Visibility = "Collapsed"
     $SectionApex.Visibility = "Collapsed"
-    $SectionCache.Visibility = "Collapsed"
-    $SectionDebloating.Visibility = "Collapsed"
     $SectionOBS.Visibility = "Collapsed"
     $SectionAbout.Visibility = "Collapsed"
+    $SectionNvidia.Visibility = "Collapsed"
     $section.Visibility = "Visible"
+}
+
+function Show-SystemTweaksTab($tabIndex) {
+    # Hide all content
+    $ContentPerfTweaks.Visibility = "Collapsed"
+    $ContentPerfCleanup.Visibility = "Collapsed"
+    $ContentServicesOpt.Visibility = "Collapsed"
+    
+    # Reset all tab styles
+    $darkBrush = New-Object System.Windows.Media.SolidColorBrush
+    $darkBrush.Color = [System.Windows.Media.Color]::FromRgb(37, 42, 55)
+    $grayForeground = New-Object System.Windows.Media.SolidColorBrush
+    $grayForeground.Color = [System.Windows.Media.Color]::FromRgb(153, 153, 153)
+    
+    $TabPerfTweaks.Background = $darkBrush
+    $TabPerfTweaks.Foreground = $grayForeground
+    $TabPerfTweaks.Tag = ""
+    
+    $TabPerfCleanup.Background = $darkBrush
+    $TabPerfCleanup.Foreground = $grayForeground
+    $TabPerfCleanup.Tag = ""
+    
+    $TabServicesOpt.Background = $darkBrush
+    $TabServicesOpt.Foreground = $grayForeground
+    $TabServicesOpt.Tag = ""
+    
+    # Activate selected tab
+    $blueBrush = New-Object System.Windows.Media.SolidColorBrush
+    $blueBrush.Color = [System.Windows.Media.Color]::FromRgb(0, 163, 255)
+    
+    switch($tabIndex) {
+        0 {
+            $ContentPerfTweaks.Visibility = "Visible"
+            $TabPerfTweaks.Background = $blueBrush
+            $TabPerfTweaks.Foreground = [System.Windows.Media.Brushes]::White
+            $TabPerfTweaks.Tag = "Active"
+        }
+        1 {
+            $ContentPerfCleanup.Visibility = "Visible"
+            $TabPerfCleanup.Background = $blueBrush
+            $TabPerfCleanup.Foreground = [System.Windows.Media.Brushes]::White
+            $TabPerfCleanup.Tag = "Active"
+        }
+        2 {
+            $ContentServicesOpt.Visibility = "Visible"
+            $TabServicesOpt.Background = $blueBrush
+            $TabServicesOpt.Foreground = [System.Windows.Media.Brushes]::White
+            $TabServicesOpt.Tag = "Active"
+        }
+    }
 }
 
 $BtnNavGaming.Add_Click({ Show-Section $SectionGaming })
 $BtnNavApex.Add_Click({ Show-Section $SectionApex })
-$BtnNavCache.Add_Click({ Show-Section $SectionCache })
-$BtnNavDebloating.Add_Click({ Show-Section $SectionDebloating })
 $BtnNavOBS.Add_Click({ Show-Section $SectionOBS })
 $BtnNavAbout.Add_Click({ Show-Section $SectionAbout })
+$BtnNavNvidia.Add_Click({ Show-Section $SectionNvidia })
+
+# System Tweaks tab handlers
+if ($TabPerfTweaks) { $TabPerfTweaks.Add_Click({ Show-SystemTweaksTab 0 }) }
+if ($TabPerfCleanup) { $TabPerfCleanup.Add_Click({ Show-SystemTweaksTab 1 }) }
+if ($TabServicesOpt) { $TabServicesOpt.Add_Click({ Show-SystemTweaksTab 2 }) }
 
 # Additional UI Elements
 $ChkIRQ    = $UserControl.FindName("ChkIRQ")
@@ -355,13 +414,11 @@ $ApexLaunchOptions = $UserControl.FindName("ApexLaunchOptions")
 $TabLaunchOpts = $UserControl.FindName("TabLaunchOpts")
 $TabVideoSettings = $UserControl.FindName("TabVideoSettings")
 $TabCSMOptimization = $UserControl.FindName("TabCSMOptimization")
-$TabNvidiaPanel = $UserControl.FindName("TabNvidiaPanel")
 
 # Apex Content Sections
 $ContentLaunchOpts = $UserControl.FindName("ContentLaunchOpts")
 $ContentVideoSettings = $UserControl.FindName("ContentVideoSettings")
 $ContentCSMOptimization = $UserControl.FindName("ContentCSMOptimization")
-$ContentNvidiaPanel = $UserControl.FindName("ContentNvidiaPanel")
 
 # OBS Preset Buttons
 $BtnDownloadOBSOnly = $UserControl.FindName("BtnDownloadOBSOnly")
@@ -401,11 +458,9 @@ if ($null -ne $TabLaunchOpts) {
         $ContentLaunchOpts.Visibility = "Visible"
         $ContentVideoSettings.Visibility = "Collapsed"
         $ContentCSMOptimization.Visibility = "Collapsed"
-        $ContentNvidiaPanel.Visibility = "Collapsed"
         $TabLaunchOpts.Tag = "Active"
         $TabVideoSettings.Tag = ""
         $TabCSMOptimization.Tag = ""
-        $TabNvidiaPanel.Tag = ""
     })
 }
 if ($null -ne $TabVideoSettings) {
@@ -413,11 +468,9 @@ if ($null -ne $TabVideoSettings) {
         $ContentLaunchOpts.Visibility = "Collapsed"
         $ContentVideoSettings.Visibility = "Visible"
         $ContentCSMOptimization.Visibility = "Collapsed"
-        $ContentNvidiaPanel.Visibility = "Collapsed"
         $TabLaunchOpts.Tag = ""
         $TabVideoSettings.Tag = "Active"
         $TabCSMOptimization.Tag = ""
-        $TabNvidiaPanel.Tag = ""
     })
 }
 if ($null -ne $TabCSMOptimization) {
@@ -425,23 +478,9 @@ if ($null -ne $TabCSMOptimization) {
         $ContentLaunchOpts.Visibility = "Collapsed"
         $ContentVideoSettings.Visibility = "Collapsed"
         $ContentCSMOptimization.Visibility = "Visible"
-        $ContentNvidiaPanel.Visibility = "Collapsed"
         $TabLaunchOpts.Tag = ""
         $TabVideoSettings.Tag = ""
         $TabCSMOptimization.Tag = "Active"
-        $TabNvidiaPanel.Tag = ""
-    })
-}
-if ($null -ne $TabNvidiaPanel) {
-    $TabNvidiaPanel.Add_Click({
-        $ContentLaunchOpts.Visibility = "Collapsed"
-        $ContentVideoSettings.Visibility = "Collapsed"
-        $ContentCSMOptimization.Visibility = "Collapsed"
-        $ContentNvidiaPanel.Visibility = "Visible"
-        $TabLaunchOpts.Tag = ""
-        $TabVideoSettings.Tag = ""
-        $TabCSMOptimization.Tag = ""
-        $TabNvidiaPanel.Tag = "Active"
     })
 }
 
@@ -1053,14 +1092,12 @@ if ($BtnCopyLaunchOptions -and $ApexLaunchOptions) {
 $TabLaunchOpts = $UserControl.FindName("TabLaunchOpts")
 $TabVideoSettings = $UserControl.FindName("TabVideoSettings")
 $TabCSMOptimization = $UserControl.FindName("TabCSMOptimization")
-$TabNvidiaPanel = $UserControl.FindName("TabNvidiaPanel")
 $ContentLaunchOpts = $UserControl.FindName("ContentLaunchOpts")
 $ContentVideoSettings = $UserControl.FindName("ContentVideoSettings")
 $ContentCSMOptimization = $UserControl.FindName("ContentCSMOptimization")
-$ContentNvidiaPanel = $UserControl.FindName("ContentNvidiaPanel")
 
-$apexTabs = @($TabLaunchOpts, $TabVideoSettings, $TabCSMOptimization, $TabNvidiaPanel)
-$apexContents = @($ContentLaunchOpts, $ContentVideoSettings, $ContentCSMOptimization, $ContentNvidiaPanel)
+$apexTabs = @($TabLaunchOpts, $TabVideoSettings, $TabCSMOptimization)
+$apexContents = @($ContentLaunchOpts, $ContentVideoSettings, $ContentCSMOptimization)
 
 function Show-ApexTab($tabIndex) {
     for ($i = 0; $i -lt $apexTabs.Count; $i++) {
@@ -1087,7 +1124,6 @@ function Show-ApexTab($tabIndex) {
 if ($TabLaunchOpts) { $TabLaunchOpts.Add_Click({ Show-ApexTab 0 }) }
 if ($TabVideoSettings) { $TabVideoSettings.Add_Click({ Show-ApexTab 1 }) }
 if ($TabCSMOptimization) { $TabCSMOptimization.Add_Click({ Show-ApexTab 2 }) }
-if ($TabNvidiaPanel) { $TabNvidiaPanel.Add_Click({ Show-ApexTab 3 }) }
 
 # Function to get registry tweak status - uses direct registry access
 function Get-RegistryTweakStatus {

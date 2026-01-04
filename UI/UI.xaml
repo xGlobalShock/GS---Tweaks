@@ -297,20 +297,6 @@
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="BtnNavCache" Style="{StaticResource SidebarButton}" Tag="Cache" Margin="8,6">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="18" Foreground="#4CAF50" Margin="0,0,12,0" Width="24"/>
-                        <TextBlock Text="Performance Cleanup" VerticalAlignment="Center" FontSize="12"/>
-                    </StackPanel>
-                </Button>
-
-                <Button x:Name="BtnNavDebloating" Style="{StaticResource SidebarButton}" Tag="Debloating" Margin="8,6">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="&#xE74C;" FontFamily="Segoe MDL2 Assets" FontSize="18" Foreground="#9C27B0" Margin="0,0,12,0" Width="24"/>
-                        <TextBlock Text="Services Optimization" VerticalAlignment="Center" FontSize="12"/>
-                    </StackPanel>
-                </Button>
-
                 <Button x:Name="BtnNavOBS" Style="{StaticResource SidebarButton}" Tag="OBS" Margin="8,6">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Border Width="24" Margin="-3,0,12,0" VerticalAlignment="Center">
@@ -326,6 +312,17 @@
                         <TextBlock Text="Support &amp; Info" VerticalAlignment="Center" FontSize="12"/>
                     </StackPanel>
                 </Button>
+
+                <Button x:Name="BtnNavNvidia" Style="{StaticResource SidebarButton}" Tag="Nvidia" Margin="8,6">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Viewbox Width="24" Height="24" Margin="0,0,12,0">
+                            <Canvas Width="384.195" Height="282.809">
+                                <Path Fill="#76B900" Data="M82.211 102.414s22.504-33.203 67.437-36.638V53.73c-49.769 3.997-92.867 46.149-92.867 46.149s24.41 70.564 92.867 77.026v-12.804c-50.237-6.32-67.437-61.687-67.437-61.687zm67.437 36.223v11.727c-37.968-6.77-48.507-46.237-48.507-46.237s18.23-20.195 48.507-23.47v12.867c-.023 0-.039-.007-.058-.007-15.891-1.907-28.305 12.938-28.305 12.938s6.958 24.99 28.363 32.182m0-107.125V53.73c1.461-.112 2.922-.207 4.391-.257 56.582-1.907 93.449 46.406 93.449 46.406s-42.343 51.488-86.457 51.488c-4.043 0-7.828-.375-11.383-1.005v13.739a75.04 75.04 0 0 0 9.481.612c41.051 0 70.738-20.965 99.484-45.778 4.766 3.817 24.278 13.103 28.289 17.167-27.332 22.884-91.031 41.33-127.144 41.33-3.481 0-6.824-.211-10.11-.528v19.306H305.68V31.512H149.648zm0 49.144V65.777c1.446-.101 2.903-.179 4.391-.226 40.688-1.278 67.382 34.965 67.382 34.965s-28.832 40.042-59.746 40.042c-4.449 0-8.438-.715-12.028-1.922V93.523c15.84 1.914 19.028 8.911 28.551 24.786l21.181-17.859s-15.461-20.277-41.524-20.277c-2.834-.001-5.545.198-8.207.483"/>
+                            </Canvas>
+                        </Viewbox>
+                        <TextBlock Text="Nvidia Control" VerticalAlignment="Center" FontSize="12"/>
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </Border>
 
@@ -336,6 +333,15 @@
                 <TextBlock Text="Apply low-level kernel and registry tweaks to reduce input latency." 
                            Foreground="{StaticResource TextSecondary}" Margin="0,0,0,30"/>
 
+                <!-- Tab Navigation -->
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
+                    <Button x:Name="TabPerfTweaks" Style="{StaticResource TabButtonStyle}" Margin="0,0,12,0" Tag="Active" Content="Performance Tweaks"/>
+                    <Button x:Name="TabPerfCleanup" Style="{StaticResource TabButtonStyle}" Margin="0,0,12,0" Content="Performance Cleanup"/>
+                    <Button x:Name="TabServicesOpt" Style="{StaticResource TabButtonStyle}" Content="Services Optimization"/>
+                </StackPanel>
+
+                <!-- Performance Tweaks Content -->
+                <StackPanel x:Name="ContentPerfTweaks" Visibility="Visible">
                 <Border Background="{StaticResource CardBg}" CornerRadius="16" Padding="30" BorderBrush="#00A3FF" BorderThickness="2">
                     <StackPanel>
                         <Grid Margin="0,0,0,20">
@@ -585,6 +591,128 @@
                         <Button x:Name="BtnApply" Content="Apply Optimization" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" Height="36" Padding="20,0" FontSize="12"/>
                     </StackPanel>
                 </Border>
+                </StackPanel>
+
+                <!-- Performance Cleanup Content -->
+                <StackPanel x:Name="ContentPerfCleanup" Visibility="Collapsed">
+                <TextBlock Text="Clear caches and temporary files to improve performance and free up disk space." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
+                
+                <Border Background="#0F111A" CornerRadius="14" Padding="16" BorderBrush="#00A3FF" BorderThickness="2" Margin="0,0,0,12">
+                    <Grid>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                <Viewbox Width="20" Height="20" Margin="0,0,10,0" VerticalAlignment="Center">
+                                    <Canvas Width="384.195" Height="282.809">
+                                        <Path Fill="#77b900" Data="M82.211 102.414s22.504-33.203 67.437-36.638V53.73c-49.769 3.997-92.867 46.149-92.867 46.149s24.41 70.564 92.867 77.026v-12.804c-50.237-6.32-67.437-61.687-67.437-61.687zm67.437 36.223v11.727c-37.968-6.77-48.507-46.237-48.507-46.237s18.23-20.195 48.507-23.47v12.867c-.023 0-.039-.007-.058-.007-15.891-1.907-28.305 12.938-28.305 12.938s6.958 24.99 28.363 32.182m0-107.125V53.73c1.461-.112 2.922-.207 4.391-.257 56.582-1.907 93.449 46.406 93.449 46.406s-42.343 51.488-86.457 51.488c-4.043 0-7.828-.375-11.383-1.005v13.739a75.04 75.04 0 0 0 9.481.612c41.051 0 70.738-20.965 99.484-45.778 4.766 3.817 24.278 13.103 28.289 17.167-27.332 22.884-91.031 41.33-127.144 41.33-3.481 0-6.824-.211-10.11-.528v19.306H305.68V31.512H149.648zm0 49.144V65.777c1.446-.101 2.903-.179 4.391-.226 40.688-1.278 67.382 34.965 67.382 34.965s-28.832 40.042-59.746 40.042c-4.449 0-8.438-.715-12.028-1.922V93.523c15.84 1.914 19.028 8.911 28.551 24.786l21.181-17.859s-15.461-20.277-41.524-20.277c-2.834-.001-5.545.198-8.207.483"/>
+                                    </Canvas>
+                                </Viewbox>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Clear NVIDIA Shader Cache" FontSize="14" FontWeight="Bold" Margin="0,0,0,0"/>
+                                    <TextBlock Text="Clears DXCache/GLCache to fix stuttering after game updates." FontSize="10" Foreground="{StaticResource TextSecondary}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <Button x:Name="BtnClearNVIDIACache" Content="Clear Cache" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
+                    </Grid>
+                </Border>
+
+                <Border Background="#0F111A" CornerRadius="14" Padding="16" BorderBrush="#FF6B35" BorderThickness="2" Margin="0,0,0,12">
+                    <Grid>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                <Border Width="20" Margin="-2,0,10,0" VerticalAlignment="Center">
+                                    <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Apex%20Logo.png" Width="24" Height="24" VerticalAlignment="Center" HorizontalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
+                                </Border>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Clear Apex Shaders" FontSize="14" FontWeight="Bold" Margin="0,0,0,0"/>
+                                    <TextBlock Text="Clears the psoCache.pso shader cache to fix stuttering." FontSize="10" Foreground="{StaticResource TextSecondary}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <Button x:Name="BtnClearApexShaders" Content="Clear Shaders" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
+                    </Grid>
+                </Border>
+
+                <Border Background="#0F111A" CornerRadius="14" Padding="16" BorderBrush="#9C27B0" BorderThickness="2" Margin="0,0,0,12">
+                    <Grid>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="#9C27B0" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Clear Temporary Files" FontSize="14" FontWeight="Bold" Margin="0,0,0,0"/>
+                                    <TextBlock Text="Clears %temp% folder to free up disk space and remove temporary files." FontSize="10" Foreground="{StaticResource TextSecondary}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <Button x:Name="BtnClearTemp" Content="Clear Temp Files" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
+                    </Grid>
+                </Border>
+
+                <Border Background="#0F111A" CornerRadius="14" Padding="16" BorderBrush="#2196F3" BorderThickness="2" Margin="0,0,0,12">
+                    <Grid>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="#2196F3" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Clear Windows Prefetch" FontSize="14" FontWeight="Bold" Margin="0,0,0,0"/>
+                                    <TextBlock Text="Clears prefetch cache to optimize system startup and performance." FontSize="10" Foreground="{StaticResource TextSecondary}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <Button x:Name="BtnClearPrefetch" Content="Clear Prefetch" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
+                    </Grid>
+                </Border>
+
+                <Border Background="#0F111A" CornerRadius="14" Padding="16" BorderBrush="#FF9800" BorderThickness="2" Margin="0,0,0,12">
+                    <Grid>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                <TextBlock Text="&#xE897;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="#FF9800" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Clear Memory Dumps" FontSize="14" FontWeight="Bold" Margin="0,0,0,0"/>
+                                    <TextBlock Text="Removes crash dump files to free up disk space." FontSize="10" Foreground="{StaticResource TextSecondary}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <Button x:Name="BtnClearMemDumps" Content="Clear Dumps" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
+                    </Grid>
+                </Border>
+
+                <Border Background="#0F111A" CornerRadius="14" Padding="16" BorderBrush="#00BCD4" BorderThickness="2" Margin="0,0,0,12">
+                    <Grid>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="#00BCD4" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Clear Windows Update Cache" FontSize="14" FontWeight="Bold" Margin="0,0,0,0"/>
+                                    <TextBlock Text="Removes cached Windows update files to save disk space." FontSize="10" Foreground="{StaticResource TextSecondary}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <Button x:Name="BtnClearUpdateCache" Content="Clear Updates" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
+                    </Grid>
+                </Border>
+                </StackPanel>
+
+                <!-- Services Optimization Content -->
+                <StackPanel x:Name="ContentServicesOpt" Visibility="Collapsed">
+                <TextBlock Text="Remove non-essential Windows services to improve performance and reduce background activity." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
+
+                <Border Background="#0F111A" CornerRadius="14" Padding="24" BorderBrush="#4CAF50" BorderThickness="2">
+                    <Grid>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <TextBlock Text="&#xE770;" FontFamily="Segoe MDL2 Assets" FontSize="24" Foreground="#4CAF50" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Set Services to Manual" FontSize="17" FontWeight="Bold" Margin="0,0,0,2"/>
+                                    <TextBlock Text="Disables non-essential Windows services to improve performance and reduce background activity." FontSize="11" Foreground="{StaticResource TextSecondary}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <Button x:Name="BtnSetServicesManual" Content="Set to Manual" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="36" Padding="20,0" FontSize="12"/>
+                    </Grid>
+                </Border>
+                </StackPanel>
             </StackPanel>
 
             <StackPanel x:Name="SectionApex" Visibility="Collapsed">
@@ -605,20 +733,10 @@
                             <TextBlock Text="Video Settings" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
-                    <Button x:Name="TabCSMOptimization" Style="{StaticResource TabButtonStyle}" Margin="0,0,12,0">
+                    <Button x:Name="TabCSMOptimization" Style="{StaticResource TabButtonStyle}" Margin="0">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBlock Text="&#xE83B;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0"/>
                             <TextBlock Text="CSM Shadows" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    <Button x:Name="TabNvidiaPanel" Style="{StaticResource TabButtonStyle}" Margin="0">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Viewbox Width="14" Height="14" Margin="0,0,8,0">
-                                <Canvas Width="384.195" Height="282.809">
-                                    <Path Fill="#77b900" Data="M82.211 102.414s22.504-33.203 67.437-36.638V53.73c-49.769 3.997-92.867 46.149-92.867 46.149s24.41 70.564 92.867 77.026v-12.804c-50.237-6.32-67.437-61.687-67.437-61.687zm67.437 36.223v11.727c-37.968-6.77-48.507-46.237-48.507-46.237s18.23-20.195 48.507-23.47v12.867c-.023 0-.039-.007-.058-.007-15.891-1.907-28.305 12.938-28.305 12.938s6.958 24.99 28.363 32.182m0-107.125V53.73c1.461-.112 2.922-.207 4.391-.257 56.582-1.907 93.449 46.406 93.449 46.406s-42.343 51.488-86.457 51.488c-4.043 0-7.828-.375-11.383-1.005v13.739a75.04 75.04 0 0 0 9.481.612c41.051 0 70.738-20.965 99.484-45.778 4.766 3.817 24.278 13.103 28.289 17.167-27.332 22.884-91.031 41.33-127.144 41.33-3.481 0-6.824-.211-10.11-.528v19.306H305.68V31.512H149.648zm0 49.144V65.777c1.446-.101 2.903-.179 4.391-.226 40.688-1.278 67.382 34.965 67.382 34.965s-28.832 40.042-59.746 40.042c-4.449 0-8.438-.715-12.028-1.922V93.523c15.84 1.914 19.028 8.911 28.551 24.786l21.181-17.859s-15.461-20.277-41.524-20.277c-2.834-.001-5.545.198-8.207.483"/>
-                                </Canvas>
-                            </Viewbox>
-                            <TextBlock Text="Nvidia Control Panel" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
 
@@ -975,76 +1093,80 @@
                             </Border>
                         </StackPanel>
 
-                        <!-- Tab 3: Nvidia Control Panel -->
-                        <StackPanel x:Name="ContentNvidiaPanel" Visibility="Collapsed">
-                            <Border Background="{StaticResource CardBg}" CornerRadius="16" Padding="30" BorderBrush="#76B900" BorderThickness="2" Margin="0">
-                                <StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                        <Viewbox Width="32" Height="32" Margin="0,0,12,0" VerticalAlignment="Center">
-                                            <Canvas Width="384.195" Height="282.809">
-                                                <Path Fill="#77b900" Data="M82.211 102.414s22.504-33.203 67.437-36.638V53.73c-49.769 3.997-92.867 46.149-92.867 46.149s24.41 70.564 92.867 77.026v-12.804c-50.237-6.32-67.437-61.687-67.437-61.687zm67.437 36.223v11.727c-37.968-6.77-48.507-46.237-48.507-46.237s18.23-20.195 48.507-23.47v12.867c-.023 0-.039-.007-.058-.007-15.891-1.907-28.305 12.938-28.305 12.938s6.958 24.99 28.363 32.182m0-107.125V53.73c1.461-.112 2.922-.207 4.391-.257 56.582-1.907 93.449 46.406 93.449 46.406s-42.343 51.488-86.457 51.488c-4.043 0-7.828-.375-11.383-1.005v13.739a75.04 75.04 0 0 0 9.481.612c41.051 0 70.738-20.965 99.484-45.778 4.766 3.817 24.278 13.103 28.289 17.167-27.332 22.884-91.031 41.33-127.144 41.33-3.481 0-6.824-.211-10.11-.528v19.306H305.68V31.512H149.648zm0 49.144V65.777c1.446-.101 2.903-.179 4.391-.226 40.688-1.278 67.382 34.965 67.382 34.965s-28.832 40.042-59.746 40.042c-4.449 0-8.438-.715-12.028-1.922V93.523c15.84 1.914 19.028 8.911 28.551 24.786l21.181-17.859s-15.461-20.277-41.524-20.277c-2.834-.001-5.545.198-8.207.483"/>
-                                            </Canvas>
-                                        </Viewbox>
-                                        <StackPanel VerticalAlignment="Center">
-                                            <TextBlock Text="Nvidia Control Panel" FontSize="20" FontWeight="Bold" Margin="0,0,0,2"/>
-                                            <TextBlock Text="Optimize your Nvidia GPU settings for maximum performance." FontSize="11" Foreground="{StaticResource TextSecondary}"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                    <TextBlock Text="Access Nvidia Control Panel to fine-tune GPU power settings, memory clocking, and performance profiles." FontSize="12" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,24" TextWrapping="Wrap"/>
-                                    
-                                    <Grid Margin="0,0,0,24">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="1*"/>
-                                            <ColumnDefinition Width="1*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Border Grid.Column="0" Background="#0F111A" Padding="20" CornerRadius="12" BorderBrush="#76B900" BorderThickness="1.5" Margin="0,0,10,0">
-                                            <StackPanel>
-                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                                                    <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/PowerSettings.png" Width="20" Height="20" Margin="0,0,10,0"/>
-                                                    <StackPanel VerticalAlignment="Center">
-                                                        <TextBlock Text="Power Settings" FontSize="13" FontWeight="Bold" Foreground="White"/>
-                                                        <TextBlock Text="GPU Performance" FontSize="10" Foreground="#888"/>
-                                                    </StackPanel>
-                                                </StackPanel>
-                                                <TextBlock Text="Optimize power delivery to your GPU for sustained performance." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Grid.Column="1" Background="#0F111A" Padding="20" CornerRadius="12" BorderBrush="#76B900" BorderThickness="1.5" Margin="10,0,0,0">
-                                            <StackPanel>
-                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                                                    <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/speedometer.png" Width="20" Height="20" Margin="0,0,10,0"/>
-                                                    <StackPanel VerticalAlignment="Center">
-                                                        <TextBlock Text="Overclocking" FontSize="13" FontWeight="Bold" Foreground="White"/>
-                                                        <TextBlock Text="Advanced Tuning" FontSize="10" Foreground="#888"/>
-                                                    </StackPanel>
-                                                </StackPanel>
-                                                <TextBlock Text="Fine-tune GPU clock speeds for maximum FPS gains." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
-                                            </StackPanel>
-                                        </Border>
-                                    </Grid>
 
-                                    <Border Background="#0F111A" CornerRadius="14" Padding="24" BorderBrush="#76B900" BorderThickness="2" Margin="0">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                                    <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="24" Foreground="#76B900" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                                    <TextBlock Text="Open Nvidia Control Panel" FontSize="17" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
-                                                </StackPanel>
-                                                <TextBlock Text="Access the full Nvidia Control Panel to configure your GPU settings." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
-                                            </StackPanel>
-                                            <Button x:Name="BtnOpenNvidiaCP" Grid.Column="1" Content="Open Now" Style="{StaticResource PrimaryActionBtn}" Height="36" Padding="20,0" Margin="20,0,0,0" FontSize="11" VerticalAlignment="Center"/>
-                                        </Grid>
-                                    </Border>
-                                </StackPanel>
-                            </Border>
-                        </StackPanel>
 
                     </StackPanel>
                 </ScrollViewer>
+            </StackPanel>
+
+            <StackPanel x:Name="SectionNvidia" Visibility="Collapsed">
+                <TextBlock Text="Nvidia Control Panel" FontSize="28" FontWeight="Bold" Margin="0,0,0,5"/>
+                <TextBlock Text="Access Nvidia GPU settings and optimize your graphics performance." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,30"/>
+                
+                <Border Background="{StaticResource CardBg}" CornerRadius="16" Padding="30" BorderBrush="#76B900" BorderThickness="2" Margin="0">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <Viewbox Width="32" Height="32" Margin="0,0,12,0" VerticalAlignment="Center">
+                                <Canvas Width="384.195" Height="282.809">
+                                    <Path Fill="#77b900" Data="M82.211 102.414s22.504-33.203 67.437-36.638V53.73c-49.769 3.997-92.867 46.149-92.867 46.149s24.41 70.564 92.867 77.026v-12.804c-50.237-6.32-67.437-61.687-67.437-61.687zm67.437 36.223v11.727c-37.968-6.77-48.507-46.237-48.507-46.237s18.23-20.195 48.507-23.47v12.867c-.023 0-.039-.007-.058-.007-15.891-1.907-28.305 12.938-28.305 12.938s6.958 24.99 28.363 32.182m0-107.125V53.73c1.461-.112 2.922-.207 4.391-.257 56.582-1.907 93.449 46.406 93.449 46.406s-42.343 51.488-86.457 51.488c-4.043 0-7.828-.375-11.383-1.005v13.739a75.04 75.04 0 0 0 9.481.612c41.051 0 70.738-20.965 99.484-45.778 4.766 3.817 24.278 13.103 28.289 17.167-27.332 22.884-91.031 41.33-127.144 41.33-3.481 0-6.824-.211-10.11-.528v19.306H305.68V31.512H149.648zm0 49.144V65.777c1.446-.101 2.903-.179 4.391-.226 40.688-1.278 67.382 34.965 67.382 34.965s-28.832 40.042-59.746 40.042c-4.449 0-8.438-.715-12.028-1.922V93.523c15.84 1.914 19.028 8.911 28.551 24.786l21.181-17.859s-15.461-20.277-41.524-20.277c-2.834-.001-5.545.198-8.207.483"/>
+                                </Canvas>
+                            </Viewbox>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Nvidia Control Panel" FontSize="20" FontWeight="Bold" Margin="0,0,0,2"/>
+                                <TextBlock Text="Optimize your Nvidia GPU settings for maximum performance." FontSize="11" Foreground="{StaticResource TextSecondary}"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <TextBlock Text="Access Nvidia Control Panel to fine-tune GPU power settings, memory clocking, and performance profiles." FontSize="12" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,24" TextWrapping="Wrap"/>
+                        
+                        <Grid Margin="0,0,0,24">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Background="#0F111A" Padding="20" CornerRadius="12" BorderBrush="#76B900" BorderThickness="1.5" Margin="0,0,10,0">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                        <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/PowerSettings.png" Width="20" Height="20" Margin="0,0,10,0"/>
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Text="Power Settings" FontSize="13" FontWeight="Bold" Foreground="White"/>
+                                            <TextBlock Text="GPU Performance" FontSize="10" Foreground="#888"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <TextBlock Text="Optimize power delivery to your GPU for sustained performance." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Column="1" Background="#0F111A" Padding="20" CornerRadius="12" BorderBrush="#76B900" BorderThickness="1.5" Margin="10,0,0,0">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                        <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/speedometer.png" Width="20" Height="20" Margin="0,0,10,0"/>
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Text="Overclocking" FontSize="13" FontWeight="Bold" Foreground="White"/>
+                                            <TextBlock Text="Advanced Tuning" FontSize="10" Foreground="#888"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <TextBlock Text="Fine-tune GPU clock speeds for maximum FPS gains." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <Border Background="#0F111A" CornerRadius="14" Padding="24" BorderBrush="#76B900" BorderThickness="2" Margin="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                        <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="24" Foreground="#76B900" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Open Nvidia Control Panel" FontSize="17" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <TextBlock Text="Access the full Nvidia Control Panel to configure your GPU settings." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                                <Button x:Name="BtnOpenNvidiaCP" Grid.Column="1" Content="Open Now" Style="{StaticResource PrimaryActionBtn}" Height="36" Padding="20,0" Margin="20,0,0,0" FontSize="11" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Border>
             </StackPanel>
 
             <StackPanel x:Name="SectionOBS" Visibility="Collapsed">
@@ -1132,127 +1254,6 @@
                 </StackPanel>
                 
                 <TextBlock x:Name="StatusText" Foreground="{StaticResource PrimaryAccent}" Margin="0,20,0,0" FontSize="14"/>
-            </StackPanel>
-
-            <StackPanel x:Name="SectionCache" Visibility="Collapsed">
-                <TextBlock Text="Performance Cleanup" FontSize="28" FontWeight="Bold" Margin="0,0,0,5"/>
-                <TextBlock Text="Clear caches and temporary files to improve performance and free up disk space." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,30"/>
-                
-                <Border Background="#0F111A" CornerRadius="14" Padding="16" BorderBrush="#00A3FF" BorderThickness="2" Margin="0,0,0,12">
-                    <Grid>
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                <Viewbox Width="20" Height="20" Margin="0,0,10,0" VerticalAlignment="Center">
-                                    <Canvas Width="384.195" Height="282.809">
-                                        <Path Fill="#77b900" Data="M82.211 102.414s22.504-33.203 67.437-36.638V53.73c-49.769 3.997-92.867 46.149-92.867 46.149s24.41 70.564 92.867 77.026v-12.804c-50.237-6.32-67.437-61.687-67.437-61.687zm67.437 36.223v11.727c-37.968-6.77-48.507-46.237-48.507-46.237s18.23-20.195 48.507-23.47v12.867c-.023 0-.039-.007-.058-.007-15.891-1.907-28.305 12.938-28.305 12.938s6.958 24.99 28.363 32.182m0-107.125V53.73c1.461-.112 2.922-.207 4.391-.257 56.582-1.907 93.449 46.406 93.449 46.406s-42.343 51.488-86.457 51.488c-4.043 0-7.828-.375-11.383-1.005v13.739a75.04 75.04 0 0 0 9.481.612c41.051 0 70.738-20.965 99.484-45.778 4.766 3.817 24.278 13.103 28.289 17.167-27.332 22.884-91.031 41.33-127.144 41.33-3.481 0-6.824-.211-10.11-.528v19.306H305.68V31.512H149.648zm0 49.144V65.777c1.446-.101 2.903-.179 4.391-.226 40.688-1.278 67.382 34.965 67.382 34.965s-28.832 40.042-59.746 40.042c-4.449 0-8.438-.715-12.028-1.922V93.523c15.84 1.914 19.028 8.911 28.551 24.786l21.181-17.859s-15.461-20.277-41.524-20.277c-2.834-.001-5.545.198-8.207.483"/>
-                                    </Canvas>
-                                </Viewbox>
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="Clear NVIDIA Shader Cache" FontSize="14" FontWeight="Bold" Margin="0,0,0,0"/>
-                                    <TextBlock Text="Clears DXCache/GLCache to fix stuttering after game updates." FontSize="10" Foreground="{StaticResource TextSecondary}"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </StackPanel>
-                        <Button x:Name="BtnClearNVIDIACache" Content="Clear Cache" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
-                    </Grid>
-                </Border>
-
-                <Border Background="#0F111A" CornerRadius="14" Padding="16" BorderBrush="#FF6B35" BorderThickness="2" Margin="0,0,0,12">
-                    <Grid>
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                <Border Width="20" Margin="-2,0,10,0" VerticalAlignment="Center">
-                                    <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Apex%20Logo.png" Width="24" Height="24" VerticalAlignment="Center" HorizontalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
-                                </Border>
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="Clear Apex Shaders" FontSize="14" FontWeight="Bold" Margin="0,0,0,0"/>
-                                    <TextBlock Text="Clears the psoCache.pso shader cache to fix stuttering." FontSize="10" Foreground="{StaticResource TextSecondary}"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </StackPanel>
-                        <Button x:Name="BtnClearApexShaders" Content="Clear Shaders" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
-                    </Grid>
-                </Border>
-
-                <Border Background="#0F111A" CornerRadius="14" Padding="16" BorderBrush="#9C27B0" BorderThickness="2" Margin="0,0,0,12">
-                    <Grid>
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="#9C27B0" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="Clear Temporary Files" FontSize="14" FontWeight="Bold" Margin="0,0,0,0"/>
-                                    <TextBlock Text="Clears %temp% folder to free up disk space and remove temporary files." FontSize="10" Foreground="{StaticResource TextSecondary}"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </StackPanel>
-                        <Button x:Name="BtnClearTemp" Content="Clear Temp Files" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
-                    </Grid>
-                </Border>
-
-                <Border Background="#0F111A" CornerRadius="14" Padding="16" BorderBrush="#2196F3" BorderThickness="2" Margin="0,0,0,12">
-                    <Grid>
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="#2196F3" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="Clear Windows Prefetch" FontSize="14" FontWeight="Bold" Margin="0,0,0,0"/>
-                                    <TextBlock Text="Clears prefetch cache to optimize system startup and performance." FontSize="10" Foreground="{StaticResource TextSecondary}"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </StackPanel>
-                        <Button x:Name="BtnClearPrefetch" Content="Clear Prefetch" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
-                    </Grid>
-                </Border>
-
-                <Border Background="#0F111A" CornerRadius="14" Padding="16" BorderBrush="#FF9800" BorderThickness="2" Margin="0,0,0,12">
-                    <Grid>
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                <TextBlock Text="&#xE897;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="#FF9800" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="Clear Memory Dumps" FontSize="14" FontWeight="Bold" Margin="0,0,0,0"/>
-                                    <TextBlock Text="Removes crash dump files to free up disk space." FontSize="10" Foreground="{StaticResource TextSecondary}"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </StackPanel>
-                        <Button x:Name="BtnClearMemDumps" Content="Clear Dumps" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
-                    </Grid>
-                </Border>
-
-                <Border Background="#0F111A" CornerRadius="14" Padding="16" BorderBrush="#00BCD4" BorderThickness="2" Margin="0,0,0,12">
-                    <Grid>
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="#00BCD4" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="Clear Windows Update Cache" FontSize="14" FontWeight="Bold" Margin="0,0,0,0"/>
-                                    <TextBlock Text="Removes cached Windows update files to save disk space." FontSize="10" Foreground="{StaticResource TextSecondary}"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </StackPanel>
-                        <Button x:Name="BtnClearUpdateCache" Content="Clear Updates" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
-                    </Grid>
-                </Border>
-            </StackPanel>
-
-            <StackPanel x:Name="SectionDebloating" Visibility="Collapsed">
-                <TextBlock Text="Windows Tweaks" FontSize="28" FontWeight="Bold" Margin="0,0,0,5"/>
-                <TextBlock Text="Remove non-essential Windows services to improve performance and reduce background activity." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,30"/>
-
-                <Border Background="#0F111A" CornerRadius="14" Padding="24" BorderBrush="#4CAF50" BorderThickness="2">
-                    <Grid>
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                                <TextBlock Text="&#xE770;" FontFamily="Segoe MDL2 Assets" FontSize="24" Foreground="#4CAF50" Margin="0,0,12,0" VerticalAlignment="Center"/>
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="Set Services to Manual" FontSize="17" FontWeight="Bold" Margin="0,0,0,2"/>
-                                    <TextBlock Text="Disables non-essential Windows services to improve performance and reduce background activity." FontSize="11" Foreground="{StaticResource TextSecondary}"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </StackPanel>
-                        <Button x:Name="BtnSetServicesManual" Content="Set to Manual" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="36" Padding="20,0" FontSize="12"/>
-                    </Grid>
-                </Border>
             </StackPanel>
 
             <StackPanel x:Name="SectionAbout" Visibility="Collapsed">
