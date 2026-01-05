@@ -1,0 +1,18 @@
+{
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "terminal.integrated.profiles.windows": {
+        "PowerShell": {
+            "source": "PowerShell",
+            "icon": "terminal-powershell",
+            "args": ["-NoProfile", "-ExecutionPolicy", "Bypass"]
+        }
+    },
+    "powershell.integratedConsole.showOnStartup": true,
+    "powershell.startAsLoginShell.windows": false,
+    "powershell.codeFormatting.enable": false,
+    "powershell.developer.editorServicesWaitForDebugger": false,
+    "[powershell]": {
+        "editor.defaultFormatter": "ms-vscode.powershell"
+    },
+    "powershell.enableProfileLoading": true
+}
