@@ -1449,11 +1449,136 @@ if ($BtnCopyApexLaunchOpts) {
 if ($BtnSetServicesManual) {
     $BtnSetServicesManual.Add_Click({
         $script = "$(Split-Path $PSScriptRoot)\Tools\Tweaks\GamingTweaks.ps1"
-        & powershell -NoProfile -ExecutionPolicy Bypass -File $script -Type SetServicesManual
         
-        [System.Windows.MessageBox]::Show("Services have been set to manual! A system restart is recommended for changes to take effect.", "Services Updated", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Information) | Out-Null
+        # Check if running as administrator
+        $isAdmin = ([System.Security.Principal.WindowsPrincipal][System.Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
+        
+        if ($isAdmin) {
+            # If already admin, run directly
+            $output = & powershell -NoProfile -ExecutionPolicy Bypass -File $script -Type SetServicesManual 2>&1 | Out-String
+        } else {
+            # If not admin, show message
+            $output = "This operation requires Administrator privileges.`n`nPlease close this application and run Launch.bat as Administrator to set services to manual."
+        }
+        
+        # Create a text box to display results
+        $resultWindow = New-Object System.Windows.Window
+        $resultWindow.Title = "Services Configuration Results"
+        $resultWindow.Width = 600
+        $resultWindow.Height = 500
+        $resultWindow.Background = [System.Windows.Media.Brushes]::Black
+        $resultWindow.Foreground = [System.Windows.Media.Brushes]::White
+        $resultWindow.WindowStartupLocation = "CenterScreen"
+        $resultWindow.FontFamily = "Consolas"
+        $resultWindow.FontSize = 11
+        
+        $textBox = New-Object System.Windows.Controls.TextBox
+        $textBox.Text = if ($output) { $output } else { "Services have been set to manual. Restart your system for changes to take effect." }
+        $textBox.IsReadOnly = $true
+        $textBox.Background = "#0F111A"
+        $textBox.Foreground = "#00A3FF"
+        $textBox.VerticalScrollBarVisibility = "Auto"
+        $textBox.HorizontalScrollBarVisibility = "Auto"
+        $textBox.Margin = "10,10,10,50"
+        
+        $buttonPanel = New-Object System.Windows.Controls.StackPanel
+        $buttonPanel.Orientation = "Horizontal"
+        $buttonPanel.HorizontalAlignment = "Right"
+        $buttonPanel.Margin = "10,0,10,10"
+        
+        $okButton = New-Object System.Windows.Controls.Button
+        $okButton.Content = "Close"
+        $okButton.Width = 80
+        $okButton.Height = 32
+        $okButton.Background = "#00A3FF"
+        $okButton.Foreground = "White"
+        $okButton.Add_Click({ $resultWindow.Close() })
+        
+        $buttonPanel.Children.Add($okButton)
+        
+        $grid = New-Object System.Windows.Controls.Grid
+        $grid.RowDefinitions.Add((New-Object System.Windows.Controls.RowDefinition -Property @{ Height = "*" }))
+        $grid.RowDefinitions.Add((New-Object System.Windows.Controls.RowDefinition -Property @{ Height = "Auto" }))
+        
+        [System.Windows.Controls.Grid]::SetRow($textBox, 0)
+        [System.Windows.Controls.Grid]::SetRow($buttonPanel, 1)
+        
+        $grid.Children.Add($textBox)
+        $grid.Children.Add($buttonPanel)
+        
+        $resultWindow.Content = $grid
+        $resultWindow.ShowDialog()
         
         if ($StatusText) { $StatusText.Text = "Services set to manual. Restart recommended." }
+    })
+}
+
+# Reset Services Button Logic
+$BtnResetServices = $UserControl.FindName("BtnResetServices")
+if ($BtnResetServices) {
+    $BtnResetServices.Add_Click({
+        $script = "$(Split-Path $PSScriptRoot)\Tools\Tweaks\GamingTweaks.ps1"
+        
+        # Check if running as administrator
+        $isAdmin = ([System.Security.Principal.WindowsPrincipal][System.Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
+        
+        if ($isAdmin) {
+            # If already admin, run directly
+            $output = & powershell -NoProfile -ExecutionPolicy Bypass -File $script -Type ResetServices 2>&1 | Out-String
+        } else {
+            # If not admin, show message
+            $output = "This operation requires Administrator privileges.`n`nPlease close this application and run Launch.vbs as Administrator to reset services."
+        }
+        
+        # Create a text box to display results
+        $resultWindow = New-Object System.Windows.Window
+        $resultWindow.Title = "Services Reset Results"
+        $resultWindow.Width = 600
+        $resultWindow.Height = 500
+        $resultWindow.Background = [System.Windows.Media.Brushes]::Black
+        $resultWindow.Foreground = [System.Windows.Media.Brushes]::White
+        $resultWindow.WindowStartupLocation = "CenterScreen"
+        $resultWindow.FontFamily = "Consolas"
+        $resultWindow.FontSize = 11
+        
+        $textBox = New-Object System.Windows.Controls.TextBox
+        $textBox.Text = if ($output) { $output } else { "Services have been reset to default. Restart your system for changes to take effect." }
+        $textBox.IsReadOnly = $true
+        $textBox.Background = "#0F111A"
+        $textBox.Foreground = "#00A3FF"
+        $textBox.VerticalScrollBarVisibility = "Auto"
+        $textBox.HorizontalScrollBarVisibility = "Auto"
+        $textBox.Margin = "10,10,10,50"
+        
+        $buttonPanel = New-Object System.Windows.Controls.StackPanel
+        $buttonPanel.Orientation = "Horizontal"
+        $buttonPanel.HorizontalAlignment = "Right"
+        $buttonPanel.Margin = "10,0,10,10"
+        
+        $okButton = New-Object System.Windows.Controls.Button
+        $okButton.Content = "Close"
+        $okButton.Width = 80
+        $okButton.Height = 32
+        $okButton.Background = "#00A3FF"
+        $okButton.Foreground = "White"
+        $okButton.Add_Click({ $resultWindow.Close() })
+        
+        $buttonPanel.Children.Add($okButton)
+        
+        $grid = New-Object System.Windows.Controls.Grid
+        $grid.RowDefinitions.Add((New-Object System.Windows.Controls.RowDefinition -Property @{ Height = "*" }))
+        $grid.RowDefinitions.Add((New-Object System.Windows.Controls.RowDefinition -Property @{ Height = "Auto" }))
+        
+        [System.Windows.Controls.Grid]::SetRow($textBox, 0)
+        [System.Windows.Controls.Grid]::SetRow($buttonPanel, 1)
+        
+        $grid.Children.Add($textBox)
+        $grid.Children.Add($buttonPanel)
+        
+        $resultWindow.Content = $grid
+        $resultWindow.ShowDialog()
+        
+        if ($StatusText) { $StatusText.Text = "Services reset to default. Restart recommended." }
     })
 }
 
