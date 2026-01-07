@@ -334,20 +334,7 @@ switch ($Type) {
             }
         }
         
-        # 7. Mouse Acceleration - SET to defaults (HKCU)
-        try {
-            $path = "HKCU:\Control Panel\Mouse"
-            if (Test-Path $path) {
-                Set-ItemProperty -Path $path -Name "MouseSpeed" -Value "1" -Type String -Force -ErrorAction Stop
-                Set-ItemProperty -Path $path -Name "MouseThreshold1" -Value "6" -Type String -Force -ErrorAction Stop
-                Set-ItemProperty -Path $path -Name "MouseThreshold2" -Value "10" -Type String -Force -ErrorAction Stop
-                Write-Host "[OK] Reset: Mouse Acceleration [MouseSpeed=1, Threshold1=6, Threshold2=10]" -ForegroundColor Green
-            } else {
-                Write-Host "[OK] Reset: Mouse Acceleration (already removed)" -ForegroundColor Green
-            }
-        } catch {
-            Write-Host "[ERR] Error resetting Mouse Acceleration: $($_.Exception.Message)" -ForegroundColor Red
-        }
+        # 7. Mouse Acceleration - Removed (was Enhanced Pointer Precision)
         
         Write-Host "`n[OK] All tweaks reset to Windows defaults" -ForegroundColor Green
         Write-Host "A system restart is recommended for changes to take effect.`n" -ForegroundColor Cyan
