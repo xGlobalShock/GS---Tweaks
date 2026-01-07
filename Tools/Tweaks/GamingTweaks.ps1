@@ -152,42 +152,26 @@ switch ($Type) {
         }
     }
     
-    
     "SetServicesManual" {
         Write-Host "`n=== Setting Windows Services to Manual ===" -ForegroundColor Cyan
         Write-Host ""
         
         # List of non-essential services to set to manual
         $servicesToDisable = @(
-            "ALG", "AppMgmt", "AppReadiness", "AppVClient", "Appinfo", "AxInstSV", "BDESVC", "BITS",
-            "BTAGService", "Browser", "BthAvctpSvc", "CDPSvc", "COMSysApp", "CertPropSvc", "CryptSvc",
-            "CscService", "DPS", "DevQueryBroker", "DeviceAssociationService", "DeviceInstall",
-            "DiagTrack", "DialogBlockingService", "DispBrokerDesktopSvc",
-            "EFS", "EapHost", "FDResPub", "FontCache", "FrameServer",
-            "FrameServerMonitor", "GraphicsPerfSvc", "HvHost", "IKEEXT", "InstallService", "InventorySvc",
-            "IpxlatCfgSvc", "KeyIso", "KtmRm", "LanmanServer", "LanmanWorkstation", "LicenseManager",
-            "LxpSvc", "MSDTC", "MSiSCSI", "MapsBroker", "McpManagementService", "MicrosoftEdgeElevationService",
-            "NaturalAuthentication", "NcaSvc", "NcbService", "NcdAutoSetup", "NetSetupSvc", "NetTcpPortSharing",
-            "Netlogon", "Netman", "NtmsSvc", "PcaSvc", "PeerDistSvc", "PerfHost", "PhoneSvc",
-            "PolicyAgent", "Print3D", "PrintNotify", "ProfSvc", "PushToInstall", "QWAVE",
-            "RasAuto", "RasMan", "RemoteAccess", "RemoteRegistry", "RetailDemo", "RmSvc", "RpcLocator",
-            "SCPolicySvc", "SCardSvr", "SDRSVC", "SEMgrSvc", "SENS", "SNMPTRAP", "SNMPTrap", "SSDPSRV",
-            "ScDeviceEnum", "SensorDataService", "SensorService", "SensrSvc",
-            "SharedAccess", "ShellHWDetection", "SmsRouter", "Spooler", "SstpSvc", "StiSvc", "StorSvc",
-            "TapiSrv", "Themes", "TieringEngineService", "TrkWks",
-            "TroubleshootingSvc", "TrustedInstaller", "UevAgentService", "UmRdpService", "UserManager",
-            "UsoSvc", "WEPHOSTSVC", "WFDSConMgrSvc", "WMPNetworkSvc",
-            "WManSvc", "WPDBusEnum", "WSearch", "WalletService", "WarpJITSvc", "WbioSrvc", "Wcmsvc",
-            "WdiServiceHost", "WdiSystemHost", "WebClient", "WiaRpc", "WinRM",
-            "WpcMonSvc", "WpnService", "XblAuthManager", "XblGameSave", "XboxGipSvc",
-            "XboxNetApiSvc", "autotimesvc", "bthserv", "camsvc", "cloudidsvc", "dcsvc", "defragsvc",
-            "diagsvc", "dmwappushservice", "dot3svc", "edgeupdate", "edgeupdatem", "fdPHost", "fhsvc",
-            "hidserv", "icssvc", "lfsvc", "lltdsvc", "lmhosts", "netprofm", "nsi",
-            "perceptionsimulation", "pla", "seclogon", "shpamsvc", "smphost", "ssh-agent", "svsvc",
-            "swprv", "tzautoupdate", "upnphost", "vds", "vmicguestinterface", "vmicheartbeat",
-            "vmickvpexchange", "vmicrdv", "vmicshutdown", "vmictimesync", "vmicvmsession", "vmicvss",
-            "wbengine", "wcncsvc", "webthreatdefsvc", "wercplsupport", "wisvc", "wlidsvc", "wlpasvc",
-            "wmiApSrv", "workfolderssvc", "wuauserv"
+            "DiagTrack",                 # Diagnostic Tracking Service
+            "dmwappushservice",          # dmwappushservice
+            "lfsvc",                     # Location Service
+            "MapsBroker",                # Downloaded Maps Manager
+            "NetTcpPortSharingService",  # Net.Tcp Port Sharing Service
+            "PcaSvc",                    # Program Compatibility Assistant Service
+            "RemoteRegistry",            # Remote Registry
+            "SysMainSvc",                # Superfetch
+            "TrkWks",                    # Distributed Link Tracking Client
+            "WerSvc",                    # Windows Error Reporting Service
+            "WMPNetworkSvc",             # Windows Media Player Network Sharing Service
+            "XblAuthManager",            # Xbox Live Auth Manager
+            "XblGameSave",               # Xbox Live Game Save Service
+            "XboxNetApiSvc"              # Xbox Live Networking Service
         )
         
         $successCount = 0
@@ -212,72 +196,6 @@ switch ($Type) {
         Write-Host ""
         Write-Host "=== Services Configuration Complete ===" -ForegroundColor Cyan
         Write-Host "Successfully changed: $successCount services" -ForegroundColor Green
-        if ($failCount -gt 0) {
-            Write-Host "Failed: $failCount services" -ForegroundColor Red
-        }
-        Write-Host "A system restart is recommended for changes to take effect.`n" -ForegroundColor Yellow
-    }
-    
-    "ResetServices" {
-        Write-Host "`n=== Resetting Windows Services to Default ===" -ForegroundColor Cyan
-        Write-Host ""
-        
-        $successCount = 0
-        $failCount = 0
-        
-        # Get all services that were disabled/set to manual and reset them
-        $servicesToReset = @(
-            "ALG", "AppMgmt", "AppReadiness", "AppVClient", "Appinfo", "AxInstSV", "BDESVC", "BITS",
-            "BTAGService", "Browser", "BthAvctpSvc", "CDPSvc", "COMSysApp", "CertPropSvc", "CryptSvc",
-            "CscService", "DPS", "DevQueryBroker", "DeviceAssociationService", "DeviceInstall",
-            "DiagTrack", "DialogBlockingService", "DispBrokerDesktopSvc",
-            "EFS", "EapHost", "FDResPub", "FontCache", "FrameServer",
-            "FrameServerMonitor", "GraphicsPerfSvc", "HvHost", "IKEEXT", "InstallService", "InventorySvc",
-            "IpxlatCfgSvc", "KeyIso", "KtmRm", "LanmanServer", "LanmanWorkstation", "LicenseManager",
-            "LxpSvc", "MSDTC", "MSiSCSI", "MapsBroker", "McpManagementService", "MicrosoftEdgeElevationService",
-            "NaturalAuthentication", "NcaSvc", "NcbService", "NcdAutoSetup", "NetSetupSvc", "NetTcpPortSharing",
-            "Netlogon", "Netman", "NtmsSvc", "PcaSvc", "PeerDistSvc", "PerfHost", "PhoneSvc",
-            "PolicyAgent", "Print3D", "PrintNotify", "ProfSvc", "PushToInstall", "QWAVE",
-            "RasAuto", "RasMan", "RemoteAccess", "RemoteRegistry", "RetailDemo", "RmSvc", "RpcLocator",
-            "SCPolicySvc", "SCardSvr", "SDRSVC", "SEMgrSvc", "SENS", "SNMPTRAP", "SNMPTrap", "SSDPSRV",
-            "ScDeviceEnum", "SensorDataService", "SensorService", "SensrSvc",
-            "SharedAccess", "ShellHWDetection", "SmsRouter", "Spooler", "SstpSvc", "StiSvc", "StorSvc",
-            "TapiSrv", "Themes", "TieringEngineService", "TrkWks",
-            "TroubleshootingSvc", "TrustedInstaller", "UevAgentService", "UmRdpService", "UserManager",
-            "UsoSvc", "WEPHOSTSVC", "WFDSConMgrSvc", "WMPNetworkSvc",
-            "WManSvc", "WPDBusEnum", "WSearch", "WalletService", "WarpJITSvc", "WbioSrvc", "Wcmsvc",
-            "WdiServiceHost", "WdiSystemHost", "WebClient", "WiaRpc", "WinRM",
-            "WpcMonSvc", "WpnService", "XblAuthManager", "XblGameSave", "XboxGipSvc",
-            "XboxNetApiSvc", "autotimesvc", "bthserv", "camsvc", "cloudidsvc", "dcsvc", "defragsvc",
-            "diagsvc", "dmwappushservice", "dot3svc", "edgeupdate", "edgeupdatem", "fdPHost", "fhsvc",
-            "hidserv", "icssvc", "lfsvc", "lltdsvc", "lmhosts", "netprofm", "nsi",
-            "perceptionsimulation", "pla", "seclogon", "shpamsvc", "smphost", "ssh-agent", "svsvc",
-            "swprv", "tzautoupdate", "upnphost", "vds", "vmicguestinterface", "vmicheartbeat",
-            "vmickvpexchange", "vmicrdv", "vmicshutdown", "vmictimesync", "vmicvmsession", "vmicvss",
-            "wbengine", "wcncsvc", "webthreatdefsvc", "wercplsupport", "wisvc", "wlidsvc", "wlpasvc",
-            "wmiApSrv", "workfolderssvc", "wuauserv"
-        )
-        
-        foreach ($service in $servicesToReset) {
-            try {
-                $svc = Get-Service -Name $service -ErrorAction SilentlyContinue
-                if ($svc) {
-                    # Reset to default startup type (Automatic for most services)
-                    Set-Service -Name $service -StartupType Automatic -ErrorAction Stop
-                    Write-Host "[OK] $service - Reset to Automatic" -ForegroundColor Green
-                    $successCount++
-                } else {
-                    Write-Host "[SKIP] $service - Service not found" -ForegroundColor Yellow
-                }
-            } catch {
-                Write-Host "[ERR] $service - Failed: $($_.Exception.Message)" -ForegroundColor Red
-                $failCount++
-            }
-        }
-        
-        Write-Host ""
-        Write-Host "=== Services Reset Complete ===" -ForegroundColor Cyan
-        Write-Host "Successfully reset: $successCount services to Automatic" -ForegroundColor Green
         if ($failCount -gt 0) {
             Write-Host "Failed: $failCount services" -ForegroundColor Red
         }
@@ -364,6 +282,21 @@ switch ($Type) {
             } else {
                 Write-Host "[ERR] Error resetting USB Suspend: $($_.Exception.Message)" -ForegroundColor Red
             }
+        }
+        
+        # 7. Mouse Acceleration - SET to defaults (HKCU)
+        try {
+            $path = "HKCU:\Control Panel\Mouse"
+            if (Test-Path $path) {
+                Set-ItemProperty -Path $path -Name "MouseSpeed" -Value "1" -Type String -Force -ErrorAction Stop
+                Set-ItemProperty -Path $path -Name "MouseThreshold1" -Value "6" -Type String -Force -ErrorAction Stop
+                Set-ItemProperty -Path $path -Name "MouseThreshold2" -Value "10" -Type String -Force -ErrorAction Stop
+                Write-Host "[OK] Reset: Mouse Acceleration [MouseSpeed=1, Threshold1=6, Threshold2=10]" -ForegroundColor Green
+            } else {
+                Write-Host "[OK] Reset: Mouse Acceleration (already removed)" -ForegroundColor Green
+            }
+        } catch {
+            Write-Host "[ERR] Error resetting Mouse Acceleration: $($_.Exception.Message)" -ForegroundColor Red
         }
         
         Write-Host "`n[OK] All tweaks reset to Windows defaults" -ForegroundColor Green
