@@ -1381,7 +1381,9 @@ if ($BtnViewSupportedCommands) {
                 @{cmd = "-freq"; desc = "Sets monitor refresh rate (e.g., -freq 144, -freq 240)."},
                 @{cmd = "+cl_showfps"; desc = "Displays FPS counter on screen."},
                 @{cmd = "+cl_fovScale 1.7"; desc = "Expands field of view scale to 120."},
-                @{cmd = "+mat_queue_mode"; desc = "Optimizes GPU material queue."}
+                @{cmd = "+mat_queue_mode"; desc = "Optimizes GPU material queue."},
+                @{cmd = "+mat_wide_pillarbox 0"; desc = "Disable pillarboxing on ultrawide monitors."},
+                @{cmd = "+mat_minimize_on_alt_tab 1"; desc = "Make the game minimize when you alt-tab (like DX11 behavior)."}
             )
             
             # Clear the RichTextBox

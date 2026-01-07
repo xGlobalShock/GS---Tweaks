@@ -1015,37 +1015,6 @@
                                             <TextBlock Text='"setting.csm_cascade_res" "0"' FontSize="11" Foreground="#4CAF50" FontFamily="Consolas" Margin="0" TextWrapping="Wrap"/>
                                         </StackPanel>
                                     </Border>
-
-                                    <Grid Margin="0,0,0,20">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Border Grid.Column="0" Background="#0F111A" Padding="18" CornerRadius="12" BorderBrush="#4CAF50" BorderThickness="1.5" Margin="0,0,10,0">
-                                            <StackPanel>
-                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                                                    <TextBlock Text="&#xE83B;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="#4CAF50" Margin="0,0,10,0"/>
-                                                    <StackPanel VerticalAlignment="Center">
-                                                        <TextBlock Text="FPS Boost" FontSize="13" FontWeight="Bold" Foreground="White"/>
-                                                        <TextBlock Text="Performance Gain" FontSize="10" Foreground="#888"/>
-                                                    </StackPanel>
-                                                </StackPanel>
-                                                <TextBlock Text="15-30% higher FPS" FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Grid.Column="1" Background="#0F111A" Padding="18" CornerRadius="12" BorderBrush="#4CAF50" BorderThickness="1.5" Margin="10,0,0,0">
-                                            <StackPanel>
-                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                                                    <TextBlock Text="&#xE71C;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="#4CAF50" Margin="0,0,10,0"/>
-                                                    <StackPanel VerticalAlignment="Center">
-                                                        <TextBlock Text="Visual Impact" FontSize="13" FontWeight="Bold" Foreground="White"/>
-                                                        <TextBlock Text="Minimal Loss" FontSize="10" Foreground="#888"/>
-                                                    </StackPanel>
-                                                </StackPanel>
-                                                <TextBlock Text="Barely noticeable" FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
-                                            </StackPanel>
-                                        </Border>
-                                    </Grid>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
