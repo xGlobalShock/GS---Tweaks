@@ -299,6 +299,352 @@ function Show-CacheResultPopup($title, $description, $filesDeleted, $filesRemain
     }
 }
 
+# Show Styled Information Popup
+function Show-StyledInfoPopup {
+    param(
+        [string]$Title = "Information",
+        [string]$Message = "",
+        [string]$IconType = "Info"
+    )
+    
+    $popup = New-Object System.Windows.Window
+    $popup.Title = $Title
+    $popup.Width = 450
+    $popup.Height = 200
+    $popup.Background = [System.Windows.Media.SolidColorBrush]([System.Windows.Media.Color]::FromRgb(15, 17, 26))
+    $popup.Foreground = [System.Windows.Media.Brushes]::White
+    $popup.WindowStartupLocation = 'CenterScreen'
+    $popup.ResizeMode = 'NoResize'
+    $popup.Topmost = $true
+    
+    $mainPanel = New-Object System.Windows.Controls.Grid
+    $mainPanel.Background = [System.Windows.Media.SolidColorBrush]([System.Windows.Media.Color]::FromRgb(15, 17, 26))
+    
+    # Create row definitions
+    $row1 = New-Object System.Windows.Controls.RowDefinition
+    $row1.Height = [System.Windows.GridLength]::Auto
+    $mainPanel.RowDefinitions.Add($row1)
+    
+    $row2 = New-Object System.Windows.Controls.RowDefinition
+    $row2.Height = [System.Windows.GridLength]::Auto
+    $mainPanel.RowDefinitions.Add($row2)
+    
+    # Content Panel with Icon and Message
+    $contentPanel = New-Object System.Windows.Controls.StackPanel
+    $contentPanel.Orientation = [System.Windows.Controls.Orientation]::Horizontal
+    $contentPanel.Margin = New-Object System.Windows.Thickness(20, 20, 20, 20)
+    [System.Windows.Controls.Grid]::SetRow($contentPanel, 0)
+    
+    # Icon (Info circle)
+    if ($IconType -eq "Info") {
+        $iconBlock = New-Object System.Windows.Controls.TextBlock
+        $iconBlock.Text = "i"
+        $iconBlock.FontSize = 50
+        $iconBlock.FontWeight = [System.Windows.FontWeights]::Bold
+        $iconBlock.Foreground = [System.Windows.Media.SolidColorBrush]([System.Windows.Media.Color]::FromRgb(0, 163, 255))
+        $iconBlock.Margin = New-Object System.Windows.Thickness(0, 0, 15, 0)
+        $iconBlock.VerticalAlignment = [System.Windows.VerticalAlignment]::Top
+        [void]$contentPanel.Children.Add($iconBlock)
+    }
+    
+    # Message
+    $messageBlock = New-Object System.Windows.Controls.TextBlock
+    $messageBlock.Text = $Message
+    $messageBlock.FontSize = 13
+    $messageBlock.TextWrapping = [System.Windows.TextWrapping]::Wrap
+    $messageBlock.Foreground = [System.Windows.Media.SolidColorBrush]([System.Windows.Media.Color]::FromRgb(200, 200, 200))
+    $messageBlock.VerticalAlignment = [System.Windows.VerticalAlignment]::Top
+    [void]$contentPanel.Children.Add($messageBlock)
+    
+    [void]$mainPanel.Children.Add($contentPanel)
+    
+    # Button Panel
+    $buttonPanel = New-Object System.Windows.Controls.StackPanel
+    $buttonPanel.Orientation = [System.Windows.Controls.Orientation]::Horizontal
+    $buttonPanel.HorizontalAlignment = [System.Windows.HorizontalAlignment]::Right
+    $buttonPanel.Margin = New-Object System.Windows.Thickness(20, 0, 20, 20)
+    [System.Windows.Controls.Grid]::SetRow($buttonPanel, 1)
+    
+    $okButton = New-Object System.Windows.Controls.Button
+    $okButton.Content = "OK"
+    $okButton.Width = 80
+    $okButton.Height = 35
+    $okButton.Margin = New-Object System.Windows.Thickness(5)
+    $okButton.Background = [System.Windows.Media.SolidColorBrush]([System.Windows.Media.Color]::FromRgb(0, 163, 255))
+    $okButton.Foreground = [System.Windows.Media.Brushes]::White
+    $okButton.FontSize = 12
+    $okButton.Cursor = [System.Windows.Input.Cursors]::Hand
+    $okButton.Add_Click({ $popup.Close() })
+    
+    [void]$buttonPanel.Children.Add($okButton)
+    [void]$mainPanel.Children.Add($buttonPanel)
+    
+    $popup.Content = $mainPanel
+    $popup.ShowDialog() | Out-Null
+}
+
+# Show Download Progress Window
+function Show-DownloadProgressWindow {
+    param(
+        [string]$Title = "Downloading",
+        [string]$ScriptPath,
+        [bool]$LaunchInstaller = $false
+    )
+    
+    # Create progress window
+    $progressWindow = New-Object System.Windows.Window
+    $progressWindow.Title = $Title
+    $progressWindow.Width = 500
+    $progressWindow.Height = 300
+    $progressWindow.Background = [System.Windows.Media.SolidColorBrush]([System.Windows.Media.Color]::FromRgb(15, 17, 26))
+    $progressWindow.Foreground = [System.Windows.Media.Brushes]::White
+    $progressWindow.WindowStartupLocation = 'CenterScreen'
+    $progressWindow.ResizeMode = 'NoResize'
+    $progressWindow.Topmost = $true
+    
+    # Create main stack panel
+    $mainPanel = New-Object System.Windows.Controls.StackPanel
+    $mainPanel.Margin = New-Object System.Windows.Thickness(20)
+    $mainPanel.Background = [System.Windows.Media.SolidColorBrush]([System.Windows.Media.Color]::FromRgb(15, 17, 26))
+    
+    # Title
+    $titleBlock = New-Object System.Windows.Controls.TextBlock
+    $titleBlock.Text = $Title
+    $titleBlock.FontSize = 16
+    $titleBlock.FontWeight = [System.Windows.FontWeights]::Bold
+    $titleBlock.Margin = New-Object System.Windows.Thickness(0, 0, 0, 20)
+    $titleBlock.Foreground = [System.Windows.Media.SolidColorBrush]([System.Windows.Media.Color]::FromRgb(0, 163, 255))
+    $mainPanel.Children.Add($titleBlock)
+    
+    # Progress bar
+    $progressBar = New-Object System.Windows.Controls.ProgressBar
+    $progressBar.Height = 20
+    $progressBar.Margin = New-Object System.Windows.Thickness(0, 0, 0, 15)
+    $progressBar.Foreground = [System.Windows.Media.SolidColorBrush]([System.Windows.Media.Color]::FromRgb(0, 163, 255))
+    $progressBar.Background = [System.Windows.Media.SolidColorBrush]([System.Windows.Media.Color]::FromRgb(30, 34, 45))
+    $progressBar.Minimum = 0
+    $progressBar.Maximum = 100
+    $progressBar.Value = 0
+    $mainPanel.Children.Add($progressBar)
+    
+    # Statistics panel
+    $statsPanel = New-Object System.Windows.Controls.StackPanel
+    $statsPanel.Margin = New-Object System.Windows.Thickness(0, 0, 0, 15)
+    
+    # Percentage text
+    $percentageBlock = New-Object System.Windows.Controls.TextBlock
+    $percentageBlock.FontSize = 13
+    $percentageBlock.Margin = New-Object System.Windows.Thickness(0, 0, 0, 8)
+    $percentageBlock.Foreground = [System.Windows.Media.Brushes]::White
+    $percentageBlock.Text = "Starting download..."
+    $statsPanel.Children.Add($percentageBlock)
+    
+    # File size text
+    $sizeBlock = New-Object System.Windows.Controls.TextBlock
+    $sizeBlock.FontSize = 12
+    $sizeBlock.Margin = New-Object System.Windows.Thickness(0, 0, 0, 8)
+    $sizeBlock.Foreground = [System.Windows.Media.SolidColorBrush]([System.Windows.Media.Color]::FromRgb(148, 163, 184))
+    $sizeBlock.Text = "Initializing..."
+    $statsPanel.Children.Add($sizeBlock)
+    
+    # Speed text
+    $speedBlock = New-Object System.Windows.Controls.TextBlock
+    $speedBlock.FontSize = 12
+    $speedBlock.Margin = New-Object System.Windows.Thickness(0, 0, 0, 8)
+    $speedBlock.Foreground = [System.Windows.Media.SolidColorBrush]([System.Windows.Media.Color]::FromRgb(148, 163, 184))
+    $speedBlock.Text = "Speed: 0 MB/s"
+    $statsPanel.Children.Add($speedBlock)
+    
+    # ETA text
+    $etaBlock = New-Object System.Windows.Controls.TextBlock
+    $etaBlock.FontSize = 12
+    $etaBlock.Foreground = [System.Windows.Media.SolidColorBrush]([System.Windows.Media.Color]::FromRgb(148, 163, 184))
+    $etaBlock.Text = "Time Remaining: Calculating..."
+    $statsPanel.Children.Add($etaBlock)
+    
+    $mainPanel.Children.Add($statsPanel)
+    
+    # Status message
+    $statusBlock = New-Object System.Windows.Controls.TextBlock
+    $statusBlock.FontSize = 11
+    $statusBlock.TextWrapping = [System.Windows.TextWrapping]::Wrap
+    $statusBlock.Foreground = [System.Windows.Media.SolidColorBrush]([System.Windows.Media.Color]::FromRgb(76, 175, 80))
+    $statusBlock.Margin = New-Object System.Windows.Thickness(0, 15, 0, 0)
+    $statusBlock.Text = "Initializing..."
+    $mainPanel.Children.Add($statusBlock)
+    
+    $progressWindow.Content = $mainPanel
+    
+    # Use fixed temp file for output
+    $outputFile = "$env:TEMP\nvidia_download.txt"
+    
+    # Run download script 
+    $processInfo = New-Object System.Diagnostics.ProcessStartInfo
+    $processInfo.FileName = "powershell.exe"
+    $processInfo.Arguments = "-NoProfile -ExecutionPolicy Bypass -File `"$ScriptPath`""
+    $processInfo.RedirectStandardOutput = $true
+    $processInfo.UseShellExecute = $false
+    $processInfo.CreateNoWindow = $true
+    
+    $process = [System.Diagnostics.Process]::Start($processInfo)
+    
+    if ($null -eq $process) {
+        [System.Windows.MessageBox]::Show("Failed to start download process.", "Error", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error) | Out-Null
+        return
+    }
+    
+    # Track if window was closed to prevent installer launch
+    $windowClosed = $false
+    
+    # Timer to read output file
+    $timer = New-Object System.Windows.Threading.DispatcherTimer
+    $timer.Interval = [TimeSpan]::FromMilliseconds(80)
+    $lastLineCount = 0
+    $downloadComplete = $false
+    
+    $tickAction = {
+        # Read output file if it exists
+        $lines = @()
+        if (Test-Path $outputFile) {
+            try {
+                $lines = @(Get-Content -Path $outputFile -Encoding UTF8 -ErrorAction SilentlyContinue)
+            }
+            catch {
+                # File might be locked, skip this read
+            }
+        }
+        
+        if ($null -eq $lines) { $lines = @() }
+        if ($lines -isnot [array]) { $lines = @($lines) }
+        
+        # Process new lines only
+        if ($lines.Count -gt $lastLineCount) {
+            for ($i = $lastLineCount; $i -lt $lines.Count; $i++) {
+                $line = $lines[$i]
+                $lineStr = $line.ToString().Trim()
+                
+                if ([string]::IsNullOrWhiteSpace($lineStr)) { continue }
+                
+                # Parse different output types
+                if ($lineStr -match "^NVIDIA_APP_PROGRESS\|([0-9.]+)\|([0-9.]+)\|([0-9.]+)\|([0-9.]+)\|([0-9]+)") {
+                    $percentage = [double]::Parse($matches[1])
+                    $downloaded = [double]::Parse($matches[2])
+                    $total = [double]::Parse($matches[3])
+                    $speed = [double]::Parse($matches[4])
+                    $eta = [int]::Parse($matches[5])
+                    
+                    # Update UI - check if window is still valid
+                    try {
+                        $progressWindow.Dispatcher.Invoke([action]{
+                            if ($progressWindow.IsVisible) {
+                                $progressBar.Value = $percentage
+                                $percentageBlock.Text = "$percentage% Complete"
+                                $sizeBlock.Text = "Downloaded: $downloaded MB / $total MB"
+                                $speedBlock.Text = "Speed: $speed MB/s"
+                                
+                                if ($eta -gt 0) {
+                                    $etaMinutes = [Math]::Floor($eta / 60)
+                                    $etaSeconds = $eta % 60
+                                    $etaBlock.Text = "Time Remaining: ${etaMinutes}m ${etaSeconds}s"
+                                }
+                                $statusBlock.Text = "Downloading..."
+                            }
+                        }, [System.Windows.Threading.DispatcherPriority]::Normal)
+                    }
+                    catch {
+                        # Window was closed, stop processing
+                        return
+                    }
+                }
+                elseif ($lineStr -match "^NVIDIA_APP_DOWNLOAD_COMPLETE\|(.+)$") {
+                    $downloadPath = $matches[1]
+                    $downloadComplete = $true
+                    try {
+                        $progressWindow.Dispatcher.Invoke([action]{
+                            if ($progressWindow.IsVisible) {
+                                $progressBar.Value = 100
+                                $percentageBlock.Text = "100% Complete"
+                                $statusBlock.Text = "Download completed successfully!"
+                                $statusBlock.Foreground = [System.Windows.Media.SolidColorBrush]([System.Windows.Media.Color]::FromRgb(76, 175, 80))
+                                
+                                # Launch installer if requested, file exists, AND window wasn't closed
+                                if ($LaunchInstaller -and -not $windowClosed -and (Test-Path $downloadPath)) {
+                                    Start-Sleep -Seconds 2
+                                    Start-Process $downloadPath
+                                    $statusBlock.Text = "Launching installer..."
+                                }
+                            }
+                        }, [System.Windows.Threading.DispatcherPriority]::Normal)
+                    }
+                    catch {}
+                    
+                    # Schedule window close after 2 seconds (non-blocking)
+                    Start-Sleep -Seconds 2
+                    $progressWindow.Dispatcher.Invoke([action]{ $progressWindow.Close() })
+                }
+                elseif ($lineStr -match "^NVIDIA_APP_DOWNLOAD_ERROR\|(.+)$") {
+                    $error = $matches[1]
+                    try {
+                        $progressWindow.Dispatcher.Invoke([action]{
+                            if ($progressWindow.IsVisible) {
+                                $statusBlock.Text = "Error: $error"
+                                $statusBlock.Foreground = [System.Windows.Media.SolidColorBrush]([System.Windows.Media.Color]::FromRgb(244, 67, 54))
+                            }
+                        }, [System.Windows.Threading.DispatcherPriority]::Normal)
+                    }
+                    catch {}
+                    $downloadComplete = $true
+                }
+            }
+            $lastLineCount = $lines.Count
+        }
+        
+        # Check if process has exited and file still exists
+        if ($null -ne $process -and $process.HasExited) {
+            # Try one last read
+            if (Test-Path $outputFile) {
+                try {
+                    $finalLines = @(Get-Content -Path $outputFile -Encoding UTF8 -ErrorAction SilentlyContinue)
+                    if ($null -ne $finalLines -and $finalLines.Count -gt $lastLineCount) {
+                        for ($i = $lastLineCount; $i -lt $finalLines.Count; $i++) {
+                            $line = $finalLines[$i].ToString().Trim()
+                            if (-not [string]::IsNullOrWhiteSpace($line)) {
+                                if ($line -match "^NVIDIA_APP_DOWNLOAD_COMPLETE\|(.+)$" -or $line -match "^NVIDIA_APP_DOWNLOAD_ERROR\|(.+)$") {
+                                    $downloadComplete = $true
+                                }
+                            }
+                        }
+                    }
+                }
+                catch {}
+            }
+        }
+        
+        # Don't auto-close, let user close manually when ready
+    }
+    
+    $timer.Add_Tick($tickAction)
+    
+    # Handle window close to prevent installer launch
+    $progressWindow.Add_Closed({
+        $windowClosed = $true
+        if ($null -ne $timer) { $timer.Stop() }
+    })
+    
+    $timer.Start()
+    $progressWindow.ShowDialog() | Out-Null
+    
+    # Cleanup
+    if ($null -ne $timer) { $timer.Stop() }
+    if ($null -ne $process) { 
+        if (-not $process.HasExited) { $process.Kill() }
+        $process.Dispose() 
+    }
+    if (Test-Path $outputFile) { Remove-Item -Path $outputFile -Force -ErrorAction SilentlyContinue }
+}
+
+
+
 # UI Elements
 $BtnNavGaming = $UserControl.FindName("BtnNavGaming")
 $BtnNavApex = $UserControl.FindName("BtnNavApex")
@@ -429,6 +775,11 @@ $BtnDownloadOBSCustom = $UserControl.FindName("BtnDownloadOBSCustom")
 
 # Clear NVIDIA Cache Button
 $BtnClearNVIDIACache = $UserControl.FindName("BtnClearNVIDIACache")
+
+# NVIDIA Control Panel Buttons
+$BtnOpenNvidiaCP = $UserControl.FindName("BtnOpenNvidiaCP")
+$BtnInstallNvidiaApp = $UserControl.FindName("BtnInstallNvidiaApp")
+$BtnDownloadNvidiaDriver = $UserControl.FindName("BtnDownloadNvidiaDriver")
 
 # Clear Apex Shaders Button
 $BtnClearApexShaders = $UserControl.FindName("BtnClearApexShaders")
@@ -852,6 +1203,67 @@ if ($BtnClearNVIDIACache) {
         }
         
         if ($StatusText) { $StatusText.Text = "NVIDIA cache cleared successfully." }
+    })
+}
+
+# Open NVIDIA Control Panel Button Logic
+if ($BtnOpenNvidiaCP) {
+    $BtnOpenNvidiaCP.Add_Click({
+        try {
+            Start-Process "nvidia-smi" -ErrorAction SilentlyContinue
+            Start-Process "C:\Program Files\NVIDIA Corporation\NVIDIA GFXExperience\NVIDIA GeForce Experience.exe" -ErrorAction SilentlyContinue
+            [System.Windows.MessageBox]::Show("Opening NVIDIA Control Panel...", "NVIDIA Control Panel", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Information) | Out-Null
+            if ($StatusText) { $StatusText.Text = "NVIDIA Control Panel opened." }
+        } catch {
+            [System.Windows.MessageBox]::Show("Unable to open NVIDIA Control Panel. Please ensure NVIDIA drivers are installed.", "Error", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error) | Out-Null
+            if ($StatusText) { $StatusText.Text = "Error opening NVIDIA Control Panel." }
+        }
+    })
+}
+
+# Install Latest NVIDIA App Button Logic
+if ($BtnInstallNvidiaApp) {
+    $BtnInstallNvidiaApp.Add_Click({
+        try {
+            # Check if already installed
+            $nvidiaAppPath = "C:\Program Files\NVIDIA Corporation\NVIDIA GFXExperience\NVIDIA GeForce Experience.exe"
+            
+            if (Test-Path $nvidiaAppPath) {
+                # App already exists, just launch it
+                Start-Process $nvidiaAppPath
+                [System.Windows.MessageBox]::Show("NVIDIA App is starting.", "NVIDIA App", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Information) | Out-Null
+                if ($StatusText) { $StatusText.Text = "NVIDIA App launched." }
+            } else {
+                # Download the app
+                $scriptPath = Join-Path (Split-Path $PSScriptRoot) "Tools\Tweaks\DownloadNvidiaApp.ps1"
+                
+                if (-not (Test-Path $scriptPath)) {
+                    [System.Windows.MessageBox]::Show("Download script not found.", "Error", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error) | Out-Null
+                    return
+                }
+                
+                Show-DownloadProgressWindow -Title "Downloading NVIDIA App" -ScriptPath $scriptPath -LaunchInstaller $true
+                
+                if ($StatusText) { $StatusText.Text = "NVIDIA App downloaded." }
+            }
+        } catch {
+            [System.Windows.MessageBox]::Show("Error: $_", "Error", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error) | Out-Null
+            if ($StatusText) { $StatusText.Text = "Error with NVIDIA App." }
+        }
+    })
+}
+
+# Download Latest NVIDIA Driver Button Logic
+if ($BtnDownloadNvidiaDriver) {
+    $BtnDownloadNvidiaDriver.Add_Click({
+        try {
+            Show-StyledInfoPopup "NVIDIA Driver" "Opening NVIDIA Driver download page.`n`nNVIDIA will auto-detect your GPU." "Info"
+            Start-Process "https://www.nvidia.com/Download/index.aspx"
+            if ($StatusText) { $StatusText.Text = "Opening NVIDIA Driver page." }
+        } catch {
+            [System.Windows.MessageBox]::Show("Error: $_", "Error", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error) | Out-Null
+            if ($StatusText) { $StatusText.Text = "Error opening NVIDIA Driver page." }
+        }
     })
 }
 

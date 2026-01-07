@@ -1108,7 +1108,7 @@
                             </Border>
                         </Grid>
 
-                        <Border Background="#0F111A" CornerRadius="14" Padding="24" BorderBrush="#76B900" BorderThickness="2" Margin="0">
+                        <Border Background="#0F111A" CornerRadius="14" Padding="24" BorderBrush="#76B900" BorderThickness="2" Margin="0,0,0,24">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -1122,6 +1122,42 @@
                                     <TextBlock Text="Access the full Nvidia Control Panel to configure your GPU settings." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
                                 </StackPanel>
                                 <Button x:Name="BtnOpenNvidiaCP" Grid.Column="1" Content="Open Now" Style="{StaticResource PrimaryActionBtn}" Height="36" Padding="20,0" Margin="20,0,0,0" FontSize="11" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Install Latest NVIDIA App Update -->
+                        <Border Background="#0F111A" CornerRadius="14" Padding="24" BorderBrush="#76B900" BorderThickness="2" Margin="0,0,0,24">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                        <TextBlock Text="&#xE896;" FontFamily="Segoe MDL2 Assets" FontSize="24" Foreground="#76B900" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Install Latest NVIDIA App" FontSize="17" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <TextBlock Text="Download and install the latest NVIDIA App update for GPU management and driver updates." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                                <Button x:Name="BtnInstallNvidiaApp" Grid.Column="1" Content="Install Now" Style="{StaticResource PrimaryActionBtn}" Height="36" Padding="20,0" Margin="20,0,0,0" FontSize="11" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Download Latest NVIDIA Driver -->
+                        <Border Background="#0F111A" CornerRadius="14" Padding="24" BorderBrush="#76B900" BorderThickness="2" Margin="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                        <TextBlock Text="&#xE118;" FontFamily="Segoe MDL2 Assets" FontSize="24" Foreground="#76B900" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Download Latest Driver" FontSize="17" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <TextBlock Text="Download the latest NVIDIA graphics driver optimized for your GPU." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                                <Button x:Name="BtnDownloadNvidiaDriver" Grid.Column="1" Content="Download" Style="{StaticResource PrimaryActionBtn}" Height="36" Padding="20,0" Margin="20,0,0,0" FontSize="11" VerticalAlignment="Center"/>
                             </Grid>
                         </Border>
                     </StackPanel>
