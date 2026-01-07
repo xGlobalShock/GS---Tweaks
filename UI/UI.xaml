@@ -723,7 +723,11 @@
 
                 <Border Background="#0F111A" CornerRadius="14" Padding="24" BorderBrush="#4CAF50" BorderThickness="2">
                     <Grid>
-                        <StackPanel>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                                 <TextBlock Text="&#xE770;" FontFamily="Segoe MDL2 Assets" FontSize="24" Foreground="#4CAF50" Margin="0,0,12,0" VerticalAlignment="Center"/>
                                 <StackPanel VerticalAlignment="Center">
@@ -732,7 +736,10 @@
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
-                        <Button x:Name="BtnSetServicesManual" Content="Set to Manual" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="36" Padding="20,0" FontSize="12"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button x:Name="BtnSetServicesManual" Content="Set to Manual" Style="{StaticResource PrimaryActionBtn}" Height="36" Padding="20,0" FontSize="12" Margin="0,0,10,0"/>
+                            <Button x:Name="BtnResetServices" Content="Reset to Default" Style="{StaticResource PrimaryActionBtn}" Height="36" Padding="20,0" FontSize="12"/>
+                        </StackPanel>
                     </Grid>
                 </Border>
                 </StackPanel>

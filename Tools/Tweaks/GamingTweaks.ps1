@@ -202,6 +202,56 @@ switch ($Type) {
         Write-Host "A system restart is recommended for changes to take effect.`n" -ForegroundColor Yellow
     }
 
+    "ResetServices" {
+        Write-Host "`n=== Resetting Windows Services to Default ===" -ForegroundColor Cyan
+        Write-Host ""
+        
+        # List of services to reset to their default startup types
+        $servicesToReset = @(
+            @{ Name = "DiagTrack"; DefaultType = "Automatic" },
+            @{ Name = "dmwappushservice"; DefaultType = "Automatic" },
+            @{ Name = "lfsvc"; DefaultType = "Manual" },
+            @{ Name = "MapsBroker"; DefaultType = "Automatic" },
+            @{ Name = "NetTcpPortSharingService"; DefaultType = "Disabled" },
+            @{ Name = "PcaSvc"; DefaultType = "Automatic" },
+            @{ Name = "RemoteRegistry"; DefaultType = "Disabled" },
+            @{ Name = "SysMainSvc"; DefaultType = "Automatic" },
+            @{ Name = "TrkWks"; DefaultType = "Automatic" },
+            @{ Name = "WerSvc"; DefaultType = "Automatic" },
+            @{ Name = "WMPNetworkSvc"; DefaultType = "Automatic" },
+            @{ Name = "XblAuthManager"; DefaultType = "Manual" },
+            @{ Name = "XblGameSave"; DefaultType = "Manual" },
+            @{ Name = "XboxNetApiSvc"; DefaultType = "Manual" }
+        )
+        
+        $successCount = 0
+        $failCount = 0
+        
+        foreach ($serviceInfo in $servicesToReset) {
+            try {
+                $svc = Get-Service -Name $serviceInfo.Name -ErrorAction SilentlyContinue
+                if ($svc) {
+                    Set-Service -Name $serviceInfo.Name -StartupType $serviceInfo.DefaultType -ErrorAction Stop
+                    Write-Host "[OK] $($serviceInfo.Name) - Reset to $($serviceInfo.DefaultType)" -ForegroundColor Green
+                    $successCount++
+                } else {
+                    Write-Host "[SKIP] $($serviceInfo.Name) - Service not found" -ForegroundColor Yellow
+                }
+            } catch {
+                Write-Host "[ERR] $($serviceInfo.Name) - Failed: $($_.Exception.Message)" -ForegroundColor Red
+                $failCount++
+            }
+        }
+        
+        Write-Host ""
+        Write-Host "=== Services Reset Complete ===" -ForegroundColor Cyan
+        Write-Host "Successfully reset: $successCount services" -ForegroundColor Green
+        if ($failCount -gt 0) {
+            Write-Host "Failed: $failCount services" -ForegroundColor Red
+        }
+        Write-Host "A system restart is recommended for changes to take effect.`n" -ForegroundColor Yellow
+    }
+
     "ResetAll" {
         Write-Host "`n========================================" -ForegroundColor Cyan
         Write-Host "RESETTING ALL GAMING TWEAKS TO DEFAULTS" -ForegroundColor Cyan
