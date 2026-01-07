@@ -115,10 +115,40 @@
         </Style>
 
         <!-- Thin vertical scrollbar style for modern look -->
+        <!-- Custom Scrollbar Style -->
+        <Style x:Key="ScrollBarThumb" TargetType="Thumb">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Border Background="#00A3FF" CornerRadius="5" Margin="2.5,0,2.5,0" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="ThinVerticalScrollBar" TargetType="ScrollBar">
-            <Setter Property="Width" Value="4"/>
-            <Setter Property="Background" Value="#232733"/>
-            <Setter Property="Foreground" Value="#4FC3F7"/>
+            <Setter Property="Width" Value="6"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid Background="Transparent">
+                            <Border Background="#1A1E2E" CornerRadius="5" Margin="1,25,1,25" VerticalAlignment="Stretch" />
+                            <Track x:Name="PART_Track" IsDirectionReversed="False">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.PageUpCommand" Background="Transparent" Height="0"/>
+                                </Track.DecreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb Style="{StaticResource ScrollBarThumb}" />
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.PageDownCommand" Background="Transparent" Height="0"/>
+                                </Track.IncreaseRepeatButton>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <!-- Custom Modern CheckBox Style -->
@@ -203,8 +233,8 @@
             <Setter Property="Foreground" Value="#999"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="BorderBrush" Value="#252A37"/>
-            <Setter Property="Padding" Value="20,10"/>
-            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="FontSize" Value="10"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
@@ -303,13 +333,6 @@
                             <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/OBS.png" Width="32" Height="32" VerticalAlignment="Center" HorizontalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
                         </Border>
                         <TextBlock Text="OBS Presets" VerticalAlignment="Center" FontSize="12"/>
-                    </StackPanel>
-                </Button>
-
-                <Button x:Name="BtnNavAbout" Style="{StaticResource SidebarButton}" Tag="About" Margin="8,6">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="&#xE71B;" FontFamily="Segoe MDL2 Assets" FontSize="18" Foreground="#2196F3" Margin="0,0,12,0" Width="24"/>
-                        <TextBlock Text="Support &amp; Info" VerticalAlignment="Center" FontSize="12"/>
                     </StackPanel>
                 </Button>
 
@@ -612,7 +635,7 @@
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
-                        <Button x:Name="BtnClearNVIDIACache" Content="Clear Cache" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
+                        <Button x:Name="BtnClearNVIDIACache" Content="Clear" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
                     </Grid>
                 </Border>
 
@@ -629,7 +652,7 @@
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
-                        <Button x:Name="BtnClearApexShaders" Content="Clear Shaders" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
+                        <Button x:Name="BtnClearApexShaders" Content="Clear" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
                     </Grid>
                 </Border>
 
@@ -644,7 +667,7 @@
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
-                        <Button x:Name="BtnClearTemp" Content="Clear Temp Files" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
+                        <Button x:Name="BtnClearTemp" Content="Clear" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
                     </Grid>
                 </Border>
 
@@ -659,7 +682,7 @@
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
-                        <Button x:Name="BtnClearPrefetch" Content="Clear Prefetch" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
+                        <Button x:Name="BtnClearPrefetch" Content="Clear" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
                     </Grid>
                 </Border>
 
@@ -674,7 +697,7 @@
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
-                        <Button x:Name="BtnClearMemDumps" Content="Clear Dumps" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
+                        <Button x:Name="BtnClearMemDumps" Content="Clear" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
                     </Grid>
                 </Border>
 
@@ -689,7 +712,7 @@
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
-                        <Button x:Name="BtnClearUpdateCache" Content="Clear Updates" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
+                        <Button x:Name="BtnClearUpdateCache" Content="Clear" Style="{StaticResource PrimaryActionBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="32" Padding="16,0" FontSize="11"/>
                     </Grid>
                 </Border>
                 </StackPanel>
@@ -742,11 +765,11 @@
 
                 </StackPanel>
 
-                <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="850">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="750">
                     <ScrollViewer.Resources>
                         <Style TargetType="ScrollBar" BasedOn="{StaticResource ThinVerticalScrollBar}"/>
                     </ScrollViewer.Resources>
-                    <StackPanel Margin="0,0,15,0">
+                    <StackPanel Margin="0,0,20,0" VerticalAlignment="Top">
 
                         <!-- Tab 0: Launch Options -->
                         <StackPanel x:Name="ContentLaunchOpts" Visibility="Visible">
@@ -811,38 +834,6 @@
                                     </Grid>
                                     
                                     <!-- Rest of content continues below -->
-
-                                    <Border Background="{StaticResource CardBg}" CornerRadius="16" Padding="30" BorderBrush="#00A3FF" BorderThickness="2" Margin="0">
-                                        <StackPanel>
-                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                                <TextBlock Text="&#xE83B;" FontFamily="Segoe MDL2 Assets" FontSize="32" Foreground="#00A3FF" Margin="0,0,12,0" VerticalAlignment="Center"/>
-                                                <StackPanel VerticalAlignment="Center">
-                                                    <TextBlock Text="CSM Shadow Optimization" FontSize="20" FontWeight="Bold" Margin="0,0,0,2"/>
-                                                    <TextBlock Text="Advanced tweak for extra FPS by disabling expensive shadow calculations." FontSize="11" Foreground="{StaticResource TextSecondary}"/>
-                                                </StackPanel>
-                                            </StackPanel>
-                                            
-                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="&#xE8B7;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="#00A3FF" Margin="0,0,8,0"/>
-                                                <TextBlock Text="File Location:" FontSize="11" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
-                                            </StackPanel>
-                                            <Border Background="#0F111A" Padding="14" CornerRadius="10" BorderBrush="#00A3FF" BorderThickness="2" Margin="0,0,0,20">
-                                                <TextBlock Text="Saved Games\Respawn\Apex\Local\videoconfig.txt" FontSize="10" Foreground="#00A3FF" FontFamily="Consolas" TextWrapping="Wrap"/>
-                                            </Border>
-
-                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="#00A3FF" Margin="0,0,8,0"/>
-                                                <TextBlock Text="Add These Lines:" FontSize="11" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
-                                            </StackPanel>
-                                            <Border Background="#0F111A" Padding="16" CornerRadius="12" BorderBrush="#00A3FF" BorderThickness="2" Margin="0,0,0,20">
-                                                <StackPanel>
-                                                    <TextBlock Text='"setting.csm_enabled" "0"' FontSize="11" Foreground="#00A3FF" FontFamily="Consolas" Margin="0,0,0,6" TextWrapping="Wrap"/>
-                                                    <TextBlock Text='"setting.csm_coverage" "0"' FontSize="11" Foreground="#00A3FF" FontFamily="Consolas" Margin="0,0,0,6" TextWrapping="Wrap"/>
-                                                    <TextBlock Text='"setting.csm_cascade_res" "0"' FontSize="11" Foreground="#00A3FF" FontFamily="Consolas" Margin="0" TextWrapping="Wrap"/>
-                                                </StackPanel>
-                                            </Border>
-                                        </StackPanel>
-                                    </Border>
 
                                     <Border Background="#0F111A" Padding="24" CornerRadius="14" BorderBrush="#00A3FF" BorderThickness="2" Margin="0,24,0,0">
                                         <Grid>
@@ -1075,56 +1066,7 @@
                                 <TextBlock Text="Optimize your Nvidia GPU settings for maximum performance." FontSize="11" Foreground="{StaticResource TextSecondary}"/>
                             </StackPanel>
                         </StackPanel>
-                        <TextBlock Text="Access Nvidia Control Panel to fine-tune GPU power settings, memory clocking, and performance profiles." FontSize="12" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,24" TextWrapping="Wrap"/>
                         
-                        <Grid Margin="0,0,0,24">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                            </Grid.ColumnDefinitions>
-                            <Border Grid.Column="0" Background="#0F111A" Padding="20" CornerRadius="12" BorderBrush="#76B900" BorderThickness="1.5" Margin="0,0,10,0">
-                                <StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                                        <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/PowerSettings.png" Width="20" Height="20" Margin="0,0,10,0"/>
-                                        <StackPanel VerticalAlignment="Center">
-                                            <TextBlock Text="Power Settings" FontSize="13" FontWeight="Bold" Foreground="White"/>
-                                            <TextBlock Text="GPU Performance" FontSize="10" Foreground="#888"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                    <TextBlock Text="Optimize power delivery to your GPU for sustained performance." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
-                                </StackPanel>
-                            </Border>
-                            <Border Grid.Column="1" Background="#0F111A" Padding="20" CornerRadius="12" BorderBrush="#76B900" BorderThickness="1.5" Margin="10,0,0,0">
-                                <StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                                        <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/speedometer.png" Width="20" Height="20" Margin="0,0,10,0"/>
-                                        <StackPanel VerticalAlignment="Center">
-                                            <TextBlock Text="Overclocking" FontSize="13" FontWeight="Bold" Foreground="White"/>
-                                            <TextBlock Text="Advanced Tuning" FontSize="10" Foreground="#888"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                    <TextBlock Text="Fine-tune GPU clock speeds for maximum FPS gains." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
-                                </StackPanel>
-                            </Border>
-                        </Grid>
-
-                        <Border Background="#0F111A" CornerRadius="14" Padding="24" BorderBrush="#76B900" BorderThickness="2" Margin="0,0,0,24">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                        <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="24" Foreground="#76B900" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                        <TextBlock Text="Open Nvidia Control Panel" FontSize="17" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                    <TextBlock Text="Access the full Nvidia Control Panel to configure your GPU settings." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
-                                </StackPanel>
-                                <Button x:Name="BtnOpenNvidiaCP" Grid.Column="1" Content="Open Now" Style="{StaticResource PrimaryActionBtn}" Height="36" Padding="20,0" Margin="20,0,0,0" FontSize="11" VerticalAlignment="Center"/>
-                            </Grid>
-                        </Border>
-
                         <!-- Install Latest NVIDIA App Update -->
                         <Border Background="#0F111A" CornerRadius="14" Padding="24" BorderBrush="#76B900" BorderThickness="2" Margin="0,0,0,24">
                             <Grid>

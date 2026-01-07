@@ -493,14 +493,10 @@ function Show-DownloadProgressWindow {
         return
     }
     
-    # Track if window was closed to prevent installer launch
-    $windowClosed = $false
-    
     # Timer to read output file
     $timer = New-Object System.Windows.Threading.DispatcherTimer
     $timer.Interval = [TimeSpan]::FromMilliseconds(80)
     $lastLineCount = 0
-    $downloadComplete = $false
     
     $tickAction = {
         # Read output file if it exists
@@ -558,7 +554,6 @@ function Show-DownloadProgressWindow {
                 }
                 elseif ($lineStr -match "^NVIDIA_APP_DOWNLOAD_COMPLETE\|(.+)$") {
                     $downloadPath = $matches[1]
-                    $downloadComplete = $true
                     try {
                         $progressWindow.Dispatcher.Invoke([action]{
                             if ($progressWindow.IsVisible) {
@@ -568,7 +563,7 @@ function Show-DownloadProgressWindow {
                                 $statusBlock.Foreground = [System.Windows.Media.SolidColorBrush]([System.Windows.Media.Color]::FromRgb(76, 175, 80))
                                 
                                 # Launch installer if requested, file exists, AND window wasn't closed
-                                if ($LaunchInstaller -and -not $windowClosed -and (Test-Path $downloadPath)) {
+                                if ($LaunchInstaller -and (Test-Path $downloadPath)) {
                                     Start-Sleep -Seconds 2
                                     Start-Process $downloadPath
                                     $statusBlock.Text = "Launching installer..."
@@ -583,17 +578,16 @@ function Show-DownloadProgressWindow {
                     $progressWindow.Dispatcher.Invoke([action]{ $progressWindow.Close() })
                 }
                 elseif ($lineStr -match "^NVIDIA_APP_DOWNLOAD_ERROR\|(.+)$") {
-                    $error = $matches[1]
+                    $errorMsg = $matches[1]
                     try {
                         $progressWindow.Dispatcher.Invoke([action]{
                             if ($progressWindow.IsVisible) {
-                                $statusBlock.Text = "Error: $error"
+                                $statusBlock.Text = "Error: $errorMsg"
                                 $statusBlock.Foreground = [System.Windows.Media.SolidColorBrush]([System.Windows.Media.Color]::FromRgb(244, 67, 54))
                             }
                         }, [System.Windows.Threading.DispatcherPriority]::Normal)
                     }
                     catch {}
-                    $downloadComplete = $true
                 }
             }
             $lastLineCount = $lines.Count
@@ -609,9 +603,7 @@ function Show-DownloadProgressWindow {
                         for ($i = $lastLineCount; $i -lt $finalLines.Count; $i++) {
                             $line = $finalLines[$i].ToString().Trim()
                             if (-not [string]::IsNullOrWhiteSpace($line)) {
-                                if ($line -match "^NVIDIA_APP_DOWNLOAD_COMPLETE\|(.+)$" -or $line -match "^NVIDIA_APP_DOWNLOAD_ERROR\|(.+)$") {
-                                    $downloadComplete = $true
-                                }
+                                # Process final lines if needed
                             }
                         }
                     }
@@ -624,12 +616,6 @@ function Show-DownloadProgressWindow {
     }
     
     $timer.Add_Tick($tickAction)
-    
-    # Handle window close to prevent installer launch
-    $progressWindow.Add_Closed({
-        $windowClosed = $true
-        if ($null -ne $timer) { $timer.Stop() }
-    })
     
     $timer.Start()
     $progressWindow.ShowDialog() | Out-Null
@@ -649,12 +635,10 @@ function Show-DownloadProgressWindow {
 $BtnNavGaming = $UserControl.FindName("BtnNavGaming")
 $BtnNavApex = $UserControl.FindName("BtnNavApex")
 $BtnNavOBS = $UserControl.FindName("BtnNavOBS")
-$BtnNavAbout = $UserControl.FindName("BtnNavAbout")
 $BtnNavNvidia = $UserControl.FindName("BtnNavNvidia")
 $SectionGaming = $UserControl.FindName("SectionGaming")
 $SectionApex = $UserControl.FindName("SectionApex")
 $SectionOBS = $UserControl.FindName("SectionOBS")
-$SectionAbout = $UserControl.FindName("SectionAbout")
 $SectionNvidia = $UserControl.FindName("SectionNvidia")
 
 # System Tweaks tabs
@@ -669,7 +653,6 @@ function Show-Section($section) {
     $SectionGaming.Visibility = "Collapsed"
     $SectionApex.Visibility = "Collapsed"
     $SectionOBS.Visibility = "Collapsed"
-    $SectionAbout.Visibility = "Collapsed"
     $SectionNvidia.Visibility = "Collapsed"
     $section.Visibility = "Visible"
 }
@@ -727,7 +710,6 @@ function Show-SystemTweaksTab($tabIndex) {
 $BtnNavGaming.Add_Click({ Show-Section $SectionGaming })
 $BtnNavApex.Add_Click({ Show-Section $SectionApex })
 $BtnNavOBS.Add_Click({ Show-Section $SectionOBS })
-$BtnNavAbout.Add_Click({ Show-Section $SectionAbout })
 $BtnNavNvidia.Add_Click({ Show-Section $SectionNvidia })
 
 # System Tweaks tab handlers
@@ -777,7 +759,6 @@ $BtnDownloadOBSCustom = $UserControl.FindName("BtnDownloadOBSCustom")
 $BtnClearNVIDIACache = $UserControl.FindName("BtnClearNVIDIACache")
 
 # NVIDIA Control Panel Buttons
-$BtnOpenNvidiaCP = $UserControl.FindName("BtnOpenNvidiaCP")
 $BtnInstallNvidiaApp = $UserControl.FindName("BtnInstallNvidiaApp")
 $BtnDownloadNvidiaDriver = $UserControl.FindName("BtnDownloadNvidiaDriver")
 
@@ -1203,21 +1184,6 @@ if ($BtnClearNVIDIACache) {
         }
         
         if ($StatusText) { $StatusText.Text = "NVIDIA cache cleared successfully." }
-    })
-}
-
-# Open NVIDIA Control Panel Button Logic
-if ($BtnOpenNvidiaCP) {
-    $BtnOpenNvidiaCP.Add_Click({
-        try {
-            Start-Process "nvidia-smi" -ErrorAction SilentlyContinue
-            Start-Process "C:\Program Files\NVIDIA Corporation\NVIDIA GFXExperience\NVIDIA GeForce Experience.exe" -ErrorAction SilentlyContinue
-            [System.Windows.MessageBox]::Show("Opening NVIDIA Control Panel...", "NVIDIA Control Panel", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Information) | Out-Null
-            if ($StatusText) { $StatusText.Text = "NVIDIA Control Panel opened." }
-        } catch {
-            [System.Windows.MessageBox]::Show("Unable to open NVIDIA Control Panel. Please ensure NVIDIA drivers are installed.", "Error", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error) | Out-Null
-            if ($StatusText) { $StatusText.Text = "Error opening NVIDIA Control Panel." }
-        }
     })
 }
 
