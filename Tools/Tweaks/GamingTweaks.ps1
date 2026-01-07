@@ -156,6 +156,27 @@ switch ($Type) {
         Write-Host "`n=== Setting Windows Services to Manual ===" -ForegroundColor Cyan
         Write-Host ""
         
+        # Create system restore point before making changes
+        Write-Host "Creating system restore point..." -ForegroundColor Yellow
+        try {
+            # Enable System Restore on C: drive if not already enabled
+            $restoreEnabled = (Get-ComputerRestorePoint -ErrorAction SilentlyContinue) -ne $null
+            if (-not $restoreEnabled) {
+                Enable-ComputerRestore -Drive "C:\" -ErrorAction SilentlyContinue
+            }
+            
+            # Create the restore point
+            $description = "Before GS Tweaks - Set Services to Manual ($(Get-Date -Format 'yyyy-MM-dd HH:mm'))"
+            Checkpoint-Computer -Description $description -RestorePointType "MODIFY_SETTINGS" -ErrorAction Stop
+            Write-Host "[OK] System restore point created successfully" -ForegroundColor Green
+            Write-Host "    Description: $description" -ForegroundColor Gray
+            Write-Host ""
+        } catch {
+            Write-Host "[WARNING] Failed to create restore point: $($_.Exception.Message)" -ForegroundColor Yellow
+            Write-Host "          Continuing with service configuration..." -ForegroundColor Yellow
+            Write-Host ""
+        }
+        
         # List of non-essential services to set to manual
         $servicesToDisable = @(
             "DiagTrack",                 # Diagnostic Tracking Service

@@ -1454,8 +1454,20 @@ if ($BtnSetServicesManual) {
         $isAdmin = ([System.Security.Principal.WindowsPrincipal][System.Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
         
         if ($isAdmin) {
-            # If already admin, run directly
-            $output = & powershell -NoProfile -ExecutionPolicy Bypass -File $script -Type SetServicesManual 2>&1 | Out-String
+            # Show confirmation dialog with restore point option
+            $confirmResult = [System.Windows.MessageBox]::Show(
+                "This will set multiple Windows services to Manual startup.`n`nA system restore point will be created automatically before applying changes.`n`nDo you want to continue?",
+                "Set Services to Manual",
+                [System.Windows.MessageBoxButton]::YesNo,
+                [System.Windows.MessageBoxImage]::Question
+            )
+            
+            if ($confirmResult -eq [System.Windows.MessageBoxResult]::Yes) {
+                # Create restore point and run script
+                $output = & powershell -NoProfile -ExecutionPolicy Bypass -File $script -Type SetServicesManual 2>&1 | Out-String
+            } else {
+                $output = "Operation cancelled by user."
+            }
         } else {
             # If not admin, show message
             $output = "This operation requires Administrator privileges.`n`nPlease close this application and run Launch.bat as Administrator to set services to manual."
