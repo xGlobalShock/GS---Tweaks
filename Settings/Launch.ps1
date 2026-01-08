@@ -634,10 +634,20 @@ function Show-DownloadProgressWindow {
 # UI Elements
 $BtnNavGaming = $UserControl.FindName("BtnNavGaming")
 $BtnNavApex = $UserControl.FindName("BtnNavApex")
+$BtnNavGamesLibrary = $UserControl.FindName("BtnNavGamesLibrary")
 $BtnNavOBS = $UserControl.FindName("BtnNavOBS")
 $BtnNavNvidia = $UserControl.FindName("BtnNavNvidia")
 $SectionGaming = $UserControl.FindName("SectionGaming")
 $SectionApex = $UserControl.FindName("SectionApex")
+$SectionGamesLibrary = $UserControl.FindName("SectionGamesLibrary")
+$SectionValorant = $UserControl.FindName("SectionValorant")
+$SectionCS2 = $UserControl.FindName("SectionCS2")
+$SectionFortnite = $UserControl.FindName("SectionFortnite")
+$SectionCOD = $UserControl.FindName("SectionCOD")
+$SectionLoL = $UserControl.FindName("SectionLoL")
+$SectionOW2 = $UserControl.FindName("SectionOW2")
+$SectionR6 = $UserControl.FindName("SectionR6")
+$SectionRL = $UserControl.FindName("SectionRL")
 $SectionOBS = $UserControl.FindName("SectionOBS")
 $SectionNvidia = $UserControl.FindName("SectionNvidia")
 
@@ -652,6 +662,15 @@ $ContentServicesOpt = $UserControl.FindName("ContentServicesOpt")
 function Show-Section($section) {
     $SectionGaming.Visibility = "Collapsed"
     $SectionApex.Visibility = "Collapsed"
+    $SectionGamesLibrary.Visibility = "Collapsed"
+    $SectionValorant.Visibility = "Collapsed"
+    $SectionCS2.Visibility = "Collapsed"
+    $SectionFortnite.Visibility = "Collapsed"
+    $SectionCOD.Visibility = "Collapsed"
+    $SectionLoL.Visibility = "Collapsed"
+    $SectionOW2.Visibility = "Collapsed"
+    $SectionR6.Visibility = "Collapsed"
+    $SectionRL.Visibility = "Collapsed"
     $SectionOBS.Visibility = "Collapsed"
     $SectionNvidia.Visibility = "Collapsed"
     $section.Visibility = "Visible"
@@ -709,6 +728,7 @@ function Show-SystemTweaksTab($tabIndex) {
 
 $BtnNavGaming.Add_Click({ Show-Section $SectionGaming })
 $BtnNavApex.Add_Click({ Show-Section $SectionApex })
+$BtnNavGamesLibrary.Add_Click({ Show-Section $SectionGamesLibrary })
 $BtnNavOBS.Add_Click({ Show-Section $SectionOBS })
 $BtnNavNvidia.Add_Click({ Show-Section $SectionNvidia })
 
@@ -1764,6 +1784,93 @@ $Window.Add_ContentRendered({
     Update-StatusBadge "BadgeGameDVR" "BadgeGameDVRText" $status.GameDVR
     Update-StatusBadge "BadgeFullscreenOpt" "BadgeFullscreenOptText" $status.FullscreenOpt
 })
+
+# Games Library - Game Optimization Button Handlers
+$BtnOptimizeApex = $UserControl.FindName("BtnOptimizeApex")
+$BtnOptimizeValorant = $UserControl.FindName("BtnOptimizeValorant")
+$BtnOptimizeCS2 = $UserControl.FindName("BtnOptimizeCS2")
+$BtnOptimizeFortnite = $UserControl.FindName("BtnOptimizeFortnite")
+$BtnOptimizeCOD = $UserControl.FindName("BtnOptimizeCOD")
+$BtnOptimizeLoL = $UserControl.FindName("BtnOptimizeLoL")
+$BtnOptimizeOW2 = $UserControl.FindName("BtnOptimizeOW2")
+$BtnOptimizeR6 = $UserControl.FindName("BtnOptimizeR6")
+$BtnOptimizeRL = $UserControl.FindName("BtnOptimizeRL")
+$BtnBackFromValorant = $UserControl.FindName("BtnBackFromValorant")
+$BtnBackFromCS2 = $UserControl.FindName("BtnBackFromCS2")
+$BtnBackFromFortnite = $UserControl.FindName("BtnBackFromFortnite")
+$BtnBackFromCOD = $UserControl.FindName("BtnBackFromCOD")
+$BtnBackFromLoL = $UserControl.FindName("BtnBackFromLoL")
+$BtnBackFromOW2 = $UserControl.FindName("BtnBackFromOW2")
+$BtnBackFromR6 = $UserControl.FindName("BtnBackFromR6")
+$BtnBackFromRL = $UserControl.FindName("BtnBackFromRL")
+
+if ($BtnOptimizeApex) {
+    $BtnOptimizeApex.Add_Click({ Show-Section $SectionApex })
+}
+
+if ($BtnOptimizeValorant) {
+    $BtnOptimizeValorant.Add_Click({ Show-Section $SectionValorant })
+}
+
+if ($BtnOptimizeCS2) {
+    $BtnOptimizeCS2.Add_Click({ Show-Section $SectionCS2 })
+}
+
+if ($BtnOptimizeFortnite) {
+    $BtnOptimizeFortnite.Add_Click({ Show-Section $SectionFortnite })
+}
+
+if ($BtnOptimizeCOD) {
+    $BtnOptimizeCOD.Add_Click({ Show-Section $SectionCOD })
+}
+
+if ($BtnOptimizeLoL) {
+    $BtnOptimizeLoL.Add_Click({ Show-Section $SectionLoL })
+}
+
+if ($BtnOptimizeOW2) {
+    $BtnOptimizeOW2.Add_Click({ Show-Section $SectionOW2 })
+}
+
+if ($BtnOptimizeR6) {
+    $BtnOptimizeR6.Add_Click({ Show-Section $SectionR6 })
+}
+
+if ($BtnOptimizeRL) {
+    $BtnOptimizeRL.Add_Click({ Show-Section $SectionRL })
+}
+
+if ($BtnBackFromValorant) {
+    $BtnBackFromValorant.Add_Click({ Show-Section $SectionGamesLibrary })
+}
+
+if ($BtnBackFromCS2) {
+    $BtnBackFromCS2.Add_Click({ Show-Section $SectionGamesLibrary })
+}
+
+if ($BtnBackFromFortnite) {
+    $BtnBackFromFortnite.Add_Click({ Show-Section $SectionGamesLibrary })
+}
+
+if ($BtnBackFromCOD) {
+    $BtnBackFromCOD.Add_Click({ Show-Section $SectionGamesLibrary })
+}
+
+if ($BtnBackFromLoL) {
+    $BtnBackFromLoL.Add_Click({ Show-Section $SectionGamesLibrary })
+}
+
+if ($BtnBackFromOW2) {
+    $BtnBackFromOW2.Add_Click({ Show-Section $SectionGamesLibrary })
+}
+
+if ($BtnBackFromR6) {
+    $BtnBackFromR6.Add_Click({ Show-Section $SectionGamesLibrary })
+}
+
+if ($BtnBackFromRL) {
+    $BtnBackFromRL.Add_Click({ Show-Section $SectionGamesLibrary })
+}
 
 # OBS Preset Download Buttons
 if ($BtnDownloadOBSOnly) {

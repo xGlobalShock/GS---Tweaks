@@ -327,6 +327,13 @@
                     </StackPanel>
                 </Button>
 
+                <Button x:Name="BtnNavGamesLibrary" Style="{StaticResource SidebarButton}" Tag="GamesLibrary" Margin="8,6">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="&#xE768;" FontFamily="Segoe MDL2 Assets" FontSize="18" Foreground="#00A3FF" Margin="0,0,12,0" Width="24"/>
+                        <TextBlock Text="Games Library" VerticalAlignment="Center" FontSize="12"/>
+                    </StackPanel>
+                </Button>
+
                 <Button x:Name="BtnNavOBS" Style="{StaticResource SidebarButton}" Tag="OBS" Margin="8,6">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Border Width="24" Margin="-3,0,12,0" VerticalAlignment="Center">
@@ -745,6 +752,165 @@
                 </StackPanel>
             </StackPanel>
 
+            <!-- Games Library Section -->
+            <StackPanel x:Name="SectionGamesLibrary" Visibility="Collapsed">
+                <TextBlock Text="Games Library" FontSize="28" FontWeight="Bold" Margin="0,0,0,5"/>
+                <TextBlock Text="Optimize your favorite games for maximum performance and competitive advantage." TextWrapping="Wrap" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,30"/>
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Apex Legends Card -->
+                            <Button x:Name="BtnOptimizeApex" Grid.Row="0" Grid.Column="0" Background="Transparent" BorderThickness="0" Margin="0,0,10,10" Cursor="Hand" Padding="0">
+                                <Border CornerRadius="12" ClipToBounds="True" Height="200">
+                                    <Grid>
+                                        <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Apex%20Banner.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                        <Border VerticalAlignment="Bottom" Background="#CC000000" Padding="16,12">
+                                            <StackPanel>
+                                                <TextBlock Text="Apex Legends" FontSize="16" FontWeight="Bold" Foreground="White"/>
+                                                <TextBlock Text="Battle Royale FPS" FontSize="11" Foreground="#CCCCCC" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </Button>
+
+                            <!-- Valorant Card -->
+                            <Button x:Name="BtnOptimizeValorant" Grid.Row="0" Grid.Column="1" Background="Transparent" BorderThickness="0" Margin="0,0,10,10" Cursor="Hand" Padding="0">
+                                <Border CornerRadius="12" ClipToBounds="True" Height="200">
+                                    <Grid>
+                                        <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Valorant.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                        <Border VerticalAlignment="Bottom" Background="#CC000000" Padding="16,12">
+                                            <StackPanel>
+                                                <TextBlock Text="Valorant" FontSize="16" FontWeight="Bold" Foreground="White"/>
+                                                <TextBlock Text="Tactical Shooter" FontSize="11" Foreground="#CCCCCC" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </Button>
+
+                            <!-- CS2 Card -->
+                            <Button x:Name="BtnOptimizeCS2" Grid.Row="0" Grid.Column="2" Background="Transparent" BorderThickness="0" Margin="0,0,0,10" Cursor="Hand" Padding="0">
+                                <Border CornerRadius="12" ClipToBounds="True" Height="200">
+                                    <Grid>
+                                        <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/CS2%20Banner.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                        <Border VerticalAlignment="Bottom" Background="#CC000000" Padding="16,12">
+                                            <StackPanel>
+                                                <TextBlock Text="Counter-Strike 2" FontSize="16" FontWeight="Bold" Foreground="White"/>
+                                                <TextBlock Text="Competitive FPS" FontSize="11" Foreground="#CCCCCC" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </Button>
+
+                            <!-- Fortnite Card -->
+                            <Button x:Name="BtnOptimizeFortnite" Grid.Row="1" Grid.Column="0" Background="Transparent" BorderThickness="0" Margin="0,0,10,10" Cursor="Hand" Padding="0">
+                                <Border CornerRadius="12" ClipToBounds="True" Height="200">
+                                    <Grid>
+                                        <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Fortnite%20Banner.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                        <Border VerticalAlignment="Bottom" Background="#CC000000" Padding="16,12">
+                                            <StackPanel>
+                                                <TextBlock Text="Fortnite" FontSize="16" FontWeight="Bold" Foreground="White"/>
+                                                <TextBlock Text="Battle Royale" FontSize="11" Foreground="#CCCCCC" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </Button>
+
+                            <!-- Call of Duty Card -->
+                            <Button x:Name="BtnOptimizeCOD" Grid.Row="1" Grid.Column="1" Background="Transparent" BorderThickness="0" Margin="0,0,10,10" Cursor="Hand" Padding="0">
+                                <Border CornerRadius="12" ClipToBounds="True" Height="200">
+                                    <Grid>
+                                        <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/COD%20Banner.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                        <Border VerticalAlignment="Bottom" Background="#CC000000" Padding="16,12">
+                                            <StackPanel>
+                                                <TextBlock Text="Call of Duty" FontSize="16" FontWeight="Bold" Foreground="White"/>
+                                                <TextBlock Text="Modern Warfare" FontSize="11" Foreground="#CCCCCC" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </Button>
+
+                            <!-- League of Legends Card -->
+                            <Button x:Name="BtnOptimizeLoL" Grid.Row="1" Grid.Column="2" Background="Transparent" BorderThickness="0" Margin="0,0,0,10" Cursor="Hand" Padding="0">
+                                <Border CornerRadius="12" ClipToBounds="True" Height="200">
+                                    <Grid>
+                                        <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/LoL%20Banner.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                        <Border VerticalAlignment="Bottom" Background="#CC000000" Padding="16,12">
+                                            <StackPanel>
+                                                <TextBlock Text="League of Legends" FontSize="16" FontWeight="Bold" Foreground="White"/>
+                                                <TextBlock Text="MOBA" FontSize="11" Foreground="#CCCCCC" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </Button>
+
+                            <!-- Overwatch 2 Card -->
+                            <Button x:Name="BtnOptimizeOW2" Grid.Row="2" Grid.Column="0" Background="Transparent" BorderThickness="0" Margin="0,0,10,10" Cursor="Hand" Padding="0">
+                                <Border CornerRadius="12" ClipToBounds="True" Height="200">
+                                    <Grid>
+                                        <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Overwatch%20Banner.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                        <Border VerticalAlignment="Bottom" Background="#CC000000" Padding="16,12">
+                                            <StackPanel>
+                                                <TextBlock Text="Overwatch 2" FontSize="16" FontWeight="Bold" Foreground="White"/>
+                                                <TextBlock Text="Team-Based Shooter" FontSize="11" Foreground="#CCCCCC" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </Button>
+
+                            <!-- Rainbow Six Siege Card -->
+                            <Button x:Name="BtnOptimizeR6" Grid.Row="2" Grid.Column="1" Background="Transparent" BorderThickness="0" Margin="0,0,10,10" Cursor="Hand" Padding="0">
+                                <Border CornerRadius="12" ClipToBounds="True" Height="200">
+                                    <Grid>
+                                        <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/R6%20Banner.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                        <Border VerticalAlignment="Bottom" Background="#CC000000" Padding="16,12">
+                                            <StackPanel>
+                                                <TextBlock Text="Rainbow Six Siege" FontSize="16" FontWeight="Bold" Foreground="White"/>
+                                                <TextBlock Text="Tactical Shooter" FontSize="11" Foreground="#CCCCCC" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </Button>
+
+                            <!-- Rocket League Card -->
+                            <Button x:Name="BtnOptimizeRL" Grid.Row="2" Grid.Column="2" Background="Transparent" BorderThickness="0" Margin="0,0,0,10" Cursor="Hand" Padding="0">
+                                <Border CornerRadius="12" ClipToBounds="True" Height="200">
+                                    <Grid>
+                                        <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Rocket%20League%20Banner.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                        <Border VerticalAlignment="Bottom" Background="#CC000000" Padding="16,12">
+                                            <StackPanel>
+                                                <TextBlock Text="Rocket League" FontSize="16" FontWeight="Bold" Foreground="White"/>
+                                                <TextBlock Text="Vehicular Soccer" FontSize="11" Foreground="#CCCCCC" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </Button>
+                        </Grid>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </StackPanel>
+
             <StackPanel x:Name="SectionApex" Visibility="Collapsed">
                 <TextBlock Text="Apex Optimization" FontSize="28" FontWeight="Bold" Margin="0,0,0,5"/>
                 <TextBlock Text="Pro competitive configuration for maximum FPS and performance." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
@@ -1079,6 +1245,102 @@
                             </Grid>
                         </Border>
                     </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- Valorant Section -->
+            <StackPanel x:Name="SectionValorant" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                    <Button x:Name="BtnBackFromValorant" Content="← Back to Games" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0"/>
+                </StackPanel>
+                <TextBlock Text="Valorant Optimization" FontSize="28" FontWeight="Bold" Margin="0,0,0,5" Foreground="#FF4655"/>
+                <TextBlock Text="Tactical shooter optimizations for competitive advantage." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
+                <Border Background="{StaticResource CardBg}" CornerRadius="16" Padding="30" BorderBrush="#FF4655" BorderThickness="2">
+                    <TextBlock Text="Valorant optimizations coming soon..." FontSize="14" Foreground="{StaticResource TextSecondary}"/>
+                </Border>
+            </StackPanel>
+
+            <!-- CS2 Section -->
+            <StackPanel x:Name="SectionCS2" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                    <Button x:Name="BtnBackFromCS2" Content="← Back to Games" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0"/>
+                </StackPanel>
+                <TextBlock Text="Counter-Strike 2 Optimization" FontSize="28" FontWeight="Bold" Margin="0,0,0,5" Foreground="#FF9800"/>
+                <TextBlock Text="Competitive FPS optimizations for maximum performance." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
+                <Border Background="{StaticResource CardBg}" CornerRadius="16" Padding="30" BorderBrush="#FF9800" BorderThickness="2">
+                    <TextBlock Text="CS2 optimizations coming soon..." FontSize="14" Foreground="{StaticResource TextSecondary}"/>
+                </Border>
+            </StackPanel>
+
+            <!-- Fortnite Section -->
+            <StackPanel x:Name="SectionFortnite" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                    <Button x:Name="BtnBackFromFortnite" Content="← Back to Games" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0"/>
+                </StackPanel>
+                <TextBlock Text="Fortnite Optimization" FontSize="28" FontWeight="Bold" Margin="0,0,0,5" Foreground="#00B3E6"/>
+                <TextBlock Text="Battle Royale optimizations for competitive gameplay." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
+                <Border Background="{StaticResource CardBg}" CornerRadius="16" Padding="30" BorderBrush="#00B3E6" BorderThickness="2">
+                    <TextBlock Text="Fortnite optimizations coming soon..." FontSize="14" Foreground="{StaticResource TextSecondary}"/>
+                </Border>
+            </StackPanel>
+
+            <!-- Call of Duty Section -->
+            <StackPanel x:Name="SectionCOD" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                    <Button x:Name="BtnBackFromCOD" Content="← Back to Games" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0"/>
+                </StackPanel>
+                <TextBlock Text="Call of Duty Optimization" FontSize="28" FontWeight="Bold" Margin="0,0,0,5" Foreground="#00A651"/>
+                <TextBlock Text="Modern Warfare optimizations for competitive edge." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
+                <Border Background="{StaticResource CardBg}" CornerRadius="16" Padding="30" BorderBrush="#00A651" BorderThickness="2">
+                    <TextBlock Text="Call of Duty optimizations coming soon..." FontSize="14" Foreground="{StaticResource TextSecondary}"/>
+                </Border>
+            </StackPanel>
+
+            <!-- League of Legends Section -->
+            <StackPanel x:Name="SectionLoL" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                    <Button x:Name="BtnBackFromLoL" Content="← Back to Games" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0"/>
+                </StackPanel>
+                <TextBlock Text="League of Legends Optimization" FontSize="28" FontWeight="Bold" Margin="0,0,0,5" Foreground="#C8AA6E"/>
+                <TextBlock Text="MOBA optimizations for competitive gameplay." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
+                <Border Background="{StaticResource CardBg}" CornerRadius="16" Padding="30" BorderBrush="#C8AA6E" BorderThickness="2">
+                    <TextBlock Text="League of Legends optimizations coming soon..." FontSize="14" Foreground="{StaticResource TextSecondary}"/>
+                </Border>
+            </StackPanel>
+
+            <!-- Overwatch 2 Section -->
+            <StackPanel x:Name="SectionOW2" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                    <Button x:Name="BtnBackFromOW2" Content="← Back to Games" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0"/>
+                </StackPanel>
+                <TextBlock Text="Overwatch 2 Optimization" FontSize="28" FontWeight="Bold" Margin="0,0,0,5" Foreground="#FA9C1E"/>
+                <TextBlock Text="Team-based shooter optimizations for maximum FPS." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
+                <Border Background="{StaticResource CardBg}" CornerRadius="16" Padding="30" BorderBrush="#FA9C1E" BorderThickness="2">
+                    <TextBlock Text="Overwatch 2 optimizations coming soon..." FontSize="14" Foreground="{StaticResource TextSecondary}"/>
+                </Border>
+            </StackPanel>
+
+            <!-- Rainbow Six Siege Section -->
+            <StackPanel x:Name="SectionR6" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                    <Button x:Name="BtnBackFromR6" Content="← Back to Games" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0"/>
+                </StackPanel>
+                <TextBlock Text="Rainbow Six Siege Optimization" FontSize="28" FontWeight="Bold" Margin="0,0,0,5" Foreground="#D32F2F"/>
+                <TextBlock Text="Tactical shooter optimizations for competitive gameplay." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
+                <Border Background="{StaticResource CardBg}" CornerRadius="16" Padding="30" BorderBrush="#D32F2F" BorderThickness="2">
+                    <TextBlock Text="Rainbow Six Siege optimizations coming soon..." FontSize="14" Foreground="{StaticResource TextSecondary}"/>
+                </Border>
+            </StackPanel>
+
+            <!-- Rocket League Section -->
+            <StackPanel x:Name="SectionRL" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                    <Button x:Name="BtnBackFromRL" Content="← Back to Games" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0"/>
+                </StackPanel>
+                <TextBlock Text="Rocket League Optimization" FontSize="28" FontWeight="Bold" Margin="0,0,0,5" Foreground="#00A3FF"/>
+                <TextBlock Text="Vehicular soccer optimizations for competitive gameplay." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
+                <Border Background="{StaticResource CardBg}" CornerRadius="16" Padding="30" BorderBrush="#00A3FF" BorderThickness="2">
+                    <TextBlock Text="Rocket League optimizations coming soon..." FontSize="14" Foreground="{StaticResource TextSecondary}"/>
                 </Border>
             </StackPanel>
 
