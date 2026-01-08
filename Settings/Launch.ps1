@@ -801,6 +801,16 @@ $BtnApplyApexConfig = $UserControl.FindName("BtnApplyApexConfig")
 $BtnViewSupportedCommands = $UserControl.FindName("BtnViewSupportedCommands")
 $BtnCopyApexLaunchOpts = $UserControl.FindName("BtnCopyApexLaunchOpts")
 
+# CS2 Tab Buttons
+$TabCS2LaunchOpts = $UserControl.FindName("TabCS2LaunchOpts")
+$TabCS2VideoSettings = $UserControl.FindName("TabCS2VideoSettings")
+$TabCS2ConfigCommands = $UserControl.FindName("TabCS2ConfigCommands")
+
+# CS2 Content Sections
+$ContentCS2LaunchOpts = $UserControl.FindName("ContentCS2LaunchOpts")
+$ContentCS2VideoSettings = $UserControl.FindName("ContentCS2VideoSettings")
+$ContentCS2ConfigCommands = $UserControl.FindName("ContentCS2ConfigCommands")
+
 # Set Services to Manual Button
 $BtnSetServicesManual = $UserControl.FindName("BtnSetServicesManual")
 
@@ -1464,6 +1474,163 @@ if ($BtnCopyApexLaunchOpts) {
         [System.Windows.MessageBox]::Show("Launch options copied to clipboard!", "Copied", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Information) | Out-Null
         
         if ($StatusText) { $StatusText.Text = "Launch options copied to clipboard." }
+    })
+}
+
+# ==========================================
+# CS2 EVENT HANDLERS
+# ==========================================
+
+# CS2 Tab Switching Logic
+if ($null -ne $TabCS2LaunchOpts) {
+    $TabCS2LaunchOpts.Add_Click({
+        $ContentCS2LaunchOpts.Visibility = "Visible"
+        $ContentCS2VideoSettings.Visibility = "Collapsed"
+        $ContentCS2ConfigCommands.Visibility = "Collapsed"
+        $TabCS2LaunchOpts.Tag = "Active"
+        $TabCS2VideoSettings.Tag = ""
+        $TabCS2ConfigCommands.Tag = ""
+    })
+}
+if ($null -ne $TabCS2VideoSettings) {
+    $TabCS2VideoSettings.Add_Click({
+        $ContentCS2LaunchOpts.Visibility = "Collapsed"
+        $ContentCS2VideoSettings.Visibility = "Visible"
+        $ContentCS2ConfigCommands.Visibility = "Collapsed"
+        $TabCS2LaunchOpts.Tag = ""
+        $TabCS2VideoSettings.Tag = "Active"
+        $TabCS2ConfigCommands.Tag = ""
+    })
+}
+if ($null -ne $TabCS2ConfigCommands) {
+    $TabCS2ConfigCommands.Add_Click({
+        $ContentCS2LaunchOpts.Visibility = "Collapsed"
+        $ContentCS2VideoSettings.Visibility = "Collapsed"
+        $ContentCS2ConfigCommands.Visibility = "Visible"
+        $TabCS2LaunchOpts.Tag = ""
+        $TabCS2VideoSettings.Tag = ""
+        $TabCS2ConfigCommands.Tag = "Active"
+    })
+}
+
+# CS2 Copy Launch Options Button
+$BtnCopyCS2LaunchOpts = $UserControl.FindName("BtnCopyCS2LaunchOpts")
+if ($BtnCopyCS2LaunchOpts) {
+    $BtnCopyCS2LaunchOpts.Add_Click({
+        $CS2LaunchOptions = $UserControl.FindName("CS2LaunchOptions")
+        if ($CS2LaunchOptions) {
+            Add-Type -AssemblyName PresentationCore
+            [Windows.Clipboard]::SetText($CS2LaunchOptions.Text)
+            [System.Windows.MessageBox]::Show("CS2 launch options copied to clipboard!", "Copied", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Information) | Out-Null
+            if ($StatusText) { $StatusText.Text = "CS2 launch options copied to clipboard." }
+        }
+    })
+}
+
+# CS2 View Commands Button
+$BtnViewCS2Commands = $UserControl.FindName("BtnViewCS2Commands")
+if ($BtnViewCS2Commands) {
+    $BtnViewCS2Commands.Add_Click({
+        $InfoPopupOverlay = $UserControl.FindName("InfoPopupOverlay")
+        $InfoPopupContainer = $UserControl.FindName("InfoPopupContainer")
+        $InfoPopupTitle = $UserControl.FindName("InfoPopupTitle")
+        $InfoPopupMessage = $UserControl.FindName("InfoPopupMessage")
+        $InfoPopupOKButton = $UserControl.FindName("InfoPopupOKButton")
+        $InfoPopupDataGridBorder = $UserControl.FindName("InfoPopupDataGridBorder")
+        $PathBoxSection = $UserControl.FindName("PathBoxSection")
+        
+        if ($null -ne $InfoPopupTitle) { $InfoPopupTitle.Text = "CS2 Launch Commands Explained" }
+        if ($null -ne $PathBoxSection) { $PathBoxSection.Visibility = "Collapsed" }
+        if ($null -ne $InfoPopupDataGridBorder) { $InfoPopupDataGridBorder.Visibility = "Collapsed" }
+        
+        if ($null -ne $InfoPopupMessage) {
+            $commands = @(
+                @{cmd = "-high"; desc = "Sets CS2 to high CPU priority for better performance."},
+                @{cmd = "-novid"; desc = "Skips the intro video on startup."},
+                @{cmd = "-nojoy"; desc = "Disables joystick support to free up resources."},
+                @{cmd = "-freq [rate]"; desc = "Sets monitor refresh rate (e.g., -freq 144, -freq 240)."},
+                @{cmd = "+fps_max 0"; desc = "Uncaps frame rate for maximum FPS."},
+                @{cmd = "-tickrate 128"; desc = "Sets tickrate to 128 for practice servers."},
+                @{cmd = "+cl_forcepreload 1"; desc = "Preloads map textures to reduce stuttering."}
+            )
+            
+            # Clear the RichTextBox
+            $InfoPopupMessage.Document.Blocks.Clear()
+            
+            # Add commands
+            foreach ($item in $commands) {
+                $para = New-Object System.Windows.Documents.Paragraph
+                $para.Margin = New-Object System.Windows.Thickness(0, 0, 0, 12)
+                
+                # Command name (orange + bold)
+                $cmdRun = New-Object System.Windows.Documents.Run
+                $cmdRun.Text = "$($item.cmd)"
+                $brush = New-Object System.Windows.Media.SolidColorBrush
+                $brush.Color = [System.Windows.Media.Color]::FromRgb(255, 152, 0)
+                $cmdRun.Foreground = $brush
+                $cmdRun.FontWeight = [System.Windows.FontWeights]::Bold
+                $para.Inlines.Add($cmdRun)
+                
+                # New line
+                $para.Inlines.Add((New-Object System.Windows.Documents.LineBreak))
+                
+                # Description (gray + italic)
+                $descRun = New-Object System.Windows.Documents.Run
+                $descRun.Text = "$($item.desc)"
+                $descRun.Foreground = [System.Windows.Media.Brushes]::LightGray
+                $descRun.FontStyle = [System.Windows.FontStyles]::Italic
+                $para.Inlines.Add($descRun)
+                
+                $InfoPopupMessage.Document.Blocks.Add($para)
+            }
+        }
+        
+        if ($null -ne $InfoPopupOverlay) { $InfoPopupOverlay.Visibility = "Visible" }
+        if ($null -ne $InfoPopupContainer) { $InfoPopupContainer.Visibility = "Visible" }
+        
+        # Setup close button handler
+        if ($null -ne $InfoPopupOKButton) {
+            $closePopupHandler = {
+                $overlay = $UserControl.FindName("InfoPopupOverlay")
+                $container = $UserControl.FindName("InfoPopupContainer")
+                if ($null -ne $overlay) { $overlay.Visibility = "Collapsed" }
+                if ($null -ne $container) { $container.Visibility = "Collapsed" }
+            }
+            $InfoPopupOKButton.Add_Click($closePopupHandler)
+        }
+    })
+}
+
+# CS2 Download Config Button
+$BtnDownloadCS2Config = $UserControl.FindName("BtnDownloadCS2Config")
+if ($BtnDownloadCS2Config) {
+    $BtnDownloadCS2Config.Add_Click({
+        try {
+            $cs2TweaksScript = "$(Split-Path $PSScriptRoot)\Tools\Tweaks\CS2Tweaks.ps1"
+            
+            if (Test-Path $cs2TweaksScript) {
+                # Execute script to generate autoexec.cfg
+                $output = & powershell -NoProfile -ExecutionPolicy Bypass -File $cs2TweaksScript -Type GenerateAutoexec 2>&1 | Out-String
+                
+                # Parse output for success
+                if ($output -match "CS2_CONFIG_SUCCESS\|(.+)") {
+                    $configPath = $matches[1]
+                    $pathParts = $configPath -split '\\'
+                    $fileName = $pathParts[-1]
+                    $folderPath = $pathParts[0..($pathParts.Length-2)] -join '\'
+                    
+                    Show-InfoPopup "Config Ready" @() "Installation Guide:`n`n1. Locate your CS2 cfg folder:`n   steamapps\common\Counter-Strike Global Offensive\game\csgo\cfg`n`n2. Copy '$fileName' to the cfg folder`n`n3. Launch CS2 - the config will auto-load`n`n4. To verify, open console (~) and look for 'Config Loaded!' message" ""
+                    
+                    if ($StatusText) { $StatusText.Text = "CS2 autoexec.cfg saved successfully." }
+                } else {
+                    [System.Windows.MessageBox]::Show("Failed to generate CS2 config file.", "Error", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error) | Out-Null
+                }
+            } else {
+                [System.Windows.MessageBox]::Show("CS2Tweaks.ps1 not found.", "Error", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error) | Out-Null
+            }
+        } catch {
+            [System.Windows.MessageBox]::Show("Error generating CS2 config: $($_.Exception.Message)", "Error", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error) | Out-Null
+        }
     })
 }
 

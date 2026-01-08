@@ -1284,10 +1284,286 @@
                     </Button>
                 </StackPanel>
                 <TextBlock Text="Counter-Strike 2 Optimization" FontSize="28" FontWeight="Bold" Margin="0,0,0,5" Foreground="#FF9800"/>
-                <TextBlock Text="Competitive FPS optimizations for maximum performance." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
-                <Border Background="{StaticResource CardBg}" CornerRadius="16" Padding="30" BorderBrush="#FF9800" BorderThickness="2">
-                    <TextBlock Text="CS2 optimizations coming soon..." FontSize="14" Foreground="{StaticResource TextSecondary}"/>
-                </Border>
+                <TextBlock Text="Pro competitive configuration for maximum FPS and lowest latency." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
+                
+                <!-- Horizontal Tab Navigation -->
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                    <Button x:Name="TabCS2LaunchOpts" Style="{StaticResource TabButtonStyle}" Margin="0,0,12,0" Tag="Active">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0"/>
+                            <TextBlock Text="Launch Options" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="TabCS2VideoSettings" Style="{StaticResource TabButtonStyle}" Margin="0,0,12,0">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="&#xE714;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0"/>
+                            <TextBlock Text="Video Settings" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="TabCS2ConfigCommands" Style="{StaticResource TabButtonStyle}" Margin="0">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="&#xE756;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0"/>
+                            <TextBlock Text="Config Commands" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="750">
+                    <ScrollViewer.Resources>
+                        <Style TargetType="ScrollBar" BasedOn="{StaticResource ThinVerticalScrollBar}"/>
+                    </ScrollViewer.Resources>
+                    <StackPanel Margin="0,0,20,0" VerticalAlignment="Top">
+
+                        <!-- Tab 0: Launch Options -->
+                        <StackPanel x:Name="ContentCS2LaunchOpts" Visibility="Visible">
+                            <Border Background="{StaticResource CardBg}" CornerRadius="16" Padding="30" BorderBrush="#FF9800" BorderThickness="2" Margin="0">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                        <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Steam.png" Width="32" Height="32" Margin="0,0,12,0" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Text="Steam Launch Options" FontSize="20" FontWeight="Bold" Margin="0,0,0,2"/>
+                                            <TextBlock Text="Optimized for maximum performance and low latency" FontSize="11" Foreground="{StaticResource TextSecondary}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    
+                                    <Grid Margin="0,0,0,24">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <!-- How to Apply Box -->
+                                        <Border Grid.Column="0" Background="#0F111A" Padding="18" CornerRadius="12" BorderBrush="#FF9800" BorderThickness="1.5" Margin="0">
+                                            <StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                                    <TextBlock Text="&#xE105;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="#FF9800" Margin="0,0,10,0"/>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="How to Apply" FontSize="13" FontWeight="Bold" Foreground="White"/>
+                                                        <TextBlock Text="Step-by-Step Guide" FontSize="10" Foreground="#888"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                                <TextBlock Text="1. Right-click Counter-Strike 2 in Steam Library" FontSize="11" Foreground="White" Margin="0,0,0,4" TextWrapping="Wrap"/>
+                                                <TextBlock Text="2. Select 'Properties'" FontSize="11" Foreground="White" Margin="0,0,0,4" TextWrapping="Wrap"/>
+                                                <TextBlock Text="3. Click 'Launch Options' under General" FontSize="11" Foreground="White" Margin="0,0,0,4" TextWrapping="Wrap"/>
+                                                <TextBlock Text="4. Copy and paste the command below" FontSize="11" Foreground="White" Margin="0,0,0,4" TextWrapping="Wrap"/>
+                                                <TextBlock Text="5. Click OK and restart the game" FontSize="11" Foreground="White" Margin="0,0,0,12" TextWrapping="Wrap"/>
+                                                
+                                                <!-- Command Box Inside How to Apply -->
+                                                <Border Background="#0F111A" Padding="12" CornerRadius="8" BorderBrush="#FF9800" BorderThickness="2" Margin="0">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBox x:Name="CS2LaunchOptions" Text="-high -novid -nojoy -freq 240 +fps_max 0 -tickrate 128 +cl_forcepreload 1" 
+                                                                 IsReadOnly="True" BorderThickness="0" Background="Transparent" Foreground="White" 
+                                                                 Padding="0" FontFamily="Consolas" FontSize="11" VerticalAlignment="Center"/>
+                                                        <Button x:Name="BtnViewCS2Commands" Grid.Column="1" Width="120" Margin="12,0,0,0" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="0" FontSize="11">
+                                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                                <TextBlock Text="&#xE81E;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,6,0"/>
+                                                                <TextBlock Text="View Commands" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                        <Button x:Name="BtnCopyCS2LaunchOpts" Grid.Column="2" Width="80" Margin="8,0,0,0" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="0" FontSize="11">
+                                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                                <TextBlock Text="&#xE16F;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,6,0"/>
+                                                                <TextBlock Text="Copy" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                    </Grid>
+                                                </Border>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- Tab 1: Video Settings -->
+                        <StackPanel x:Name="ContentCS2VideoSettings" Visibility="Collapsed">
+                            <Border Background="{StaticResource CardBg}" CornerRadius="16" Padding="30" BorderBrush="#FF9800" BorderThickness="2" Margin="0">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                        <TextBlock Text="&#xE714;" FontFamily="Segoe MDL2 Assets" FontSize="32" Foreground="#FF9800" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Text="Graphic Settings" FontSize="20" FontWeight="Bold" Margin="0,0,0,2"/>
+                                            <TextBlock Text="Pro-grade settings optimized for maximum FPS and minimal latency." FontSize="11" Foreground="{StaticResource TextSecondary}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    
+                                    <!-- Layout Grid: Competitive Video Settings & Resolutions -->
+                                    <Grid Margin="0,0,0,20">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <!-- Competitive Video Settings Box -->
+                                        <Border Grid.Column="0" Background="#0F111A" Padding="20" CornerRadius="12" BorderBrush="#FF9800" BorderThickness="2" Margin="0,0,10,0">
+                                            <StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                                                    <TextBlock Text="&#xE714;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="#FF9800" Margin="0,0,8,0"/>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="Video Settings" FontSize="13" FontWeight="Bold" Foreground="White"/>
+                                                        <TextBlock Text="Competitive Setup" FontSize="9" Foreground="#888"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                                <StackPanel>
+                                                    <DockPanel Margin="0,0,0,6"><TextBlock Text="Display Mode" FontSize="10" Foreground="#888"/><TextBlock Text="Fullscreen" FontSize="10" Foreground="#4CAF50" FontWeight="Bold" HorizontalAlignment="Right" Margin="10,0,0,0"/></DockPanel>
+                                                    <DockPanel Margin="0,0,0,6"><TextBlock Text="Boost Player Contrast" FontSize="10" Foreground="#888"/><TextBlock Text="Enabled" FontSize="10" Foreground="#4CAF50" FontWeight="Bold" HorizontalAlignment="Right" Margin="10,0,0,0"/></DockPanel>
+                                                    <DockPanel Margin="0,0,0,6"><TextBlock Text="Resolution" FontSize="9" Foreground="#888"/><TextBlock Text="1280x960 (4:3)" FontSize="9" Foreground="#00A3FF" FontWeight="Bold" HorizontalAlignment="Right" Margin="10,0,0,0"/></DockPanel>
+                                                    <DockPanel Margin="0,0,0,6"><TextBlock Text="Advanced Video" FontSize="10" Foreground="#888"/><TextBlock Text="Disabled" FontSize="10" Foreground="#FF6B35" FontWeight="Bold" HorizontalAlignment="Right" Margin="10,0,0,0"/></DockPanel>
+                                                    <DockPanel Margin="0,0,0,6"><TextBlock Text="Global Shadow Quality" FontSize="10" Foreground="#888"/><TextBlock Text="Medium" FontSize="10" Foreground="#FFB700" FontWeight="Bold" HorizontalAlignment="Right" Margin="10,0,0,0"/></DockPanel>
+                                                    <DockPanel Margin="0,0,0,6"><TextBlock Text="Model/Texture Detail" FontSize="10" Foreground="#888"/><TextBlock Text="Low" FontSize="10" Foreground="#4CAF50" FontWeight="Bold" HorizontalAlignment="Right" Margin="10,0,0,0"/></DockPanel>
+                                                    <DockPanel Margin="0,0,0,6"><TextBlock Text="Shader Detail" FontSize="10" Foreground="#888"/><TextBlock Text="Low" FontSize="10" Foreground="#4CAF50" FontWeight="Bold" HorizontalAlignment="Right" Margin="10,0,0,0"/></DockPanel>
+                                                    <DockPanel Margin="0,0,0,6"><TextBlock Text="Particle Detail" FontSize="10" Foreground="#888"/><TextBlock Text="Low" FontSize="10" Foreground="#4CAF50" FontWeight="Bold" HorizontalAlignment="Right" Margin="10,0,0,0"/></DockPanel>
+                                                    <DockPanel Margin="0,0,0,6"><TextBlock Text="Ambient Occlusion" FontSize="9" Foreground="#888"/><TextBlock Text="Disabled" FontSize="9" Foreground="#FF6B35" FontWeight="Bold" HorizontalAlignment="Right" Margin="10,0,0,0"/></DockPanel>
+                                                    <DockPanel Margin="0,0,0,6"><TextBlock Text="High Dynamic Range" FontSize="10" Foreground="#888"/><TextBlock Text="Performance" FontSize="10" Foreground="#4CAF50" FontWeight="Bold" HorizontalAlignment="Right" Margin="10,0,0,0"/></DockPanel>
+                                                    <DockPanel Margin="0,0,0,6"><TextBlock Text="FidelityFX Super Res." FontSize="9" Foreground="#888"/><TextBlock Text="Disabled" FontSize="9" Foreground="#FF6B35" FontWeight="Bold" HorizontalAlignment="Right" Margin="10,0,0,0"/></DockPanel>
+                                                    <DockPanel Margin="0,0,0,6"><TextBlock Text="NVIDIA Reflex" FontSize="9" Foreground="#888"/><TextBlock Text="Enabled" FontSize="9" Foreground="#4CAF50" FontWeight="Bold" HorizontalAlignment="Right" Margin="10,0,0,0"/></DockPanel>
+                                                    <DockPanel Margin="0,0,0,6"><TextBlock Text="MSAA" FontSize="9" Foreground="#888"/><TextBlock Text="Off" FontSize="9" Foreground="#FF6B35" FontWeight="Bold" HorizontalAlignment="Right" Margin="10,0,0,0"/></DockPanel>
+                                                    <DockPanel Margin="0,0,0,6"><TextBlock Text="V-Sync" FontSize="10" Foreground="#888"/><TextBlock Text="Disabled" FontSize="10" Foreground="#FF6B35" FontWeight="Bold" HorizontalAlignment="Right" Margin="10,0,0,0"/></DockPanel>
+                                                    <DockPanel Margin="0"><TextBlock Text="Motion Blur" FontSize="10" Foreground="#888"/><TextBlock Text="Disabled" FontSize="10" Foreground="#FF6B35" FontWeight="Bold" HorizontalAlignment="Right" Margin="10,0,0,0"/></DockPanel>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <!-- Competitive Video Resolutions Box -->
+                                        <Border Grid.Column="1" Background="#0F111A" Padding="20" CornerRadius="12" BorderBrush="#FF9800" BorderThickness="2" Margin="10,0,0,0">
+                                            <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="510">
+                                                <StackPanel>
+                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                                                        <TextBlock Text="&#xE71C;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="#FF9800" Margin="0,0,8,0"/>
+                                                        <StackPanel VerticalAlignment="Center">
+                                                            <TextBlock Text="Resolutions" FontSize="13" FontWeight="Bold" Foreground="White"/>
+                                                            <TextBlock Text="Pro Player Choices" FontSize="9" Foreground="#888"/>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                    
+                                                    <!-- 4:3 Stretched Resolutions -->
+                                                    <TextBlock Text="4:3 STRETCHED (MOST POPULAR)" FontSize="12" FontWeight="Bold" Foreground="#FF9800" Margin="0,0,0,10"/>
+                                                    
+                                                    <Border Background="#1a1d28" CornerRadius="8" Padding="14" Margin="0,0,0,10">
+                                                        <StackPanel>
+                                                            <DockPanel><TextBlock Text="1280x960" FontSize="12" FontWeight="Bold" Foreground="#FF9800"/><TextBlock Text="Most Used" FontSize="10" Foreground="#4CAF50" HorizontalAlignment="Right"/></DockPanel>
+                                                            <TextBlock Text="Wider player models - Best FPS on all GPUs - Pro favorite - High visibility" FontSize="10" Foreground="#AAA" Margin="0,5,4,0" TextWrapping="Wrap"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                    
+                                                    <Border Background="#1a1d28" CornerRadius="8" Padding="14" Margin="0,0,0,10">
+                                                        <StackPanel>
+                                                            <DockPanel><TextBlock Text="1024x768" FontSize="12" FontWeight="Bold" Foreground="#FF9800"/><TextBlock Text="Classic" FontSize="10" Foreground="#00A3FF" HorizontalAlignment="Right"/></DockPanel>
+                                                            <TextBlock Text="Maximum FPS - Lowest latency - Extra stretched - Best for low-end PCs" FontSize="10" Foreground="#AAA" Margin="0,5,4,0" TextWrapping="Wrap"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                    
+                                                    <Border Background="#1a1d28" CornerRadius="8" Padding="14" Margin="0,0,0,10">
+                                                        <StackPanel>
+                                                            <DockPanel><TextBlock Text="1440x1080" FontSize="12" FontWeight="Bold" Foreground="#FF9800"/><TextBlock Text="Balanced" FontSize="10" Foreground="#FFB700" HorizontalAlignment="Right"/></DockPanel>
+                                                            <TextBlock Text="Higher clarity - Stretched feel - Good FPS - Less distortion than lower resolutions" FontSize="10" Foreground="#AAA" Margin="0,5,4,0" TextWrapping="Wrap"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                    
+                                                    <!-- 16:9 Native Resolutions -->
+                                                    <TextBlock Text="16:9 NATIVE" FontSize="12" FontWeight="Bold" Foreground="#00A3FF" Margin="0,12,0,10"/>
+                                                    
+                                                    <Border Background="#1a1d28" CornerRadius="8" Padding="14" Margin="0,0,0,10">
+                                                        <StackPanel>
+                                                            <DockPanel><TextBlock Text="1920x1080" FontSize="12" FontWeight="Bold" Foreground="#00A3FF"/><TextBlock Text="Standard" FontSize="10" Foreground="#888" HorizontalAlignment="Right"/></DockPanel>
+                                                            <TextBlock Text="Native widescreen - Best clarity - No stretching - Professional tournaments" FontSize="10" Foreground="#AAA" Margin="0,5,4,0" TextWrapping="Wrap"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                    
+                                                    <Border Background="#1a1d28" CornerRadius="8" Padding="14" Margin="0,0,0,8">
+                                                        <StackPanel>
+                                                            <DockPanel><TextBlock Text="1280x720" FontSize="12" FontWeight="Bold" Foreground="#00A3FF"/><TextBlock Text="Performance" FontSize="10" Foreground="#4CAF50" HorizontalAlignment="Right"/></DockPanel>
+                                                            <TextBlock Text="Good FPS boost - Native aspect - Lower clarity - Budget option" FontSize="10" Foreground="#AAA" Margin="0,5,4,0" TextWrapping="Wrap"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </StackPanel>
+                                            </ScrollViewer>
+                                        </Border>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- Tab 2: Config Commands -->
+                        <StackPanel x:Name="ContentCS2ConfigCommands" Visibility="Collapsed">
+                            <Border Background="{StaticResource CardBg}" CornerRadius="16" Padding="30" BorderBrush="#FF9800" BorderThickness="2" Margin="0">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                        <TextBlock Text="&#xE756;" FontFamily="Segoe MDL2 Assets" FontSize="32" Foreground="#FF9800" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Text="Autoexec Configuration" FontSize="20" FontWeight="Bold" Margin="0,0,0,2"/>
+                                            <TextBlock Text="Advanced config commands for competitive play." FontSize="11" Foreground="{StaticResource TextSecondary}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="&#xE8B7;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="#FF9800" Margin="0,0,8,0"/>
+                                        <TextBlock Text="File Location:" FontSize="11" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <Border Background="#0F111A" Padding="14" CornerRadius="10" BorderBrush="#FF9800" BorderThickness="2" Margin="0,0,0,20">
+                                        <TextBlock Text="steamapps\common\Counter-Strike Global Offensive\game\csgo\cfg\autoexec.cfg" FontSize="10" Foreground="#FF9800" FontFamily="Consolas" TextWrapping="Wrap"/>
+                                    </Border>
+
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="#FF9800" Margin="0,0,8,0"/>
+                                        <TextBlock Text="Config Commands:" FontSize="11" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <Border Background="#0F111A" Padding="16" CornerRadius="12" BorderBrush="#FF9800" BorderThickness="2" Margin="0,0,0,20">
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="400">
+                                            <StackPanel>
+                                                <TextBlock Text="// Network Settings" FontSize="11" Foreground="#4CAF50" FontFamily="Consolas" Margin="0,0,0,4" FontWeight="Bold"/>
+                                                <TextBlock Text='rate "786432"' FontSize="10" Foreground="#FF9800" FontFamily="Consolas" Margin="0,0,0,2"/>
+                                                <TextBlock Text='cl_updaterate "128"' FontSize="10" Foreground="#FF9800" FontFamily="Consolas" Margin="0,0,0,2"/>
+                                                <TextBlock Text='cl_cmdrate "128"' FontSize="10" Foreground="#FF9800" FontFamily="Consolas" Margin="0,0,0,2"/>
+                                                <TextBlock Text='cl_interp "0"' FontSize="10" Foreground="#FF9800" FontFamily="Consolas" Margin="0,0,0,2"/>
+                                                <TextBlock Text='cl_interp_ratio "1"' FontSize="10" Foreground="#FF9800" FontFamily="Consolas" Margin="0,0,0,12"/>
+                                                
+                                                <TextBlock Text="// FPS Optimization" FontSize="11" Foreground="#4CAF50" FontFamily="Consolas" Margin="0,0,0,4" FontWeight="Bold"/>
+                                                <TextBlock Text='fps_max "0"' FontSize="10" Foreground="#FF9800" FontFamily="Consolas" Margin="0,0,0,2"/>
+                                                <TextBlock Text='fps_max_menu "240"' FontSize="10" Foreground="#FF9800" FontFamily="Consolas" Margin="0,0,0,2"/>
+                                                <TextBlock Text='mat_queue_mode "2"' FontSize="10" Foreground="#FF9800" FontFamily="Consolas" Margin="0,0,0,2"/>
+                                                <TextBlock Text='cl_forcepreload "1"' FontSize="10" Foreground="#FF9800" FontFamily="Consolas" Margin="0,0,0,12"/>
+                                                
+                                                <TextBlock Text="// Mouse Settings" FontSize="11" Foreground="#4CAF50" FontFamily="Consolas" Margin="0,0,0,4" FontWeight="Bold"/>
+                                                <TextBlock Text='m_rawinput "1"' FontSize="10" Foreground="#FF9800" FontFamily="Consolas" Margin="0,0,0,2"/>
+                                                <TextBlock Text='m_mouseaccel1 "0"' FontSize="10" Foreground="#FF9800" FontFamily="Consolas" Margin="0,0,0,2"/>
+                                                <TextBlock Text='m_mouseaccel2 "0"' FontSize="10" Foreground="#FF9800" FontFamily="Consolas" Margin="0,0,0,12"/>
+                                                
+                                                <TextBlock Text="// Visual Settings" FontSize="11" Foreground="#4CAF50" FontFamily="Consolas" Margin="0,0,0,4" FontWeight="Bold"/>
+                                                <TextBlock Text='r_drawparticles "0"' FontSize="10" Foreground="#FF9800" FontFamily="Consolas" Margin="0,0,0,2"/>
+                                                <TextBlock Text='r_drawtracers_firstperson "0"' FontSize="10" Foreground="#FF9800" FontFamily="Consolas" Margin="0,0,0,2"/>
+                                                <TextBlock Text='func_break_max_pieces "0"' FontSize="10" Foreground="#FF9800" FontFamily="Consolas" Margin="0,0,0,0"/>
+                                            </StackPanel>
+                                        </ScrollViewer>
+                                    </Border>
+                                    
+                                    <!-- Download Autoexec Card -->
+                                    <Border Background="#0F111A" CornerRadius="14" Padding="24" BorderBrush="#FF9800" BorderThickness="2" Margin="0,0,0,0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                                    <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="24" Foreground="#FF9800" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="Download Autoexec Config" FontSize="17" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                                <TextBlock Text="Download the complete autoexec.cfg file with all competitive settings." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                            <Button x:Name="BtnDownloadCS2Config" Grid.Column="1" Content="Download Now" Style="{StaticResource PrimaryActionBtn}" Height="36" Padding="20,0" Margin="20,0,0,0" FontSize="11" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                    </StackPanel>
+                </ScrollViewer>
             </StackPanel>
 
             <!-- Fortnite Section -->

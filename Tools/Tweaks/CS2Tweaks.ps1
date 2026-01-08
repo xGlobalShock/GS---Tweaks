@@ -1,31 +1,31 @@
 param([string]$Type)
 
 # Counter-Strike 2 Optimization Script
-# Optimizes CS2 for competitive gameplay
+# Generates autoexec.cfg with competitive settings for maximum FPS and low latency
 
 switch ($Type) {
-    "Launch" {
-        # CS2 Steam Launch Options
-        $gameAppID = 730
-        $launchOptions = "-high -threads 8 -novid -nojoy -freq 240 +fps_max 0 +mat_queue_mode 2 +cl_forcepreload 1"
-        $steamRegistryPath = "HKCU:\Software\Valve\Steam\Apps\$gameAppID"
-        
-        if (!(Test-Path $steamRegistryPath)) {
-            New-Item -Path $steamRegistryPath -Force | Out-Null
-        }
-        
-        Set-ItemProperty -Path $steamRegistryPath -Name "LaunchOptions" -Value $launchOptions
-        Write-Host "CS2 launch options applied: $launchOptions"
-    }
-    "Config" {
-        # Optimize CS2 video settings through config file
-        $cs2ConfigPath = Join-Path $env:USERPROFILE "steamapps\common\Counter-Strike Global Offensive\game\csgo\cfg"
-        
-        if (Test-Path $cs2ConfigPath) {
-            $autoexecPath = Join-Path $cs2ConfigPath "autoexec.cfg"
+    "GenerateAutoexec" {
+        # Generate CS2 autoexec.cfg file
+        try {
+            # Use Save File Dialog for user to choose location
+            Add-Type -AssemblyName System.Windows.Forms
+            $saveDialog = New-Object System.Windows.Forms.SaveFileDialog
+            $saveDialog.FileName = "autoexec.cfg"
+            $saveDialog.DefaultExt = "cfg"
+            $saveDialog.Filter = "Config Files (*.cfg)|*.cfg|All Files (*.*)|*.*"
+            $saveDialog.Title = "Save CS2 autoexec.cfg"
+            $saveDialog.InitialDirectory = [Environment]::GetFolderPath("Desktop")
             
-            $configContent = @"
-// CS2 Performance Config
+            if ($saveDialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
+                $autoexecPath = $saveDialog.FileName
+                
+                # CS2 Competitive Autoexec Configuration
+                $configContent = @"
+// ======================================
+// CS2 Competitive Configuration
+// Optimized for maximum FPS and low latency
+// ======================================
+
 // Network Settings
 rate "786432"
 cl_updaterate "128"
@@ -44,35 +44,43 @@ m_rawinput "1"
 m_mouseaccel1 "0"
 m_mouseaccel2 "0"
 
-// Visual Settings
+// Visual Settings (Performance)
 r_drawparticles "0"
 r_drawtracers_firstperson "0"
 func_break_max_pieces "0"
 
-// Sound Settings
-snd_mixahead "0.05"
-snd_headphone_pan_exponent "1"
+// Crosshair Settings (Optional - Uncomment to use)
+// cl_crosshairalpha "255"
+// cl_crosshaircolor "1"
+// cl_crosshairdot "0"
+// cl_crosshairgap "-3"
+// cl_crosshairsize "3"
+// cl_crosshairstyle "4"
+// cl_crosshairthickness "0"
 
-echo "CS2 Performance Config Loaded!"
+echo "==================================="
+echo "CS2 Competitive Config Loaded!"
+echo "==================================="
 "@
-            
-            Set-Content -Path $autoexecPath -Value $configContent
-            Write-Host "CS2 autoexec.cfg created successfully at: $autoexecPath"
-        } else {
-            Write-Host "CS2 config folder not found. Please verify game installation."
+                
+                Set-Content -Path $autoexecPath -Value $configContent -Encoding UTF8
+                
+                # Output success message with path
+                Write-Output "CS2_CONFIG_SUCCESS|$autoexecPath"
+                
+                # Set file as read-only for safety
+                Set-ItemProperty -Path $autoexecPath -Name IsReadOnly -Value $false
+                
+                return $autoexecPath
+            }
+        } catch {
+            Write-Output "CS2_CONFIG_ERROR|$($_.Exception.Message)"
+            Write-Host "Error creating autoexec.cfg: $($_.Exception.Message)" -ForegroundColor Red
         }
     }
-    "Registry" {
-        # CS2-specific registry optimizations
-        Write-Host "Applying CS2 registry optimizations..."
-        
-        # Disable Game DVR for CS2
-        $gameDVRPath = "HKCU:\System\GameConfigStore"
-        if (!(Test-Path $gameDVRPath)) {
-            New-Item -Path $gameDVRPath -Force | Out-Null
-        }
-        Set-ItemProperty -Path $gameDVRPath -Name "GameDVR_Enabled" -Value 0 -Type DWord
-        
-        Write-Host "CS2 registry optimizations applied!"
+    
+    default {
+        Write-Host "Unknown CS2 tweak type: $Type" -ForegroundColor Red
+        Write-Host "Available types: GenerateAutoexec" -ForegroundColor Yellow
     }
 }
