@@ -1795,6 +1795,7 @@ $BtnOptimizeLoL = $UserControl.FindName("BtnOptimizeLoL")
 $BtnOptimizeOW2 = $UserControl.FindName("BtnOptimizeOW2")
 $BtnOptimizeR6 = $UserControl.FindName("BtnOptimizeR6")
 $BtnOptimizeRL = $UserControl.FindName("BtnOptimizeRL")
+$BtnBackFromApex = $UserControl.FindName("BtnBackFromApex")
 $BtnBackFromValorant = $UserControl.FindName("BtnBackFromValorant")
 $BtnBackFromCS2 = $UserControl.FindName("BtnBackFromCS2")
 $BtnBackFromFortnite = $UserControl.FindName("BtnBackFromFortnite")
@@ -1806,6 +1807,10 @@ $BtnBackFromRL = $UserControl.FindName("BtnBackFromRL")
 
 if ($BtnOptimizeApex) {
     $BtnOptimizeApex.Add_Click({ Show-Section $SectionApex })
+}
+
+if ($BtnBackFromApex) {
+    $BtnBackFromApex.Add_Click({ Show-Section $SectionGamesLibrary })
 }
 
 if ($BtnOptimizeValorant) {

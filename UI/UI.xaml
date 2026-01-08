@@ -318,18 +318,18 @@
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="BtnNavApex" Style="{StaticResource SidebarButton}" Tag="Apex" Margin="8,6">
+                <!-- <Button x:Name="BtnNavApex" Style="{StaticResource SidebarButton}" Tag="Apex" Margin="8,6">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Border Width="24" Margin="-4,0,12,0" VerticalAlignment="Center">
                             <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Apex%20Logo.png" Width="32" Height="32" VerticalAlignment="Center" HorizontalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
                         </Border>
                         <TextBlock Text="Apex Optimization" VerticalAlignment="Center" FontSize="12"/>
                     </StackPanel>
-                </Button>
+                </Button> -->
 
                 <Button x:Name="BtnNavGamesLibrary" Style="{StaticResource SidebarButton}" Tag="GamesLibrary" Margin="8,6">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="&#xE768;" FontFamily="Segoe MDL2 Assets" FontSize="18" Foreground="#00A3FF" Margin="0,0,12,0" Width="24"/>
+                        <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="18" Foreground="#00A3FF" Margin="0,0,12,0" Width="24"/>
                         <TextBlock Text="Games Library" VerticalAlignment="Center" FontSize="12"/>
                     </StackPanel>
                 </Button>
@@ -912,6 +912,14 @@
             </StackPanel>
 
             <StackPanel x:Name="SectionApex" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                    <Button x:Name="BtnBackFromApex" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Back to Games" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
                 <TextBlock Text="Apex Optimization" FontSize="28" FontWeight="Bold" Margin="0,0,0,5"/>
                 <TextBlock Text="Pro competitive configuration for maximum FPS and performance." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
                 
@@ -1251,7 +1259,12 @@
             <!-- Valorant Section -->
             <StackPanel x:Name="SectionValorant" Visibility="Collapsed">
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-                    <Button x:Name="BtnBackFromValorant" Content="← Back to Games" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0"/>
+                    <Button x:Name="BtnBackFromValorant" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Back to Games" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
                 <TextBlock Text="Valorant Optimization" FontSize="28" FontWeight="Bold" Margin="0,0,0,5" Foreground="#FF4655"/>
                 <TextBlock Text="Tactical shooter optimizations for competitive advantage." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
@@ -1263,7 +1276,12 @@
             <!-- CS2 Section -->
             <StackPanel x:Name="SectionCS2" Visibility="Collapsed">
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-                    <Button x:Name="BtnBackFromCS2" Content="← Back to Games" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0"/>
+                    <Button x:Name="BtnBackFromCS2" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Back to Games" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
                 <TextBlock Text="Counter-Strike 2 Optimization" FontSize="28" FontWeight="Bold" Margin="0,0,0,5" Foreground="#FF9800"/>
                 <TextBlock Text="Competitive FPS optimizations for maximum performance." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
@@ -1275,7 +1293,12 @@
             <!-- Fortnite Section -->
             <StackPanel x:Name="SectionFortnite" Visibility="Collapsed">
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-                    <Button x:Name="BtnBackFromFortnite" Content="← Back to Games" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0"/>
+                    <Button x:Name="BtnBackFromFortnite" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Back to Games" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
                 <TextBlock Text="Fortnite Optimization" FontSize="28" FontWeight="Bold" Margin="0,0,0,5" Foreground="#00B3E6"/>
                 <TextBlock Text="Battle Royale optimizations for competitive gameplay." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
@@ -1287,7 +1310,12 @@
             <!-- Call of Duty Section -->
             <StackPanel x:Name="SectionCOD" Visibility="Collapsed">
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-                    <Button x:Name="BtnBackFromCOD" Content="← Back to Games" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0"/>
+                    <Button x:Name="BtnBackFromCOD" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Back to Games" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
                 <TextBlock Text="Call of Duty Optimization" FontSize="28" FontWeight="Bold" Margin="0,0,0,5" Foreground="#00A651"/>
                 <TextBlock Text="Modern Warfare optimizations for competitive edge." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
@@ -1299,7 +1327,12 @@
             <!-- League of Legends Section -->
             <StackPanel x:Name="SectionLoL" Visibility="Collapsed">
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-                    <Button x:Name="BtnBackFromLoL" Content="← Back to Games" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0"/>
+                    <Button x:Name="BtnBackFromLoL" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Back to Games" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
                 <TextBlock Text="League of Legends Optimization" FontSize="28" FontWeight="Bold" Margin="0,0,0,5" Foreground="#C8AA6E"/>
                 <TextBlock Text="MOBA optimizations for competitive gameplay." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
@@ -1311,7 +1344,12 @@
             <!-- Overwatch 2 Section -->
             <StackPanel x:Name="SectionOW2" Visibility="Collapsed">
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-                    <Button x:Name="BtnBackFromOW2" Content="← Back to Games" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0"/>
+                    <Button x:Name="BtnBackFromOW2" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Back to Games" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
                 <TextBlock Text="Overwatch 2 Optimization" FontSize="28" FontWeight="Bold" Margin="0,0,0,5" Foreground="#FA9C1E"/>
                 <TextBlock Text="Team-based shooter optimizations for maximum FPS." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
@@ -1323,7 +1361,12 @@
             <!-- Rainbow Six Siege Section -->
             <StackPanel x:Name="SectionR6" Visibility="Collapsed">
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-                    <Button x:Name="BtnBackFromR6" Content="← Back to Games" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0"/>
+                    <Button x:Name="BtnBackFromR6" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Back to Games" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
                 <TextBlock Text="Rainbow Six Siege Optimization" FontSize="28" FontWeight="Bold" Margin="0,0,0,5" Foreground="#D32F2F"/>
                 <TextBlock Text="Tactical shooter optimizations for competitive gameplay." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
@@ -1335,7 +1378,12 @@
             <!-- Rocket League Section -->
             <StackPanel x:Name="SectionRL" Visibility="Collapsed">
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-                    <Button x:Name="BtnBackFromRL" Content="← Back to Games" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0"/>
+                    <Button x:Name="BtnBackFromRL" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="12,0" FontSize="11" Background="#1E222D" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Back to Games" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
                 <TextBlock Text="Rocket League Optimization" FontSize="28" FontWeight="Bold" Margin="0,0,0,5" Foreground="#00A3FF"/>
                 <TextBlock Text="Vehicular soccer optimizations for competitive gameplay." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
