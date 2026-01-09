@@ -342,17 +342,6 @@
                         <TextBlock Text="OBS Presets" VerticalAlignment="Center" FontSize="12"/>
                     </StackPanel>
                 </Button>
-
-                <Button x:Name="BtnNavNvidia" Style="{StaticResource SidebarButton}" Tag="Nvidia" Margin="8,6">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <Viewbox Width="24" Height="24" Margin="0,0,12,0">
-                            <Canvas Width="384.195" Height="282.809">
-                                <Path Fill="#76B900" Data="M82.211 102.414s22.504-33.203 67.437-36.638V53.73c-49.769 3.997-92.867 46.149-92.867 46.149s24.41 70.564 92.867 77.026v-12.804c-50.237-6.32-67.437-61.687-67.437-61.687zm67.437 36.223v11.727c-37.968-6.77-48.507-46.237-48.507-46.237s18.23-20.195 48.507-23.47v12.867c-.023 0-.039-.007-.058-.007-15.891-1.907-28.305 12.938-28.305 12.938s6.958 24.99 28.363 32.182m0-107.125V53.73c1.461-.112 2.922-.207 4.391-.257 56.582-1.907 93.449 46.406 93.449 46.406s-42.343 51.488-86.457 51.488c-4.043 0-7.828-.375-11.383-1.005v13.739a75.04 75.04 0 0 0 9.481.612c41.051 0 70.738-20.965 99.484-45.778 4.766 3.817 24.278 13.103 28.289 17.167-27.332 22.884-91.031 41.33-127.144 41.33-3.481 0-6.824-.211-10.11-.528v19.306H305.68V31.512H149.648zm0 49.144V65.777c1.446-.101 2.903-.179 4.391-.226 40.688-1.278 67.382 34.965 67.382 34.965s-28.832 40.042-59.746 40.042c-4.449 0-8.438-.715-12.028-1.922V93.523c15.84 1.914 19.028 8.911 28.551 24.786l21.181-17.859s-15.461-20.277-41.524-20.277c-2.834-.001-5.545.198-8.207.483"/>
-                            </Canvas>
-                        </Viewbox>
-                        <TextBlock Text="Nvidia Control" VerticalAlignment="Center" FontSize="12"/>
-                    </StackPanel>
-                </Button>
             </StackPanel>
         </Border>
 
@@ -367,7 +356,8 @@
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
                     <Button x:Name="TabPerfTweaks" Style="{StaticResource TabButtonStyle}" Margin="0,0,12,0" Tag="Active" Content="Performance Tweaks"/>
                     <Button x:Name="TabPerfCleanup" Style="{StaticResource TabButtonStyle}" Margin="0,0,12,0" Content="Performance Cleanup"/>
-                    <Button x:Name="TabServicesOpt" Style="{StaticResource TabButtonStyle}" Content="Services Optimization"/>
+                    <Button x:Name="TabServicesOpt" Style="{StaticResource TabButtonStyle}" Margin="0,0,12,0" Content="Services Optimization"/>
+                    <Button x:Name="TabNvidiaControl" Style="{StaticResource TabButtonStyle}" Content="Nvidia Control"/>
                 </StackPanel>
 
                 <!-- Performance Tweaks Content -->
@@ -748,6 +738,63 @@
                             <Button x:Name="BtnResetServices" Content="Reset to Default" Style="{StaticResource PrimaryActionBtn}" Height="36" Padding="20,0" FontSize="12"/>
                         </StackPanel>
                     </Grid>
+                </Border>
+                </StackPanel>
+
+                <!-- Nvidia Control Content -->
+                <StackPanel x:Name="ContentNvidiaControl" Visibility="Collapsed">
+                <TextBlock Text="Access Nvidia GPU settings and optimize your graphics performance." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,20"/>
+                
+                <Border Background="{StaticResource CardBg}" CornerRadius="16" Padding="30" BorderBrush="#76B900" BorderThickness="2" Margin="0">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <Viewbox Width="32" Height="32" Margin="0,0,12,0" VerticalAlignment="Center">
+                                <Canvas Width="384.195" Height="282.809">
+                                    <Path Fill="#77b900" Data="M82.211 102.414s22.504-33.203 67.437-36.638V53.73c-49.769 3.997-92.867 46.149-92.867 46.149s24.41 70.564 92.867 77.026v-12.804c-50.237-6.32-67.437-61.687-67.437-61.687zm67.437 36.223v11.727c-37.968-6.77-48.507-46.237-48.507-46.237s18.23-20.195 48.507-23.47v12.867c-.023 0-.039-.007-.058-.007-15.891-1.907-28.305 12.938-28.305 12.938s6.958 24.99 28.363 32.182m0-107.125V53.73c1.461-.112 2.922-.207 4.391-.257 56.582-1.907 93.449 46.406 93.449 46.406s-42.343 51.488-86.457 51.488c-4.043 0-7.828-.375-11.383-1.005v13.739a75.04 75.04 0 0 0 9.481.612c41.051 0 70.738-20.965 99.484-45.778 4.766 3.817 24.278 13.103 28.289 17.167-27.332 22.884-91.031 41.33-127.144 41.33-3.481 0-6.824-.211-10.11-.528v19.306H305.68V31.512H149.648zm0 49.144V65.777c1.446-.101 2.903-.179 4.391-.226 40.688-1.278 67.382 34.965 67.382 34.965s-28.832 40.042-59.746 40.042c-4.449 0-8.438-.715-12.028-1.922V93.523c15.84 1.914 19.028 8.911 28.551 24.786l21.181-17.859s-15.461-20.277-41.524-20.277c-2.834-.001-5.545.198-8.207.483"/>
+                                </Canvas>
+                            </Viewbox>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Nvidia Control Panel" FontSize="20" FontWeight="Bold" Margin="0,0,0,2"/>
+                                <TextBlock Text="Optimize your Nvidia GPU settings for maximum performance." FontSize="11" Foreground="{StaticResource TextSecondary}"/>
+                            </StackPanel>
+                        </StackPanel>
+                        
+                        <!-- Install Latest NVIDIA App Update -->
+                        <Border Background="#0F111A" CornerRadius="14" Padding="24" BorderBrush="#76B900" BorderThickness="2" Margin="0,0,0,24">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                        <TextBlock Text="&#xE896;" FontFamily="Segoe MDL2 Assets" FontSize="24" Foreground="#76B900" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Install Latest NVIDIA App" FontSize="17" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <TextBlock Text="Download and install the latest NVIDIA App update for GPU management and driver updates." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                                <Button x:Name="BtnInstallNvidiaApp" Grid.Column="1" Content="Install Now" Style="{StaticResource PrimaryActionBtn}" Height="36" Padding="20,0" Margin="20,0,0,0" FontSize="11" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Download Latest NVIDIA Driver -->
+                        <Border Background="#0F111A" CornerRadius="14" Padding="24" BorderBrush="#76B900" BorderThickness="2" Margin="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                        <TextBlock Text="&#xE118;" FontFamily="Segoe MDL2 Assets" FontSize="24" Foreground="#76B900" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Download Latest Driver" FontSize="17" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <TextBlock Text="Download the latest NVIDIA graphics driver optimized for your GPU." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                                <Button x:Name="BtnDownloadNvidiaDriver" Grid.Column="1" Content="Download" Style="{StaticResource PrimaryActionBtn}" Height="36" Padding="20,0" Margin="20,0,0,0" FontSize="11" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
                 </Border>
                 </StackPanel>
             </StackPanel>
@@ -1197,63 +1244,6 @@
 
                     </StackPanel>
                 </ScrollViewer>
-            </StackPanel>
-
-            <StackPanel x:Name="SectionNvidia" Visibility="Collapsed">
-                <TextBlock Text="Nvidia Control Panel" FontSize="28" FontWeight="Bold" Margin="0,0,0,5"/>
-                <TextBlock Text="Access Nvidia GPU settings and optimize your graphics performance." Foreground="{StaticResource TextSecondary}" Margin="0,0,0,30"/>
-                
-                <Border Background="{StaticResource CardBg}" CornerRadius="16" Padding="30" BorderBrush="#76B900" BorderThickness="2" Margin="0">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                            <Viewbox Width="32" Height="32" Margin="0,0,12,0" VerticalAlignment="Center">
-                                <Canvas Width="384.195" Height="282.809">
-                                    <Path Fill="#77b900" Data="M82.211 102.414s22.504-33.203 67.437-36.638V53.73c-49.769 3.997-92.867 46.149-92.867 46.149s24.41 70.564 92.867 77.026v-12.804c-50.237-6.32-67.437-61.687-67.437-61.687zm67.437 36.223v11.727c-37.968-6.77-48.507-46.237-48.507-46.237s18.23-20.195 48.507-23.47v12.867c-.023 0-.039-.007-.058-.007-15.891-1.907-28.305 12.938-28.305 12.938s6.958 24.99 28.363 32.182m0-107.125V53.73c1.461-.112 2.922-.207 4.391-.257 56.582-1.907 93.449 46.406 93.449 46.406s-42.343 51.488-86.457 51.488c-4.043 0-7.828-.375-11.383-1.005v13.739a75.04 75.04 0 0 0 9.481.612c41.051 0 70.738-20.965 99.484-45.778 4.766 3.817 24.278 13.103 28.289 17.167-27.332 22.884-91.031 41.33-127.144 41.33-3.481 0-6.824-.211-10.11-.528v19.306H305.68V31.512H149.648zm0 49.144V65.777c1.446-.101 2.903-.179 4.391-.226 40.688-1.278 67.382 34.965 67.382 34.965s-28.832 40.042-59.746 40.042c-4.449 0-8.438-.715-12.028-1.922V93.523c15.84 1.914 19.028 8.911 28.551 24.786l21.181-17.859s-15.461-20.277-41.524-20.277c-2.834-.001-5.545.198-8.207.483"/>
-                                </Canvas>
-                            </Viewbox>
-                            <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="Nvidia Control Panel" FontSize="20" FontWeight="Bold" Margin="0,0,0,2"/>
-                                <TextBlock Text="Optimize your Nvidia GPU settings for maximum performance." FontSize="11" Foreground="{StaticResource TextSecondary}"/>
-                            </StackPanel>
-                        </StackPanel>
-                        
-                        <!-- Install Latest NVIDIA App Update -->
-                        <Border Background="#0F111A" CornerRadius="14" Padding="24" BorderBrush="#76B900" BorderThickness="2" Margin="0,0,0,24">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                        <TextBlock Text="&#xE896;" FontFamily="Segoe MDL2 Assets" FontSize="24" Foreground="#76B900" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                        <TextBlock Text="Install Latest NVIDIA App" FontSize="17" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                    <TextBlock Text="Download and install the latest NVIDIA App update for GPU management and driver updates." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
-                                </StackPanel>
-                                <Button x:Name="BtnInstallNvidiaApp" Grid.Column="1" Content="Install Now" Style="{StaticResource PrimaryActionBtn}" Height="36" Padding="20,0" Margin="20,0,0,0" FontSize="11" VerticalAlignment="Center"/>
-                            </Grid>
-                        </Border>
-
-                        <!-- Download Latest NVIDIA Driver -->
-                        <Border Background="#0F111A" CornerRadius="14" Padding="24" BorderBrush="#76B900" BorderThickness="2" Margin="0">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                        <TextBlock Text="&#xE118;" FontFamily="Segoe MDL2 Assets" FontSize="24" Foreground="#76B900" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                        <TextBlock Text="Download Latest Driver" FontSize="17" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                    <TextBlock Text="Download the latest NVIDIA graphics driver optimized for your GPU." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap"/>
-                                </StackPanel>
-                                <Button x:Name="BtnDownloadNvidiaDriver" Grid.Column="1" Content="Download" Style="{StaticResource PrimaryActionBtn}" Height="36" Padding="20,0" Margin="20,0,0,0" FontSize="11" VerticalAlignment="Center"/>
-                            </Grid>
-                        </Border>
-                    </StackPanel>
-                </Border>
             </StackPanel>
 
             <!-- Valorant Section -->

@@ -636,7 +636,6 @@ $BtnNavGaming = $UserControl.FindName("BtnNavGaming")
 $BtnNavApex = $UserControl.FindName("BtnNavApex")
 $BtnNavGamesLibrary = $UserControl.FindName("BtnNavGamesLibrary")
 $BtnNavOBS = $UserControl.FindName("BtnNavOBS")
-$BtnNavNvidia = $UserControl.FindName("BtnNavNvidia")
 $SectionGaming = $UserControl.FindName("SectionGaming")
 $SectionApex = $UserControl.FindName("SectionApex")
 $SectionGamesLibrary = $UserControl.FindName("SectionGamesLibrary")
@@ -649,15 +648,16 @@ $SectionOW2 = $UserControl.FindName("SectionOW2")
 $SectionR6 = $UserControl.FindName("SectionR6")
 $SectionRL = $UserControl.FindName("SectionRL")
 $SectionOBS = $UserControl.FindName("SectionOBS")
-$SectionNvidia = $UserControl.FindName("SectionNvidia")
 
 # System Tweaks tabs
 $TabPerfTweaks = $UserControl.FindName("TabPerfTweaks")
 $TabPerfCleanup = $UserControl.FindName("TabPerfCleanup")
 $TabServicesOpt = $UserControl.FindName("TabServicesOpt")
+$TabNvidiaControl = $UserControl.FindName("TabNvidiaControl")
 $ContentPerfTweaks = $UserControl.FindName("ContentPerfTweaks")
 $ContentPerfCleanup = $UserControl.FindName("ContentPerfCleanup")
 $ContentServicesOpt = $UserControl.FindName("ContentServicesOpt")
+$ContentNvidiaControl = $UserControl.FindName("ContentNvidiaControl")
 
 function Show-Section($section) {
     $SectionGaming.Visibility = "Collapsed"
@@ -672,7 +672,6 @@ function Show-Section($section) {
     $SectionR6.Visibility = "Collapsed"
     $SectionRL.Visibility = "Collapsed"
     $SectionOBS.Visibility = "Collapsed"
-    $SectionNvidia.Visibility = "Collapsed"
     $section.Visibility = "Visible"
 }
 
@@ -681,6 +680,7 @@ function Show-SystemTweaksTab($tabIndex) {
     $ContentPerfTweaks.Visibility = "Collapsed"
     $ContentPerfCleanup.Visibility = "Collapsed"
     $ContentServicesOpt.Visibility = "Collapsed"
+    $ContentNvidiaControl.Visibility = "Collapsed"
     
     # Reset all tab styles
     $darkBrush = New-Object System.Windows.Media.SolidColorBrush
@@ -699,6 +699,10 @@ function Show-SystemTweaksTab($tabIndex) {
     $TabServicesOpt.Background = $darkBrush
     $TabServicesOpt.Foreground = $grayForeground
     $TabServicesOpt.Tag = ""
+    
+    $TabNvidiaControl.Background = $darkBrush
+    $TabNvidiaControl.Foreground = $grayForeground
+    $TabNvidiaControl.Tag = ""
     
     # Activate selected tab
     $blueBrush = New-Object System.Windows.Media.SolidColorBrush
@@ -723,6 +727,12 @@ function Show-SystemTweaksTab($tabIndex) {
             $TabServicesOpt.Foreground = [System.Windows.Media.Brushes]::White
             $TabServicesOpt.Tag = "Active"
         }
+        3 {
+            $ContentNvidiaControl.Visibility = "Visible"
+            $TabNvidiaControl.Background = $blueBrush
+            $TabNvidiaControl.Foreground = [System.Windows.Media.Brushes]::White
+            $TabNvidiaControl.Tag = "Active"
+        }
     }
 }
 
@@ -730,12 +740,12 @@ $BtnNavGaming.Add_Click({ Show-Section $SectionGaming })
 $BtnNavApex.Add_Click({ Show-Section $SectionApex })
 $BtnNavGamesLibrary.Add_Click({ Show-Section $SectionGamesLibrary })
 $BtnNavOBS.Add_Click({ Show-Section $SectionOBS })
-$BtnNavNvidia.Add_Click({ Show-Section $SectionNvidia })
 
 # System Tweaks tab handlers
 if ($TabPerfTweaks) { $TabPerfTweaks.Add_Click({ Show-SystemTweaksTab 0 }) }
 if ($TabPerfCleanup) { $TabPerfCleanup.Add_Click({ Show-SystemTweaksTab 1 }) }
 if ($TabServicesOpt) { $TabServicesOpt.Add_Click({ Show-SystemTweaksTab 2 }) }
+if ($TabNvidiaControl) { $TabNvidiaControl.Add_Click({ Show-SystemTweaksTab 3 }) }
 
 # Additional UI Elements
 $ChkIRQ    = $UserControl.FindName("ChkIRQ")
