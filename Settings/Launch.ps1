@@ -299,6 +299,101 @@ function Show-CacheResultPopup($title, $description, $filesDeleted, $filesRemain
     }
 }
 
+# Show detailed cache operation with real-time steps
+function Show-DetailedCacheResultPopup($title, $statusLines, $filesDeleted, $filesRemaining) {
+    $PopupOverlay = $UserControl.FindName("PopupOverlay")
+    $CacheResultPopupContainer = $UserControl.FindName("CacheResultPopupContainer")
+    $PopupTitle = $UserControl.FindName("PopupTitle")
+    $PopupDescription = $UserControl.FindName("PopupDescription")
+    $PopupDetailedDescription = $UserControl.FindName("PopupDetailedDescription")
+    $PopupDetailedDescriptionBorder = $UserControl.FindName("PopupDetailedDescriptionBorder")
+    $FilesDeletedCount = $UserControl.FindName("FilesDeletedCount")
+    $FilesRemainingCount = $UserControl.FindName("FilesRemainingCount")
+    $PopupOKButton = $UserControl.FindName("PopupOKButton")
+    
+    if ($null -ne $PopupTitle) { $PopupTitle.Text = $title }
+    
+    # Hide the simple text description border, show the detailed RichTextBox border
+    $PopupDescriptionBorder = $UserControl.FindName("PopupDescriptionBorder")
+    if ($null -ne $PopupDescriptionBorder) { 
+        $PopupDescriptionBorder.Visibility = "Collapsed"
+    }
+    if ($null -ne $PopupDetailedDescriptionBorder) {
+        $PopupDetailedDescriptionBorder.Visibility = "Visible"
+    }
+    
+    # Display detailed status lines in the RichTextBox
+    if ($null -ne $PopupDetailedDescription) {
+        $isRichTextBox = $PopupDetailedDescription.GetType().Name -eq "RichTextBox"
+        
+        if ($isRichTextBox) {
+            $PopupDetailedDescription.Document.Blocks.Clear()
+            
+            foreach ($line in $statusLines) {
+                $para = New-Object System.Windows.Documents.Paragraph
+                $run = New-Object System.Windows.Documents.Run
+                $run.Text = $line
+                
+                # Color code based on type
+                if ($line -match "^STATUS\|") {
+                    $run.Text = $line -replace "^STATUS\|", ""
+                    $run.Foreground = [System.Windows.Media.Brushes]::Yellow
+                    $run.FontWeight = [System.Windows.FontWeights]::Bold
+                } elseif ($line -match "^ACTION\|") {
+                    $run.Text = $line -replace "^ACTION\|", ""
+                    $run.Foreground = [System.Windows.Media.Brushes]::Cyan
+                } elseif ($line -match "^SUCCESS\|") {
+                    $run.Text = $line -replace "^SUCCESS\|", ""
+                    $run.Foreground = [System.Windows.Media.Brushes]::LimeGreen
+                    $run.FontWeight = [System.Windows.FontWeights]::Bold
+                } elseif ($line -match "^ENTRY\|") {
+                    $run.Text = $line -replace "^ENTRY\|", ""
+                    $run.Foreground = [System.Windows.Media.Brushes]::LightGray
+                    $run.FontSize = 10
+                } elseif ($line -match "^RESULT\|") {
+                    $run.Text = $line -replace "^RESULT\|", ""
+                    $run.Foreground = [System.Windows.Media.Brushes]::LimeGreen
+                    $run.FontWeight = [System.Windows.FontWeights]::Bold
+                } elseif ($line -match "^ERROR\|") {
+                    $run.Text = $line -replace "^ERROR\|", ""
+                    $run.Foreground = [System.Windows.Media.Brushes]::Red
+                    $run.FontWeight = [System.Windows.FontWeights]::Bold
+                } else {
+                    $run.Foreground = [System.Windows.Media.Brushes]::LightGray
+                }
+                
+                $para.Inlines.Add($run)
+                $para.Margin = New-Object System.Windows.Thickness(0, 0, 0, 6)
+                $PopupDetailedDescription.Document.Blocks.Add($para)
+            }
+        }
+    }
+    
+    if ($null -ne $FilesDeletedCount) { $FilesDeletedCount.Text = $filesDeleted.ToString() }
+    if ($null -ne $FilesRemainingCount) { $FilesRemainingCount.Text = $filesRemaining.ToString() }
+    
+    if ($null -ne $PopupOverlay) { $PopupOverlay.Visibility = "Visible" }
+    if ($null -ne $CacheResultPopupContainer) { $CacheResultPopupContainer.Visibility = "Visible" }
+    
+    # Setup close button handler
+    if ($null -ne $PopupOKButton) {
+        $closePopupHandler = {
+            $overlay = $UserControl.FindName("PopupOverlay")
+            $container = $UserControl.FindName("CacheResultPopupContainer")
+            if ($null -ne $overlay) { $overlay.Visibility = "Collapsed" }
+            if ($null -ne $container) { $container.Visibility = "Collapsed" }
+            
+            # Reset for next use
+            $descBorder = $UserControl.FindName("PopupDescriptionBorder")
+            $detailedBorder = $UserControl.FindName("PopupDetailedDescriptionBorder")
+            if ($null -ne $descBorder) { $descBorder.Visibility = "Visible" }
+            if ($null -ne $detailedBorder) { $detailedBorder.Visibility = "Collapsed" }
+        }
+        $PopupOKButton.Add_Click($closePopupHandler)
+    }
+}
+
+
 # Show Styled Information Popup
 function Show-StyledInfoPopup {
     param(
@@ -723,10 +818,10 @@ function Show-SystemTweaksTab($tabIndex) {
     }
 }
 
-$BtnNavGaming.Add_Click({ Show-Section $SectionGaming })
-$BtnNavApex.Add_Click({ Show-Section $SectionApex })
-$BtnNavGamesLibrary.Add_Click({ Show-Section $SectionGamesLibrary })
-$BtnNavOBS.Add_Click({ Show-Section $SectionOBS })
+$BtnNavGaming.Add_Click({ Show-Section $SectionGaming; if ($StatusText) { $StatusText.Text = "" } })
+$BtnNavApex.Add_Click({ Show-Section $SectionApex; if ($StatusText) { $StatusText.Text = "" } })
+$BtnNavGamesLibrary.Add_Click({ Show-Section $SectionGamesLibrary; if ($StatusText) { $StatusText.Text = "" } })
+$BtnNavOBS.Add_Click({ Show-Section $SectionOBS; if ($StatusText) { $StatusText.Text = "" } })
 
 # System Tweaks tab handlers
 if ($TabPerfTweaks) { $TabPerfTweaks.Add_Click({ Show-SystemTweaksTab 0 }) }
@@ -792,6 +887,9 @@ $BtnClearMemDumps = $UserControl.FindName("BtnClearMemDumps")
 
 # Clear Windows Update Cache Button
 $BtnClearUpdateCache = $UserControl.FindName("BtnClearUpdateCache")
+
+# Clear DNS Cache Button
+$BtnClearDNSCache = $UserControl.FindName("BtnClearDNSCache")
 
 $BtnApplyApexConfig = $UserControl.FindName("BtnApplyApexConfig")
 $BtnViewSupportedCommands = $UserControl.FindName("BtnViewSupportedCommands")
@@ -1351,6 +1449,43 @@ if ($BtnClearUpdateCache) {
         }
         
         if ($StatusText) { $StatusText.Text = "Windows update cache cleared successfully." }
+    })
+}
+
+# Clear DNS Cache Button Logic
+if ($BtnClearDNSCache) {
+    $BtnClearDNSCache.Add_Click({
+        $script = "$(Split-Path $PSScriptRoot)\Tools\Tweaks\ClearDNSCache.ps1"
+        
+        # Run script and capture all output (including errors)
+        $output = & powershell -NoProfile -ExecutionPolicy Bypass -File "$script" -Type ClearCache 2>&1
+        
+        # Debug: Write all output to a temporary log file for inspection
+        $logFile = "$env:TEMP\dns_debug_$(Get-Random).txt"
+        if ($output) {
+            $output | Out-File -FilePath $logFile -Force
+            Add-Content -Path $logFile -Value "`n--- Output Count: $($output.Count) ---"
+        }
+        
+        # Extract the DNS_CACHE result line
+        $resultLine = $output | Where-Object { $_ -match "DNS_CACHE" }
+        
+        if ($resultLine -match "DNS_CACHE\|(\d+)\|(\d+)") {
+            $deleted = [int]$matches[1]
+            $remaining = [int]$matches[2]
+            
+            # Filter out the DNS_CACHE line and RESULT lines (already shown at top), keep only STATUS/ACTION/SUCCESS
+            $statusLines = @($output | Where-Object { $_ -notmatch "^DNS_CACHE" -and $_ -notmatch "^RESULT\|" -and $_ -ne "" })
+            
+            # Ensure statusLines is an array even if empty
+            if ($null -eq $statusLines) { $statusLines = @() }
+            
+            Show-DetailedCacheResultPopup "DNS Cache Cleared" $statusLines $deleted $remaining
+        } else {
+            [System.Windows.MessageBox]::Show("DNS cache has been cleared!", "Cache Cleared", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Information) | Out-Null
+        }
+        
+        if ($StatusText) { $StatusText.Text = "DNS cache cleared successfully. (Debug: $logFile)" }
     })
 }
 

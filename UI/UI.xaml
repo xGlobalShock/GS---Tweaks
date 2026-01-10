@@ -660,6 +660,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -851,6 +852,36 @@
                             </Button>
                         </Grid>
                     </Border>
+
+                    <!-- Row 2 -->
+                    <!-- Clear DNS Cache -->
+                    <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="1" Background="#0F111A" CornerRadius="14" Padding="24" BorderBrush="#0288D1" BorderThickness="1.5" Margin="0,20,10,0" ClipToBounds="True">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" Margin="0,0,0,14">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="Clear DNS Cache" FontSize="15" FontWeight="Bold" Margin="0,0,0,3" Foreground="#0288D1"/>
+                                    <TextBlock Text="Network Resolver" FontSize="10" Foreground="#94A3B8"/>
+                                </StackPanel>
+                                <TextBlock Grid.Column="1" Text="&#xE71B;" FontFamily="Segoe MDL2 Assets" FontSize="28" Foreground="#0288D1" VerticalAlignment="Top"/>
+                            </Grid>
+                            <TextBlock Grid.Row="1" Text="Clears DNS resolver cache to potentially improve network latency and connectivity." FontSize="11" Foreground="#C0C7D0" TextWrapping="Wrap" LineHeight="16"/>
+                            <Button x:Name="BtnClearDNSCache" Grid.Row="2" Margin="0,16,0,0" Background="#0288D1" Style="{StaticResource CacheButtonHoverStyle}">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <TextBlock Text="⚡" Margin="0,0,8,0" FontSize="14" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Clear Cache" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </Border>
                 </Grid>
                 </StackPanel>
 
@@ -872,7 +903,7 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Grid.Column="0">
-                                    <TextBlock Text="Install NVIDIA App" FontSize="15" FontWeight="Bold" Margin="0,0,0,3" Foreground="#76B900"/>
+                                    <TextBlock Text="Download NVIDIA App" FontSize="15" FontWeight="Bold" Margin="0,0,0,3" Foreground="#76B900"/>
                                     <TextBlock Text="GPU Utility" FontSize="10" Foreground="#94A3B8"/>
                                 </StackPanel>
                                 <TextBlock Grid.Column="1" Text="&#xE896;" FontFamily="Segoe MDL2 Assets" FontSize="28" Foreground="#76B900" VerticalAlignment="Top"/>
@@ -881,7 +912,7 @@
                             <Button x:Name="BtnInstallNvidiaApp" Grid.Row="2" Margin="0,16,0,0" Background="#76B900" Style="{StaticResource CacheButtonHoverStyle}">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                                     <TextBlock Text="⚡" Margin="0,0,8,0" FontSize="14" VerticalAlignment="Center"/>
-                                    <TextBlock Text="Install App" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Download App" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
                         </Grid>
@@ -1908,13 +1939,18 @@
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
                             <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="32" Foreground="#00A3FF" Margin="0,0,12,0" VerticalAlignment="Center"/>
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="What is GlobalShock?" FontSize="20" FontWeight="Bold" Margin="0,0,0,2"/>
+                                <TextBlock Text="What is GS Tweaker?" FontSize="20" FontWeight="Bold" Margin="0,0,0,2"/>
                                 <TextBlock Text="Your all-in-one tweaker solution" FontSize="11" Foreground="{StaticResource TextSecondary}"/>
                             </StackPanel>
                         </StackPanel>
                         <TextBlock Text="GlobalShock Tweaker is a comprehensive, modern toolkit designed for competitive gamers and performance enthusiasts. It consolidates system optimizations, game-specific configurations, and streaming setups into one intuitive interface." FontSize="12" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap" Margin="0,0,0,24"/>
                         
                         <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
@@ -1995,8 +2031,14 @@
                         </StackPanel>
                     </Border>
                     
-                    <Border Background="#1A2332" BorderBrush="#2A5A7F" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,20">
+                    <Border Background="#0D1117" BorderBrush="#2A3F5F" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,20" x:Name="PopupDescriptionBorder">
                         <TextBlock x:Name="PopupDescription" FontSize="12" Foreground="#A0AEC0" TextWrapping="Wrap" Text="Operation completed successfully." TextAlignment="Center"/>
+                    </Border>
+                    
+                    <Border Background="#0D1117" BorderBrush="#2A3F5F" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,20" Visibility="Collapsed" x:Name="PopupDetailedDescriptionBorder">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="300">
+                            <RichTextBox x:Name="PopupDetailedDescription" FontSize="12" Foreground="#A0AEC0" Background="Transparent" BorderThickness="0" IsReadOnly="True" Padding="0"/>
+                        </ScrollViewer>
                     </Border>
                     
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
