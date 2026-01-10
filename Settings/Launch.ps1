@@ -1627,7 +1627,6 @@ if ($BtnDownloadCS2Config) {
                     $configPath = $matches[1]
                     $pathParts = $configPath -split '\\'
                     $fileName = $pathParts[-1]
-                    $folderPath = $pathParts[0..($pathParts.Length-2)] -join '\'
                     
                     Show-InfoPopup "Config Ready" @() "Installation Guide:`n`n1. Locate your CS2 cfg folder:`n   steamapps\common\Counter-Strike Global Offensive\game\csgo\cfg`n`n2. Copy '$fileName' to the cfg folder`n`n3. Launch CS2 - the config will auto-load`n`n4. To verify, open console (~) and look for 'Config Loaded!' message" ""
                     
