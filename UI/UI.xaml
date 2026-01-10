@@ -376,7 +376,7 @@
 
                 <!-- Performance Tweaks Content -->
                 <StackPanel x:Name="ContentPerfTweaks" Visibility="Visible">
-                <Border Background="{StaticResource CardBg}" CornerRadius="16" Padding="30" BorderBrush="#00A3FF" BorderThickness="2">
+                <Border Background="{StaticResource CardBg}" CornerRadius="16" Padding="24" BorderBrush="#00A3FF" BorderThickness="2">
                     <StackPanel>
                         <Grid Margin="0,0,0,20">
                             <Grid.ColumnDefinitions>
@@ -622,30 +622,33 @@
                             </Border>
                         </Grid>
 
-                        <!-- Services to Manual Section -->
-                        <Border Background="#0F111A" CornerRadius="14" Padding="20" BorderBrush="#00A3FF" BorderThickness="1.5" Margin="0,0,0,24">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                        <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/services.png" Width="36" Height="36" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                        <StackPanel VerticalAlignment="Center">
-                                            <TextBlock Text="Set Services to Manual" FontSize="13" FontWeight="Bold" Foreground="White"/>
-                                            <TextBlock Text="Background Services" FontSize="10" Foreground="#888"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                    <TextBlock Text="Disables non-essential Windows services to improve performance and reduce background activity." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap" Margin="30,0,0,0"/>
-                                </StackPanel>
-                                <Button x:Name="BtnSetServicesManual" Grid.Column="1" Content="Set to Manual" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="16,0" FontSize="11" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                <Button x:Name="BtnResetServices" Grid.Column="2" Content="Reset to Default" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="16,0" FontSize="11" VerticalAlignment="Center"/>
-                            </Grid>
-                        </Border>
+                        <!-- Apply Tweaks Button -->
+                        <Button x:Name="BtnApply" Content="Apply Tweaks" Style="{StaticResource PrimaryActionBtn}" Height="40" Padding="24,10" Margin="0,24,0,8" FontSize="12" FontWeight="Bold" HorizontalAlignment="Right"/>
 
                     </StackPanel>
+                </Border>
+
+                <!-- Services to Manual Section -->
+                <Border Background="{StaticResource CardBg}" CornerRadius="16" Padding="24" BorderBrush="#00A3FF" BorderThickness="2" Margin="0,16,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/services.png" Width="36" Height="36" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Set Services to Manual" FontSize="13" FontWeight="Bold" Foreground="White"/>
+                                    <TextBlock Text="Background Services" FontSize="10" Foreground="#888"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <TextBlock Text="Disables non-essential Windows services to improve performance and reduce background activity." FontSize="11" Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap" Margin="24,0,0,0"/>
+                        </StackPanel>
+                        <Button x:Name="BtnSetServicesManual" Grid.Column="1" Content="Set to Manual" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="16,0" FontSize="11" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <Button x:Name="BtnResetServices" Grid.Column="2" Content="Reset to Default" Style="{StaticResource PrimaryActionBtn}" Height="32" Padding="16,0" FontSize="11" VerticalAlignment="Center"/>
+                    </Grid>
                 </Border>
                 </StackPanel>
 
