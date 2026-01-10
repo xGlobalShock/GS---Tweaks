@@ -342,15 +342,6 @@
                     </StackPanel>
                 </Button>
 
-                <!-- <Button x:Name="BtnNavApex" Style="{StaticResource SidebarButton}" Tag="Apex" Margin="8,6">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <Border Width="24" Margin="-4,0,12,0" VerticalAlignment="Center">
-                            <Image Source="file:///e:/Dev/GS%20-%20Tweaks/UI/Assets/Apex%20Logo.png" Width="32" Height="32" VerticalAlignment="Center" HorizontalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
-                        </Border>
-                        <TextBlock Text="Apex Optimization" VerticalAlignment="Center" FontSize="12"/>
-                    </StackPanel>
-                </Button> -->
-
                 <Button x:Name="BtnNavGamesLibrary" Style="{StaticResource SidebarButton}" Tag="GamesLibrary" Margin="8,6">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="18" Foreground="#00A3FF" Margin="0,0,12,0" Width="24"/>
