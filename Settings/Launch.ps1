@@ -652,11 +652,9 @@ $SectionOBS = $UserControl.FindName("SectionOBS")
 # System Tweaks tabs
 $TabPerfTweaks = $UserControl.FindName("TabPerfTweaks")
 $TabPerfCleanup = $UserControl.FindName("TabPerfCleanup")
-$TabServicesOpt = $UserControl.FindName("TabServicesOpt")
 $TabNvidiaControl = $UserControl.FindName("TabNvidiaControl")
 $ContentPerfTweaks = $UserControl.FindName("ContentPerfTweaks")
 $ContentPerfCleanup = $UserControl.FindName("ContentPerfCleanup")
-$ContentServicesOpt = $UserControl.FindName("ContentServicesOpt")
 $ContentNvidiaControl = $UserControl.FindName("ContentNvidiaControl")
 
 function Show-Section($section) {
@@ -679,7 +677,6 @@ function Show-SystemTweaksTab($tabIndex) {
     # Hide all content
     $ContentPerfTweaks.Visibility = "Collapsed"
     $ContentPerfCleanup.Visibility = "Collapsed"
-    $ContentServicesOpt.Visibility = "Collapsed"
     $ContentNvidiaControl.Visibility = "Collapsed"
     
     # Reset all tab styles
@@ -695,10 +692,6 @@ function Show-SystemTweaksTab($tabIndex) {
     $TabPerfCleanup.Background = $darkBrush
     $TabPerfCleanup.Foreground = $grayForeground
     $TabPerfCleanup.Tag = ""
-    
-    $TabServicesOpt.Background = $darkBrush
-    $TabServicesOpt.Foreground = $grayForeground
-    $TabServicesOpt.Tag = ""
     
     $TabNvidiaControl.Background = $darkBrush
     $TabNvidiaControl.Foreground = $grayForeground
@@ -722,12 +715,6 @@ function Show-SystemTweaksTab($tabIndex) {
             $TabPerfCleanup.Tag = "Active"
         }
         2 {
-            $ContentServicesOpt.Visibility = "Visible"
-            $TabServicesOpt.Background = $blueBrush
-            $TabServicesOpt.Foreground = [System.Windows.Media.Brushes]::White
-            $TabServicesOpt.Tag = "Active"
-        }
-        3 {
             $ContentNvidiaControl.Visibility = "Visible"
             $TabNvidiaControl.Background = $blueBrush
             $TabNvidiaControl.Foreground = [System.Windows.Media.Brushes]::White
@@ -744,8 +731,7 @@ $BtnNavOBS.Add_Click({ Show-Section $SectionOBS })
 # System Tweaks tab handlers
 if ($TabPerfTweaks) { $TabPerfTweaks.Add_Click({ Show-SystemTweaksTab 0 }) }
 if ($TabPerfCleanup) { $TabPerfCleanup.Add_Click({ Show-SystemTweaksTab 1 }) }
-if ($TabServicesOpt) { $TabServicesOpt.Add_Click({ Show-SystemTweaksTab 2 }) }
-if ($TabNvidiaControl) { $TabNvidiaControl.Add_Click({ Show-SystemTweaksTab 3 }) }
+if ($TabNvidiaControl) { $TabNvidiaControl.Add_Click({ Show-SystemTweaksTab 2 }) }
 
 # Additional UI Elements
 $ChkIRQ    = $UserControl.FindName("ChkIRQ")
